@@ -410,35 +410,18 @@
         "disabled": false,
         "settings": {}
       },
-      "2002083779152374139": {
-        "type": "shopify://apps/pickup-points-pro/blocks/app_embed/005581db-53ad-477a-b330-60f483c76b50",
-        "disabled": true,
-        "settings": {
-          "country_selector_text": "Select your shipping country:",
-          "opening_button_text": "Choose pickup point on map",
-          "additional_info_text": "If you want to choose a different delivery method than the pickup point, please skip this step and select your preferred option at the checkout."
-        }
-      },
       "4918592460924562117": {
         "type": "shopify://apps/optimonk-popup-cro-a-b-test/blocks/app-embed/0b488be1-fc0a-4fe6-8793-f2bef383dba8",
         "disabled": true,
         "settings": {}
       },
-      "1015306495280391486": {
-        "type": "shopify://apps/globe-pickup-points/blocks/pickup-selector/019c6615-db2e-7538-a969-a53cad35d735",
-        "disabled": false,
-        "settings": {}
-      },
-      "8424637624631196097": {
-        "type": "shopify://apps/sendica-pickup-points/blocks/pickup-point-popup/55e82677-ed93-4600-bd2e-11f02cc09c4f",
+      "2002083779152374139": {
+        "type": "shopify://apps/pickup-points-pro/blocks/app_embed/005581db-53ad-477a-b330-60f483c76b50",
         "disabled": false,
         "settings": {
-          "border_color": "#2b7fff",
-          "background_color": "#eff6ff",
-          "primary_color": "#2b7fff",
-          "primary_text_color": "#ffffff",
-          "secondary_color": "#ffffff",
-          "secondary_text_color": "#2b7fff"
+          "country_selector_text": "Select your shipping country:",
+          "opening_button_text": "Choose pickup point on map",
+          "additional_info_text": "If you want to choose a different delivery method than the pickup point, please skip this step and select your preferred option at the checkout."
         }
       }
     },
