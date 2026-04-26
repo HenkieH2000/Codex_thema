@@ -423,6 +423,21 @@
         "type": "shopify://apps/optimonk-popup-cro-a-b-test/blocks/app-embed/0b488be1-fc0a-4fe6-8793-f2bef383dba8",
         "disabled": true,
         "settings": {}
+      },
+      "11183658931131401598": {
+        "type": "shopify://apps/se-delivery-pickup/blocks/cart-global/2eb39888-20d1-47c4-960f-ad05f2e225b3",
+        "disabled": false,
+        "settings": {
+          "sclmd_plugin_mode": "cart",
+          "sclmd_enable_cart_page": true,
+          "sclmd_enable_drawer": false,
+          "sclmd_plugin_width": 400,
+          "sclmd_plugin_width_mobile": 90,
+          "sclmd_express_checkout": false,
+          "sclmd_target_id": "",
+          "sclmd_fill_pickup_address": true,
+          "sclmd_dt_not_mandatory": false
+        }
       }
     },
     "color_schemes": {
