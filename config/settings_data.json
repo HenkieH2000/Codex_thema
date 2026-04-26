@@ -1559,20 +1559,15 @@
   },
   "platform_customizations": {
     "custom_css": [
-      "#cart h3 {display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; line-height: 1.2em; max-height: 2.5em;}",
       "a.text-justify.inv[aria-controls=\"nav\"] {display: none;}",
       ".r6rt .rating > * .fill:before {color: #ffd100;}",
-      ".jdgm-carousel-wrapper {padding-top: 0px !important; padding-bottom: 8px !important;}",
+      ".jdgm-carousel-wrapper {padding-top: 0 !important; padding-bottom: 8px !important;}",
       ".l4cl p[class*=\"overlay\"]:not(.s1pr, [class*=\"size-\"]) {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}",
-      ".l4ca.compact li {padding-left: 0; padding-right: 0; z-index: auto;}",
-      ".l4ca.compact li {z-index: auto !important;}",
-      ".l4ca.compact footer {position: relative; z-index: 9; margin-right: -14px; margin-bottom: calc(var(--pt) - var(--mr_i)); z-index: auto !important;}",
-      ".m6pn .l4ca h1 a:before {top: 0; bottom: 0; z-index: 2 !important;}",
-      ".lb-addon-cont {padding: 0px !important;}",
-      ".gfb-style-material_outlined [data-type=\"file2\"] .gfb__dropzone .gfb__dropzone--placeholder--button {color: rgb(var(--gfb-color-outlineButton)); background: none; border: px solid rgb(var(--gfb-color-outlineButton));}",
-      ".globo-form-id-131632 .globo-form-app .footer button,.globo-form-id-131632 .globo-form-app .gfb__footer button {border: 0px solid var(--gfb-primary-color); width: 100%;}",
+      ".lb-addon-cont {padding: 0 !important;}",
+      ".gfb-style-material_outlined [data-type=\"file2\"] .gfb__dropzone .gfb__dropzone--placeholder--button {color: rgb(var(--gfb-color-outlineButton)); background: none; border: 1px solid rgb(var(--gfb-color-outlineButton));}",
+      ".globo-form-id-131632 .globo-form-app .footer button, .globo-form-id-131632 .globo-form-app .gfb__footer button {border: 0 solid var(--gfb-primary-color); width: 100%;}",
       "#form-Promotion {display: none !important;}",
-      "#root .restock-rocket-button-container button,#root .restock-rocket-button-container .link-btn a {margin-top: -5px;}",
+      "#root .restock-rocket-button-container button, #root .restock-rocket-button-container .link-btn a {margin-top: -5px;}",
       ".om-holder .om-workspace-content .powered-by {display: none !important;}"
     ]
   }
