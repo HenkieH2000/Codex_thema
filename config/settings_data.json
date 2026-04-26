@@ -428,6 +428,18 @@
         "type": "shopify://apps/globe-pickup-points/blocks/pickup-selector/019c6615-db2e-7538-a969-a53cad35d735",
         "disabled": false,
         "settings": {}
+      },
+      "8424637624631196097": {
+        "type": "shopify://apps/sendica-pickup-points/blocks/pickup-point-popup/55e82677-ed93-4600-bd2e-11f02cc09c4f",
+        "disabled": false,
+        "settings": {
+          "border_color": "#2b7fff",
+          "background_color": "#eff6ff",
+          "primary_color": "#2b7fff",
+          "primary_text_color": "#ffffff",
+          "secondary_color": "#ffffff",
+          "secondary_text_color": "#2b7fff"
+        }
       }
     },
     "color_schemes": {
