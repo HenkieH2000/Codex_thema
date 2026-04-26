@@ -424,20 +424,10 @@
         "disabled": true,
         "settings": {}
       },
-      "11183658931131401598": {
-        "type": "shopify://apps/se-delivery-pickup/blocks/cart-global/2eb39888-20d1-47c4-960f-ad05f2e225b3",
+      "1015306495280391486": {
+        "type": "shopify://apps/globe-pickup-points/blocks/pickup-selector/019c6615-db2e-7538-a969-a53cad35d735",
         "disabled": false,
-        "settings": {
-          "sclmd_plugin_mode": "cart",
-          "sclmd_enable_cart_page": true,
-          "sclmd_enable_drawer": false,
-          "sclmd_plugin_width": 400,
-          "sclmd_plugin_width_mobile": 90,
-          "sclmd_express_checkout": false,
-          "sclmd_target_id": "",
-          "sclmd_fill_pickup_address": true,
-          "sclmd_dt_not_mandatory": false
-        }
+        "settings": {}
       }
     },
     "color_schemes": {
