@@ -417,7 +417,7 @@
       },
       "2002083779152374139": {
         "type": "shopify://apps/pickup-points-pro/blocks/app_embed/005581db-53ad-477a-b330-60f483c76b50",
-        "disabled": false,
+        "disabled": true,
         "settings": {
           "country_selector_text": "Select your shipping country:",
           "opening_button_text": "Choose pickup point on map",
