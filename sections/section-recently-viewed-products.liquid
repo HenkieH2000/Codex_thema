@@ -90,6 +90,16 @@
     #shopify-section-{{ section.id }} .l4cl:not(.s4wi) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    #shopify-section-{{ section.id }} .l4cl > li,
+    #shopify-section-{{ section.id }} .l4cl.s4wi .swiper-slide > li,
+    #shopify-section-{{ section.id }} .product-card {
+      height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .product-card .s1pr {
+      margin-top: 0;
+    }
   }
 </style>
 
