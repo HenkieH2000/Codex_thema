@@ -8,8 +8,6 @@ For inquiries or permissions, contact daniel@section.store
 ---------------------------------------------------------
 {% endcomment %}
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
-
 {%- liquid 
   assign padding_horizontal = section.settings.padding_horizontal
   assign padding_horizontal_mobile = section.settings.padding_horizontal_mobile
@@ -1186,12 +1184,16 @@ For inquiries or permissions, contact daniel@section.store
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@8.4.7/swiper-bundle.min.js"></script>
-              
 <script>
   function initTestimonials8{{ section.id | replace: '-', '' }}() {
-    document.querySelector('.testimonials-slider-{{ section.id }}').classList.remove('preview');
-    const slider = new Swiper('.testimonials-slider-{{ section.id }}', {
+    if (typeof Swiper === 'undefined') {
+      window.setTimeout(initTestimonials8{{ section.id | replace: '-', '' }}, 150);
+      return;
+    }
+    const sliderEl = document.querySelector('.testimonials-slider-{{ section.id }}');
+    if (!sliderEl || sliderEl.classList.contains('swiper-initialized')) return;
+    sliderEl.classList.remove('preview');
+    const slider = new Swiper(sliderEl, {
       speed: 300,
       loop: true,
       watchSlidesProgress: true,
@@ -1223,13 +1225,14 @@ For inquiries or permissions, contact daniel@section.store
       }
     })
     // slider.slidePrev();
-    let texts = document.querySelectorAll('.testimonials-slide-text-{{ section.id }}');
+    let texts = document.querySelectorAll('.testimonials-slide-text-{{ section.id }}:not(.vct-readmore-ready)');
     texts.forEach(el => {
+      el.classList.add('vct-readmore-ready');
       let btn = el.querySelector('.testimonials-slide-text-btn');
       let small = el.querySelector('.testimonials-slide-text-small');
       let big = el.querySelector('.testimonials-slide-text-big');
+      if (!btn || !small || !big) return;
       btn.addEventListener('click', () => {
-        console.log(btn);
         if(btn.classList.contains("active")) {
           small.classList.remove('active');
           big.classList.remove('active');

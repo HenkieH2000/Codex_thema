@@ -1,5 +1,5 @@
-<script type="text/javascript" src="https://edge.personalizer.io/storefront/2.0.0/js/shopify/storefront.min.js?key=5vfkm-cou1fz6ox0g9ars1f0jw-r9jph&shop=uv4nyg-xy.myshopify.com"></script>
 <script>
+(function() {
 window.LimeSpot = window.LimeSpot === undefined ? {} : LimeSpot;{% assign t = template | prepend: '/' | append: '.' %}
 {% if t contains '/product.' %}LimeSpot.PageInfo = { Type: "Product", Template: "{{ template }}", ReferenceIdentifier: "{{ product.id }}" };
 {% elsif t contains '/collection.' %}LimeSpot.PageInfo = { Type: "Collection", Template: "{{ template }}", ReferenceIdentifier: "{{ collection.id }}", Personalized: {%if collection.metafields.LimeSpot['Personalized'] == "true"%}true{%else%}false{%endif%} };
@@ -23,6 +23,28 @@ LimeSpot.StoreInfo = { Theme: "{{ theme.name | escape }}" };
 	{% endfor %}
 {% endif %}
 LimeSpot.CartItems = [{{ cart_product_ids | remove_first: "," }}];
+function loadLimeSpot() {
+	if (window.__vctLimeSpotLoaded) return;
+	window.__vctLimeSpotLoaded = true;
+	var script = document.createElement('script');
+	script.src = 'https://edge.personalizer.io/storefront/2.0.0/js/shopify/storefront.min.js?key=5vfkm-cou1fz6ox0g9ars1f0jw-r9jph&shop=uv4nyg-xy.myshopify.com';
+	script.async = true;
+	document.head.appendChild(script);
+}
+function scheduleLimeSpot() {
+	if ('requestIdleCallback' in window) {
+		window.requestIdleCallback(loadLimeSpot, { timeout: 2500 });
+	} else {
+		window.setTimeout(loadLimeSpot, 1200);
+	}
+}
+window.VCTLimeSpotLoad = loadLimeSpot;
+if (document.readyState === 'complete') {
+	scheduleLimeSpot();
+} else {
+	window.addEventListener('load', scheduleLimeSpot, { once: true });
+}
+})();
 </script>
 {% if t contains '/collection.' and collection.metafields.LimeSpot['CuratedCollectionVariation'] == "true" %}
 <link rel="canonical" data-owner="LimeSpot" href="https://{{ request.host }}{{ collection.metafields.LimeSpot['StartingCollectionPath'] }}">
