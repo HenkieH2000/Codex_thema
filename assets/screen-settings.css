@@ -47,7 +47,7 @@
        url("//www.vctparts.nl/cdn/fonts/figtree/figtree_i7.ee584b5fcaccdbb5518c0228158941f8df81b101.woff") format("woff");
 }
 
-@font-face { font-family: 'i'; src: url(//www.vctparts.nl/cdn/shop/t/54/assets/xtra.woff2?v=74598006880499421301776983953) format('woff2'), url(//www.vctparts.nl/cdn/shop/t/54/assets/xtra.woff?v=112884414208285247051776983952) format('woff'); font-display: swap; }
+@font-face { font-family: 'i'; src: url(//www.vctparts.nl/cdn/shop/t/58/assets/xtra.woff2?v=74598006880499421301777216160) format('woff2'), url(//www.vctparts.nl/cdn/shop/t/58/assets/xtra.woff?v=112884414208285247051777216159) format('woff'); font-display: swap; }
 
 :root {
   --secondary_text:     var(--white);

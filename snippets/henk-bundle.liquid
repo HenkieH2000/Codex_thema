@@ -504,41 +504,49 @@ document.addEventListener('DOMContentLoaded', function () {
     updateTotals();
   });
 
-  function updateCartCount(cart) {
-    document.querySelectorAll('[data-cart-count],[data-cart-item-count],.cart-count,.cart__count,.header__cart-count,.cart-count-bubble').forEach(el => {
-      el.textContent = cart.item_count;
-      el.setAttribute('data-count', cart.item_count);
-      if (cart.item_count > 0) el.removeAttribute('hidden');
+  function updateCartCount(cart, sideCartDoc) {
+    const totalQty = sideCartDoc?.querySelector('[data-totalqty]')?.dataset.totalqty || cart.item_count;
+    const totalPrice = sideCartDoc?.querySelector('[data-totalprice]')?.dataset.totalprice;
+    document.querySelectorAll('#cart-count,[data-cart-count],[data-cart-item-count],.cart-count,.cart__count,.header__cart-count,.cart-count-bubble').forEach(el => {
+      el.textContent = totalQty;
+      el.setAttribute('data-count', totalQty);
+      if (parseInt(totalQty, 10) > 0) el.removeAttribute('hidden');
     });
+    if (totalPrice) {
+      document.querySelectorAll('#cart-total,[data-cart-total]').forEach(el => { el.textContent = totalPrice; });
+    }
   }
 
-  function refreshDrawerContent() {
-    const drawerEl = document.querySelector('cart-drawer, #CartDrawer, .cart-drawer');
-    if (!drawerEl) return Promise.resolve();
-    const sectionId = drawerEl.dataset.sectionId || drawerEl.id || 'cart-drawer';
-    return fetch(`/?sections=${sectionId}`).then(r => r.json()).then(data => {
-      const html = data[sectionId] || data[Object.keys(data)[0]];
-      if (!html) return;
-      const parser = new DOMParser();
-      const newDoc = parser.parseFromString(html, 'text/html');
-      for (const sel of ['.cart-drawer__item-list','.drawer__cart-items-wrapper','#cart-drawer-items','.cart-items','[data-cart-items]','.js-cart-items']) {
-        const src = newDoc.querySelector(sel), tgt = document.querySelector(sel);
-        if (src && tgt) { tgt.innerHTML = src.innerHTML; break; }
-      }
-      for (const sel of ['.cart-drawer__footer','.drawer__footer','#cart-drawer-footer','[data-cart-total]','.cart-subtotal']) {
-        const src = newDoc.querySelector(sel), tgt = document.querySelector(sel);
-        if (src && tgt) { tgt.innerHTML = src.innerHTML; break; }
-      }
-    }).catch(() => {});
+  function refreshDrawerContent(addResponse) {
+    const sideCartContainer = document.getElementById('cart');
+    const sideCartHtml = addResponse?.sections?.['side-cart'];
+    if (!sideCartContainer || !sideCartHtml) return Promise.resolve(null);
+
+    const sideCartDoc = new DOMParser().parseFromString(sideCartHtml, 'text/html');
+    const sideCartSection = sideCartDoc.querySelector('#shopify-section-side-cart');
+    if (!sideCartSection) return Promise.resolve(null);
+
+    sideCartContainer.innerHTML = sideCartSection.innerHTML;
+    window.dispatchEvent(new CustomEvent('modulePanel'));
+    window.dispatchEvent(new CustomEvent('listCart'));
+    window.dispatchEvent(new CustomEvent('semanticInput'));
+    window.dispatchEvent(new CustomEvent('formValidate'));
+    window.dispatchEvent(new CustomEvent('accordeon'));
+    if (window.ajaxCart && typeof window.ajaxCart.init === 'function') window.ajaxCart.init();
+    return Promise.resolve(sideCartDoc);
   }
 
   function openCartDrawer() {
+    if (window.ajaxCart && typeof window.ajaxCart.load === 'function') {
+      window.ajaxCart.load(false, true, false, false);
+      return;
+    }
     const drawerEl = document.querySelector('cart-drawer');
     if (drawerEl) {
       if (typeof drawerEl.open === 'function') { drawerEl.open(); return; }
       drawerEl.setAttribute('open', ''); drawerEl.removeAttribute('aria-hidden'); return;
     }
-    for (const sel of ['[data-cart-toggle]','[data-drawer-trigger="cart"]','.js-drawer-open-cart','#cart-icon-bubble','[aria-label*="winkelwagen" i]','.cart-toggle','.cart__toggle','.header__cart','.site-header__cart']) {
+    for (const sel of ['a[data-panel="cart"]','[data-cart-toggle]','[data-drawer-trigger="cart"]','.js-drawer-open-cart','#cart-icon-bubble','[aria-label*="winkelwagen" i]','.cart-toggle','.cart__toggle','.header__cart','.site-header__cart']) {
       const el = document.querySelector(sel);
       if (el) { el.click(); return; }
     }
@@ -573,15 +581,20 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ items, attributes: { 'henk-bundle': 'true' } })
+      body: JSON.stringify({
+        items,
+        attributes: { 'henk-bundle': 'true' },
+        sections: 'side-cart',
+        sections_url: window.location.pathname
+      })
     })
     .then(r => {
       if (!r.ok) return r.json().then(e => { throw new Error(e.message || r.status); });
       return r.json();
     })
-    .then(() => Promise.all([fetch('/cart.js').then(r => r.json()), refreshDrawerContent()]))
-    .then(([cart]) => {
-      updateCartCount(cart);
+    .then(addResponse => Promise.all([fetch('/cart.js').then(r => r.json()), refreshDrawerContent(addResponse)]))
+    .then(([cart, sideCartDoc]) => {
+      updateCartCount(cart, sideCartDoc);
       document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true, detail: { cart } }));
       window.dispatchEvent(new CustomEvent('cart-update', { bubbles: true, detail: { cart } }));
       document.dispatchEvent(new CustomEvent('theme:cart:update', { bubbles: true, detail: { cart } }));

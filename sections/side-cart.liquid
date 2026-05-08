@@ -26,11 +26,6 @@
 -%}
 
 <style>
-  .m6pn#cart {
-    z-index: 2147483000 !important;
-    isolation: isolate;
-  }
-
   /* ── Shipping progress bar ─────────────────────────────────── */
   .cart-shipping-bar {
     padding: 8px 16px 16px;
@@ -84,7 +79,7 @@
     background: #ff7e00;
   }
 
-  /* ── HEADER: verwijder alle witruimte ──────────────────────── */
+  /* ── HEADER ────────────────────────────────────────────────── */
   .m6pn,
   #cart-panel {
     padding-top: 0 !important;
@@ -120,10 +115,10 @@
     top: 50% !important;
     right: 14px !important;
     transform: translateY(-50%) !important;
-    z-index: 20;
+    z-index: 10;
   }
 
-/* ── MOBIEL: blauw balkje als header ───────────────────────── */
+  /* ── MOBIEL: blauw balkje als header ───────────────────────── */
   @media (max-width: 768px) {
     .m6pn,
     #cart-panel {
@@ -163,8 +158,8 @@
     }
 
     .m6pn>.m6pn-close:before {
-    color: #ffffff !important;
-}
+      color: #ffffff !important;
+    }
 
     aside.m6pn .m6pn-close-btn svg,
     aside.m6pn .m6pn-close-btn i,
@@ -183,179 +178,28 @@
     z-index: 1;
   }
 
-  .m6pn .l4ca > li {
-    position: relative;
-    z-index: 1;
-  }
-
-  .m6pn .l4ca > li > section {
-    min-width: 0;
-  }
-
-  .m6pn .l4ca > li > section h2,
-  .m6pn .cart-upsell h3 {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .m6pn .l4ca > li > section h2 {
-    -webkit-line-clamp: 3;
-    line-height: 1.25;
-    max-height: 3.75em;
-    margin-right: 12px;
-  }
-
-  .m6pn .cart-upsell h3 {
-    -webkit-line-clamp: 2;
-    line-height: 1.2;
-    max-height: 2.4em;
-  }
-
-  .m6pn .l4ca.compact footer {
-    position: relative;
-    z-index: 3;
-    margin-right: 0;
-    margin-bottom: 0;
-  }
-
-  .m6pn .l4ca h1 a:before,
-  .m6pn .l4ca h2 a:before,
-  .m6pn .l4ca h3 a:before {
-    z-index: 2 !important;
-  }
-
-  .m6pn .m6pn-close.strong {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #ff7e00;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .m6pn .cart-upsell {
-    position: relative;
-    z-index: 1;
-  }
-
-  .m6pn .vct-cart-checkout {
-    position: sticky;
-    bottom: 0;
-    z-index: 12;
-    margin: 10px -4px 0;
-    padding: 14px 18px calc(14px + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid rgba(3, 10, 34, 0.08);
-    border-radius: 0;
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 -8px 24px rgba(3, 10, 34, 0.08);
-  }
-
-  .m6pn .vct-cart-checkout:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -16px;
-    height: 16px;
-    background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.96));
-    pointer-events: none;
-  }
-
-  .cart-trust-strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 12px;
-    margin: 0 0 12px;
-  }
-
-  .cart-trust-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    min-height: auto;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: #4c5672;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  .cart-trust-pill svg,
-  .cart-trust-pill img {
-    flex: 0 0 auto;
-  }
-
-  .cart-trust-pill img {
-    width: auto;
-    height: 16px;
-    max-width: 64px;
-  }
-
-  .cart-actions {
-    display: grid;
-    gap: 8px;
-  }
-
-  .cart-actions .cart-checkout-button,
-  .cart-actions .cart-button-secondary {
-    width: 100%;
-  }
-
-  .cart-actions .cart-checkout-button {
-    position: relative;
-    overflow: hidden;
-    box-shadow: none;
-  }
-
-  .cart-actions .cart-checkout-button:after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, rgba(255,255,255,0.22), rgba(255,255,255,0));
-    pointer-events: none;
-  }
-
-  .cart-actions .cart-button-secondary {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    min-height: var(--input_h);
-    padding: 0 20px;
-    border-radius: 999px;
-    border: 1px solid rgba(3, 10, 34, 0.12);
-    background: #fff;
-    color: #030a22;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .m6pn .vct-checkout-note--cart-note {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(3, 10, 34, 0.08);
-    font-size: 11px;
-  }
-
   /* m10 margin fix */
   #root .m10 {
     margin-bottom: 0px !important;
   }
 
-  @media (max-width: 768px) {
-    .m6pn .vct-cart-checkout {
-      margin-left: -4px;
-      margin-right: -4px;
-      padding-left: 16px;
-      padding-right: 16px;
-    }
-
-    .cart-trust-strip {
-      gap: 6px 10px;
-    }
+  /* ── Cart urgency tekst ────────────────────────────────────── */
+  .cart-urgency-text {
+    font-size: 12px;
+    color: #555;
+    text-align: center;
+    margin: 3px 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    line-height: 1.3;
+  }
+  .cart-urgency-text svg {
+    flex-shrink: 0;
+    width: 13px;
+    height: 13px;
+    fill: #ff7e00;
   }
 </style>
 
@@ -584,7 +428,7 @@
       </ul>
     </div>
   {%- endif -%}
-  <form class="sticky-in-panel f8vl vct-cart-checkout" action="{{ routes.cart_url }}" method="post" data-hold="0">
+  <form class="sticky-in-panel f8vl" action="{{ routes.cart_url }}" method="post" data-hold="0">
     <ul class="l4tt m15">
       <li><span>{{ 'cart.total_products' | t }} ({{ cart.item_count }})</span> {{ cart.items_subtotal_price | money }}</li>
       {%- if cart.cart_level_discount_applications.size > 0 -%}
@@ -594,56 +438,50 @@
       {%- endif -%}
       <li class="strong"><span>{% if cart.taxes_included %}{{ 'cart.total_including_tax' | t }}{% else %}{{ 'cart.total_excluding_tax' | t }}{% endif %}</span>{{ cart.total_price | money }}</li>
     </ul>
-    <div class="cart-trust-strip" aria-label="Koopzekerheid">
-      <span class="cart-trust-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-          <path fill="currentColor" d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5S5.17 15.5 6 15.5s1.5.67 1.5 1.5S6.83 18.5 6 18.5zm12 0c-.83 0-1.5-.67-1.5-1.5S17.17 15.5 18 15.5s1.5.67 1.5 1.5S18.83 18.5 18 18.5zM17 12V9.5h2.5l1.96 2.5H17z"/>
-        </svg>
-        Gratis verzending vanaf 39 euro
-      </span>
-      <span class="cart-trust-pill">
-        {%- if settings.trustbadge_custom_image -%}
-          <img
-            src="{{ settings.trustbadge_custom_image | image_url: width: 120 }}"
-            srcset="{{ settings.trustbadge_custom_image | image_url: width: 120 }} 1x, {{ settings.trustbadge_custom_image | image_url: width: 240 }} 2x"
-            alt="Thuiswinkel Waarborg"
-            loading="lazy"
-          >
-        {%- else -%}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-            <path fill="currentColor" d="M12 1.75 4.5 4.7v6.22c0 4.72 3.2 9.13 7.5 10.33 4.3-1.2 7.5-5.61 7.5-10.33V4.7L12 1.75zm0 2.15 5.5 2.16v4.86c0 3.66-2.35 7.18-5.5 8.28-3.15-1.1-5.5-4.62-5.5-8.28V6.06L12 3.9z"/>
-          </svg>
-        {%- endif -%}
-        Thuiswinkel Waarborg
-      </span>
-      <span class="cart-trust-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-          <path fill="currentColor" d="M12 1.75 4.5 4.7v6.22c0 4.72 3.2 9.13 7.5 10.33 4.3-1.2 7.5-5.61 7.5-10.33V4.7L12 1.75zm0 2.15 5.5 2.16v4.86c0 3.66-2.35 7.18-5.5 8.28-3.15-1.1-5.5-4.62-5.5-8.28V6.06L12 3.9zm-1.1 10.58-2.5-2.5-1.4 1.4 3.9 3.9 6.1-6.1-1.4-1.4-4.7 4.7z"/>
-        </svg>
-        Veilig afrekenen
-      </span>
-    </div>
     {% if settings.cart_drawer_order_notes %}
       <p class="input-show toggle">
         <label for="note">{{ 'cart.add_note' | t }}</label>
         <textarea name="note" id="note_side" placeholder="{{ 'cart.add_note_placeholder' | t }}"{% if section.settings.order_notes_alignment == 'left' %} data-bind="note_{{ section.id }}_mobile"{% endif %}>{{ cart.note }}</textarea>
       </p>
     {% endif %}
-    <div class="link-btn wide m10 cart-actions" style="margin-bottom: 0 !important;">
-      {%- if settings.cart_drawer_checkout_button -%}
-        {%- liquid
-          assign checkout_button_color = settings.checkout_button_style | split: ' ' | first
-          assign checkout_button_style = settings.checkout_button_style | split: ' ' | last
-        -%}
-        <input type="hidden" name="checkout" value="Checkout">
-        <button class="overlay-{{ checkout_button_color }}{% if checkout_button_style == 'inv' %} inv{% endif %} cart-checkout-button" name="checkout">
+
+    {%- if settings.cart_drawer_checkout_button -%}
+      {%- liquid
+        assign checkout_button_color = settings.checkout_button_style | split: ' ' | first
+        assign checkout_button_style = settings.checkout_button_style | split: ' ' | last
+      -%}
+      <input type="hidden" name="checkout" value="Checkout">
+      <p class="link-btn wide" style="margin-bottom: 0;">
+        <button class="overlay-{{ checkout_button_color }}{% if checkout_button_style == 'inv' %} inv{% endif %}" name="checkout">
           <span class="processing">{{ 'cart.button_processing' | t }}</span>
           <span class="processed">{{ 'cart.button_proceed' | t }}</span>
           <span>{{ 'cart.checkout' | t }}</span>
         </button>
-      {%- endif -%}
-      <a class="cart-button-secondary" href="{{ routes.cart_url }}">{{ 'cart.to_cart' | t }}</a>
-    </div>
-    {%- render 'vct-checkout-assurance', context: 'cart-note', show_items: false, show_note: true -%}
+      </p>
+      <p class="cart-urgency-text">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+        Op werkdagen voor 20:00 besteld, vandaag verzonden
+      </p>
+      <p class="link-btn wide" style="margin-bottom: 0;">
+        <a class="overlay-buy_button inv" href="{{ routes.cart_url }}">{{ 'cart.to_cart' | t }}</a>
+      </p>
+    {%- else -%}
+      <p class="link-btn wide m10" style="margin-bottom: 0 !important;">
+        <a class="overlay-buy_button{% if settings.button_style == 'inv' %} inv{% endif %}" href="{{ routes.cart_url }}">{{ 'cart.to_cart' | t }}</a>
+      </p>
+    {%- endif -%}
+
+    <p style="display: inline-block; font-size: 9px; margin-bottom: 5px;">
+      Door te af te rekenen accepteer je de
+      <a href="/policies/terms-of-service" target="_blank" rel="noopener noreferrer">algemene voorwaarden</a> en bevestig je je bestelling en gegevens te hebben gecontroleerd.
+    </p>
   </form>
+  {%- if settings.show_trustbadge -%}
+    {%- render 'trustbadge' -%}
+  {%- endif -%}
+  <ul class="l4pm text-center">
+    {%- for payment_method in shop.enabled_payment_types -%}
+      <li>{{ payment_method | payment_type_svg_tag }}</li>
+    {%- endfor -%}
+  </ul>
 {%- endif -%}
