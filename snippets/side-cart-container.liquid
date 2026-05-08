@@ -1,1 +1,14 @@
+<style>
+  html.m6pn-open #root > .m6pn-close,
+  html.m6pn-open #root > .overlay-close-clipping {
+    z-index: 1190;
+  }
+
+  #cart.m6pn {
+    z-index: 1200;
+    isolation: isolate;
+    contain: paint;
+    will-change: transform, opacity;
+  }
+</style>
 <aside class="m6pn base-font" id="cart" aria-hidden="true"></aside>

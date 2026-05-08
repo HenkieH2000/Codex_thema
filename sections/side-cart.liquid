@@ -204,13 +204,20 @@
 
   #cart.m6pn {
     background: #fbfbfc;
+    isolation: isolate;
+    contain: paint;
+    z-index: 1200;
   }
 
   #cart > header {
+    position: relative;
     flex-shrink: 0;
+    z-index: 30;
   }
 
   #cart .cart-shipping-bar {
+    position: relative;
+    z-index: 20;
     margin: 0 0 6px;
     padding: 12px 18px 16px;
   }
@@ -221,6 +228,8 @@
   }
 
   #cart > p:has(.m6pn-close.strong) {
+    position: relative;
+    z-index: 20;
     margin: 8px 0 4px;
   }
 
@@ -234,6 +243,8 @@
   }
 
   #cart > .l4ca.compact {
+    position: relative;
+    z-index: 1;
     margin-top: 0;
     padding-bottom: 12px;
   }
@@ -301,6 +312,8 @@
   }
 
   #cart .sticky-in-panel.f8vl {
+    position: sticky;
+    z-index: 40;
     margin-top: auto;
     padding: 16px 0 10px;
     border-top: 1px solid #e7e9ee;
