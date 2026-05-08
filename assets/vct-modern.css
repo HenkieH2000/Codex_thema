@@ -24,6 +24,78 @@ html, body {
 }
 
 /* ══════════════════════════════════════════════════════════════
+   Judge.me review media
+   Keep the app media strip swipeable on touch devices and prevent
+   theme button/focus styles from skinning the carousel arrows.
+══════════════════════════════════════════════════════════════ */
+.jdgm-widget .jdgm-gallery,
+.jdgm-widget .jdgm-rev__pics,
+.jdgm-widget .jdgm-full-rev__pics {
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+}
+
+.jdgm-widget .jdgm-rev-carousel-prev,
+.jdgm-widget .jdgm-rev-carousel-next,
+.jdgm-widget .jdgm-glider-prev,
+.jdgm-widget .jdgm-glider-next {
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.jdgm-widget .jdgm-rev-carousel-prev::before,
+.jdgm-widget .jdgm-rev-carousel-prev::after,
+.jdgm-widget .jdgm-rev-carousel-next::before,
+.jdgm-widget .jdgm-rev-carousel-next::after,
+.jdgm-widget .jdgm-glider-prev::before,
+.jdgm-widget .jdgm-glider-prev::after,
+.jdgm-widget .jdgm-glider-next::before,
+.jdgm-widget .jdgm-glider-next::after {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.jdgm-widget .jdgm-rev-carousel-prev:focus,
+.jdgm-widget .jdgm-rev-carousel-prev:focus-visible,
+.jdgm-widget .jdgm-rev-carousel-next:focus,
+.jdgm-widget .jdgm-rev-carousel-next:focus-visible,
+.jdgm-widget .jdgm-glider-prev:focus,
+.jdgm-widget .jdgm-glider-prev:focus-visible,
+.jdgm-widget .jdgm-glider-next:focus,
+.jdgm-widget .jdgm-glider-next:focus-visible {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 767px) {
+  .jdgm-widget .jdgm-gallery {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 16px;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .jdgm-widget .jdgm-gallery::-webkit-scrollbar {
+    display: none;
+  }
+
+  .jdgm-widget .jdgm-gallery__thumbnail-link {
+    float: none !important;
+    flex: 0 0 auto !important;
+    scroll-snap-align: start;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
    1. GLOBAL TOKENS
 ══════════════════════════════════════════════════════════════ */
 :root {
