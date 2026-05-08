@@ -201,6 +201,161 @@
     height: 13px;
     fill: #ff7e00;
   }
+
+  #cart.m6pn {
+    background: #fbfbfc;
+  }
+
+  #cart > header {
+    flex-shrink: 0;
+  }
+
+  #cart .cart-shipping-bar {
+    margin: 0 0 6px;
+    padding: 12px 18px 16px;
+  }
+
+  #cart .cart-shipping-bar__text {
+    margin: 0 0 10px;
+    line-height: 1.35;
+  }
+
+  #cart > p:has(.m6pn-close.strong) {
+    margin: 8px 0 4px;
+  }
+
+  #cart > p:has(.m6pn-close.strong) .m6pn-close.strong {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #697386;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  #cart > .l4ca.compact {
+    margin-top: 0;
+    padding-bottom: 12px;
+  }
+
+  #cart > .l4ca.compact > li {
+    margin: 0;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #eef0f4;
+  }
+
+  #cart > .l4ca.compact > li:first-child {
+    border-top: 0;
+  }
+
+  #cart > .l4ca.compact figure {
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid #eef0f4;
+  }
+
+  #cart > .l4ca.compact figure img {
+    padding: 5px;
+    object-fit: contain;
+  }
+
+  #cart > .l4ca.compact section > .cols {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  #cart > .l4ca.compact h2 {
+    padding-top: 0;
+    font-size: 14px;
+    line-height: 1.32;
+  }
+
+  #cart > .l4ca.compact .price {
+    white-space: nowrap;
+    font-size: 14px;
+  }
+
+  #cart > .l4ca.compact section > ul:not(.l4ca) {
+    margin-top: 5px;
+    color: #7b8494;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  #cart > .l4ca.compact footer {
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  #cart .remove-from-cart-link {
+    color: #8b94a3;
+    font-size: 12px;
+  }
+
+  #cart .product-recommendations {
+    margin-top: 6px;
+    padding-top: 14px;
+    border-top: 1px solid #eef0f4;
+  }
+
+  #cart .sticky-in-panel.f8vl {
+    margin-top: auto;
+    padding: 16px 0 10px;
+    border-top: 1px solid #e7e9ee;
+    background: #fbfbfc;
+  }
+
+  #cart .sticky-in-panel.f8vl:before {
+    background: #fbfbfc;
+  }
+
+  #cart .sticky-in-panel .l4tt {
+    margin-bottom: 14px;
+    padding: 0;
+  }
+
+  #cart .sticky-in-panel .l4tt li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0;
+    padding: 5px 0;
+    line-height: 1.35;
+  }
+
+  #cart .sticky-in-panel .l4tt li.strong {
+    margin-top: 4px;
+    padding-top: 10px;
+    border-top: 1px solid #e7e9ee;
+    font-size: 16px;
+  }
+
+  #cart .sticky-in-panel .link-btn.wide {
+    margin-bottom: 8px !important;
+  }
+
+  #cart .sticky-in-panel .link-btn.wide button,
+  #cart .sticky-in-panel .link-btn.wide a {
+    width: 100%;
+  }
+
+  #cart .sticky-in-panel > p:last-child {
+    display: block !important;
+    margin: 8px 0 0 !important;
+    color: #8b94a3;
+    font-size: 10px !important;
+    line-height: 1.35;
+  }
+
+  #cart .l4pm {
+    margin-top: 10px;
+  }
+
+  #cart .l4pm li svg {
+    max-height: 18px;
+  }
 </style>
 
 <header data-totalqty={{ cart.item_count }} data-totalprice="{{ cart.total_price | money }}">
