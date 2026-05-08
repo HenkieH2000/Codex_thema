@@ -38,9 +38,58 @@
 </ul>
 
 <style>
-  #shopify-section-{{ section.id }} .l4cl { margin-bottom: {{ section.settings.spacing_desktop | minus: 22 }}px; }
+  #shopify-section-{{ section.id }} .l4cl {
+    --recently-viewed-gap: 16px;
+    margin-bottom: {{ section.settings.spacing_desktop | minus: 22 }}px;
+  }
+
+  #shopify-section-{{ section.id }} .l4cl:not(.s4wi) {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.number_of_items }}, minmax(0, 1fr));
+    gap: var(--recently-viewed-gap);
+  }
+
+  #shopify-section-{{ section.id }} .l4cl:not(.s4wi) > li,
+  #shopify-section-{{ section.id }} .l4cl.s4wi .swiper-slide > li {
+    width: auto !important;
+    max-width: none !important;
+    height: 100%;
+    margin: 0;
+    border-left-width: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .l4cl.s4wi .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  #shopify-section-{{ section.id }} .l4cl.s4wi .swiper-slide {
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .product-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #shopify-section-{{ section.id }} .product-card .s1pr {
+    margin-top: auto;
+  }
+
+  @media only screen and (max-width: 62.5em) {
+    #shopify-section-{{ section.id }} .l4cl:not(.s4wi) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
   @media only screen and (max-width: 47.5em) {
-    #shopify-section-{{ section.id }} .l4cl { margin-bottom: {{ section.settings.spacing_mobile | minus: 8 }}px; }
+    #shopify-section-{{ section.id }} .l4cl {
+      --recently-viewed-gap: 12px;
+      margin-bottom: {{ section.settings.spacing_mobile | minus: 8 }}px;
+    }
+
+    #shopify-section-{{ section.id }} .l4cl:not(.s4wi) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 </style>
 
