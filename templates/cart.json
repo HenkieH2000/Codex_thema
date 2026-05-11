@@ -66,6 +66,15 @@
         "spacing_mobile": 30
       }
     },
+    "section_custom_liquid_Ha9Qfb": {
+      "type": "section-custom-liquid",
+      "name": "t:sections.custom_liquid.presets.name",
+      "settings": {
+        "custom_liquid": "{% render 'henk-feedbackslider' %}",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30
+      }
+    },
     "ss_testimonial_8_3ehNn8": {
       "type": "ss-testimonial-8",
       "blocks": {
@@ -162,6 +171,7 @@
         "slide_BEkd9P",
         "slide_LnmP8V"
       ],
+      "disabled": true,
       "custom_css": [
         ".testimonials-slide-text-btn-template--24294481723728__ss_testimonial_8_3ehNn8 {display: none;}"
       ],
@@ -321,6 +331,7 @@
     "section_custom_html_iAKNQR",
     "section_custom_liquid_eRpM9K",
     "section_custom_liquid_w3pyNi",
+    "section_custom_liquid_Ha9Qfb",
     "ss_testimonial_8_3ehNn8",
     "section_recently_viewed_products_bCEy9f"
   ]
