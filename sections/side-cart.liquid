@@ -192,7 +192,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 7px;
     line-height: 1.3;
   }
   .cart-urgency-text svg {
@@ -204,6 +204,10 @@
 
   #cart.m6pn {
     background: #fbfbfc;
+  }
+
+  #cart {
+    isolation: isolate;
   }
 
   #cart > header {
@@ -234,6 +238,8 @@
   }
 
   #cart > .l4ca.compact {
+    position: relative;
+    z-index: 1;
     margin-top: 0;
     padding-bottom: 12px;
   }
@@ -247,6 +253,10 @@
 
   #cart > .l4ca.compact > li:first-child {
     border-top: 0;
+  }
+
+  #cart > .l4ca.compact > li:last-child {
+    border-bottom: 0 !important;
   }
 
   #cart > .l4ca.compact figure {
@@ -295,20 +305,53 @@
   }
 
   #cart .product-recommendations {
-    margin-top: 6px;
-    padding-top: 14px;
+    position: relative;
+    z-index: 1;
+    margin-top: 0;
+    padding-top: 18px;
     border-top: 1px solid #eef0f4;
+    background: #fbfbfc;
+  }
+
+  #cart .product-recommendations::before,
+  #cart .product-recommendations::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  #cart .product-recommendations > .l4ca,
+  #cart .product-recommendations > .l4ca > li:first-child {
+    border-top: 0 !important;
   }
 
   #cart .sticky-in-panel.f8vl {
+    position: sticky;
+    bottom: 0;
+    z-index: 50;
     margin-top: auto;
     padding: 16px 0 10px;
     border-top: 1px solid #e7e9ee;
     background: #fbfbfc;
+    box-shadow: 0 -10px 24px rgba(251, 251, 252, 0.96);
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   #cart .sticky-in-panel.f8vl:before {
+    z-index: -1 !important;
     background: #fbfbfc;
+  }
+
+  #cart .sticky-in-panel.f8vl > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  #cart .product-recommendations,
+  #cart .product-recommendations *,
+  #cart > .l4ca.compact,
+  #cart > .l4ca.compact * {
+    z-index: auto;
   }
 
   #cart .sticky-in-panel .l4tt {
@@ -347,6 +390,24 @@
     color: #8b94a3;
     font-size: 10px !important;
     line-height: 1.35;
+  }
+
+  #cart .cart-trustbadge-wrap {
+    clear: both;
+    position: relative;
+    z-index: 1;
+    margin-top: 14px;
+    padding-top: 10px;
+  }
+
+  #cart .cart-trustbadge-wrap svg:first-child,
+  #cart .cart-trustbadge-wrap i:first-child,
+  #cart .cart-trustbadge-wrap [class*="lock"]:first-child {
+    margin-right: 10px !important;
+  }
+
+  #cart .cart-trustbadge-wrap > * {
+    margin-top: 0;
   }
 
   #cart .l4pm {
@@ -401,6 +462,7 @@
 {%- else-%}
   <p><a href="./" class="strong m6pn-close"><i aria-hidden="true" class="icon-chevron-left"></i> {{ 'cart.continue_shopping' | t }}</a></p>
 {% endif %}
+
 <ul class="l4ca compact base-font"{% if settings.enable_cart_drawer_undo_remove and settings.enable_cart_drawer_undo_remove_delay %} data-delay="{{ settings.cart_drawer_undo_remove_delay | times: 1000 }}"{% endif %}>
   {%- for line_item in cart.items -%}
     <li class="{% if settings.fill_product_images %} cover{% endif %}{% if line_item.original_line_price > line_item.final_line_price %} has-discount{% endif %}">
@@ -421,9 +483,9 @@
               height="{{ image_height }}"
               alt="{{ line_item.image.alt | default: line_item.title | escape }}"
             >
-            {%- else %}
-              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {%- endif -%}
+          {%- else %}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
         </picture>
       </figure>
       <section>
@@ -465,9 +527,10 @@
             </ul>
           {%- endif -%}
         {%- endif -%}
+
         {% if line_item.item_components.size > 0 %}
-        <ul class="l4ca l4ca-bundle">
-          <li>
+          <ul class="l4ca l4ca-bundle">
+            <li>
               <p class=""><a href="./" class="show-l4ca"><span class="hidden">{{ 'general.accessibility.hide' | t }}</span> <span>{{ 'general.accessibility.show' | t }}</span> {{ line_item.item_components | sum: "quantity" }} {{ 'cart.product.items' | t }} <i aria-hidden="true" class="icon-chevron-down"></i></a></p>
               <li class="has-l4ca">
                 <ul class="l4ca l4ca-bundle">
@@ -477,17 +540,17 @@
                         <figure{% if settings.multiply_product_images == 'multiply' %} class="img-multiply"{% elsif settings.multiply_product_images == 'multiply-bg' %} class="img-multiply-bg"{% endif %}>
                           <picture>
                             <img
-                                    {% if settings.fill_product_images %}
-                                      src="{{ line_item | image_url: width: image_width_2, height: image_height_2, crop: 'center' }}"
-                                      srcset="{{ line_item | image_url: width: image_width, height: image_height, crop: 'center' }} 1x,{{ line_item | image_url: width: image_width_2, height: image_height_2, crop: 'center' }} 2x"
-                                    {% else %}
-                                      src="{{ line_item | image_url: width: image_width_2 }}"
-                                      srcset="{{ line_item | image_url: width: image_width }} 1x,{{ line_item | image_url: width: image_width_2 }} 2x"
-                                    {% endif %}
-                                    width="105"
-                                    height="105"
-                                    alt="{{ line_item.image.alt | default: line_item.title | escape }}"
-                                    loading="lazy"
+                              {% if settings.fill_product_images %}
+                                src="{{ line_item | image_url: width: image_width_2, height: image_height_2, crop: 'center' }}"
+                                srcset="{{ line_item | image_url: width: image_width, height: image_height, crop: 'center' }} 1x,{{ line_item | image_url: width: image_width_2, height: image_height_2, crop: 'center' }} 2x"
+                              {% else %}
+                                src="{{ line_item | image_url: width: image_width_2 }}"
+                                srcset="{{ line_item | image_url: width: image_width }} 1x,{{ line_item | image_url: width: image_width_2 }} 2x"
+                              {% endif %}
+                              width="105"
+                              height="105"
+                              alt="{{ line_item.image.alt | default: line_item.title | escape }}"
+                              loading="lazy"
                             >
                           </picture>
                         </figure>
@@ -501,12 +564,13 @@
                 </ul>
               </li>
             </li>
-        </ul>
+          </ul>
         {%- endif -%}
 
         {%- for discount_allocation in line_item.line_level_discount_allocations -%}
           <p class="overlay-gray"><i aria-hidden="true" class="icon-label"></i> <span class="text-uppercase">{{ discount_allocation.discount_application.title }}&nbsp;(-{{ discount_allocation.amount | money }})</span></p>
         {%- endfor -%}
+
         <footer>
           <p class="input-amount">
             <label for="qty-{{ line_item.index | plus: 1 }}" class="hidden">{{ 'cart.product.qty' | t }}</label>
@@ -531,6 +595,7 @@
           <p><a class="remove remove-from-cart-link" href="{{ line_item.url_to_remove }}" data-line="{{ forloop.index }}"><i aria-hidden="true" class="icon-trash"></i> <span class="mobile-hide">{{ 'cart.product.remove' | t }}</span></a></p>
         </footer>
       </section>
+
       {%- if settings.enable_cart_drawer_undo_remove -%}
         <p class="removed base-font-small">{{ 'cart.product.product_removed' | t: product_title: line_item.product.title }}&nbsp;
           <a data-id="{{ line_item.id }}"
@@ -540,8 +605,8 @@
             {% endif %}
             {% for property in line_item.properties %}
               {%- unless property.last == blank -%}
-               data-property-{{ forloop.index }}='{{ property | json }}'
-            {%- endunless -%}
+                data-property-{{ forloop.index }}='{{ property | json }}'
+              {%- endunless -%}
             {% endfor %}
           >{{ 'cart.product.product_removed_undo' | t }}
           </a>
@@ -550,6 +615,7 @@
     </li>
   {%- endfor -%}
 </ul>
+
 {%- if cart.item_count > 0 -%}
   {%- if settings.enable_cart_drawer_upsell_complementary or settings.enable_cart_drawer_upsell_related -%}
     <div class="product-recommendations hidden cart-upsell"
@@ -570,19 +636,20 @@
               endcapture
             -%}
             {%- render 'product-item',
-                    product: product,
-                    placeholder_int: placeholder_int,
-                    enable_quick_buy_desktop: true,
-                    enable_quick_buy_mobile: true,
-                    enable_variant_picker: settings.enable_cart_drawer_upsell_variants,
-                    quick_buy_compact: true,
-                    layout: 'list-compact'
+              product: product,
+              placeholder_int: placeholder_int,
+              enable_quick_buy_desktop: true,
+              enable_quick_buy_mobile: true,
+              enable_variant_picker: settings.enable_cart_drawer_upsell_variants,
+              quick_buy_compact: true,
+              layout: 'list-compact'
             -%}
           {%- endfor -%}
         {%- endif -%}
       </ul>
     </div>
   {%- endif -%}
+
   <form class="sticky-in-panel f8vl" action="{{ routes.cart_url }}" method="post" data-hold="0">
     <ul class="l4tt m15">
       <li><span>{{ 'cart.total_products' | t }} ({{ cart.item_count }})</span> {{ cart.items_subtotal_price | money }}</li>
@@ -593,6 +660,7 @@
       {%- endif -%}
       <li class="strong"><span>{% if cart.taxes_included %}{{ 'cart.total_including_tax' | t }}{% else %}{{ 'cart.total_excluding_tax' | t }}{% endif %}</span>{{ cart.total_price | money }}</li>
     </ul>
+
     {% if settings.cart_drawer_order_notes %}
       <p class="input-show toggle">
         <label for="note">{{ 'cart.add_note' | t }}</label>
@@ -631,9 +699,13 @@
       <a href="/policies/terms-of-service" target="_blank" rel="noopener noreferrer">algemene voorwaarden</a> en bevestig je je bestelling en gegevens te hebben gecontroleerd.
     </p>
   </form>
+
   {%- if settings.show_trustbadge -%}
-    {%- render 'trustbadge' -%}
+    <div class="cart-trustbadge-wrap">
+      {%- render 'trustbadge' -%}
+    </div>
   {%- endif -%}
+
   <ul class="l4pm text-center">
     {%- for payment_method in shop.enabled_payment_types -%}
       <li>{{ payment_method | payment_type_svg_tag }}</li>
