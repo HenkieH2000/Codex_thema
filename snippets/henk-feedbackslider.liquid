@@ -1,4 +1,4 @@
-{%- assign reviews = 'Dashcam werkt perfect, al 6 maanden geen problemen. Installatie was een fluitje van een cent.|Jeroen Kuipers|Apeldoorn|5|Dashcam|Raamfolie zelf opgeplakt, met de instructievideo erbij ging het prima. Super blij mee!|Marieke van Dijk|Leeuwarden|5|Raamfolie|LED koplampen besteld, volgende dag al in huis. Verschil met de oude halogeenlampen is enorm.|Patrick Willems|Heerlen|5|LED Verlichting|CarPlay scherm past perfect in mijn Golf, alles werkt meteen. Aanrader voor iedereen.|Sander de Boer|Zwolle|5|CarPlay Scherm|Detailing set is top kwaliteit. Auto ziet er weer als nieuw uit, zeker herhaling!|Femke Adriaans|Enschede|4|Detailing|Al meerdere keren besteld, altijd razendsnel geleverd en goede producten.|Rudi Vermeulen|Bergen op Zoom|5|Algemeen|LED strips in de auto geplaatst, perfect passend en mooie afwerking.|Thijs van Gils|Venlo|5|LED Strips|Parkeercamera voor mijn bus, werkt uitstekend. Goede prijs en snelle service.|Diana Hoogerwerf|Amersfoort|5|Parkeer Camera|Dashcam cadeau gedaan, ontvanger super blij. Verpakking netjes en levering vlot.|Koen Janssen|Roosendaal|5|Dashcam|Raamtint folie perfect ontvangen, kwaliteit is echt goed voor deze prijs.|Natascha Blom|Alkmaar|4|Raamfolie' | split: '|' -%}
+{%- assign reviews = 'Dashcam werkt perfect, al 6 maanden geen problemen. Installatie was een fluitje van een cent.|Jeroen Kuipers|Apeldoorn|5|Dashcam|Raamfolie zelf opgeplakt, met de instructievideo erbij ging het prima. Super blij mee!|Marieke van Dijk|Leeuwarden|5|Raamfolie|LED koplampen besteld, volgende dag al in huis. Verschil met de oude halogeenlampen is enorm.|Patrick Willems|Heerlen|5|LED Verlichting|CarPlay scherm past perfect in mijn Golf, alles werkt meteen. Aanrader voor iedereen.|Sander de Boer|Zwolle|5|CarPlay Scherm|Detailing set is top kwaliteit. Auto ziet er weer als nieuw uit, zeker herhaling!|Femke Adriaans|Enschede|4|Detailing|Al meerdere keren besteld, altijd razendsnel geleverd en goede producten.|Rudi Vermeulen|Bergen op Zoom|5|Algemeen|LED strips in de auto geplaatst, perfect passend en mooie afwerking.|Thijs van Gils|Venlo|5|LED Strips|Parkeercamera voor mijn bus, werkt uitstekend. Goede prijs en snelle service.|Diana Hoogerwerf|Amersfoort|5|Parkeer Camera|Dashcam cadeau gedaan, ontvanger super blij. Verpakking netjes en levering vlot.|Koen Janssen|Roosendaal|5|Dashcam|Raamtint folie perfect ontvangen, kwaliteit is echt goed voor deze prijs.|Natascha Blom|Alkmaar|4|Raamfolie|Zonnescherm voor de achterruit, past perfect en doet het geweldig. Heel blij mee!|Stefan Overmars|Nijmegen|5|Zonnescherm|Achteruitrijcamera geinstalleerd, beeld is super scherp. Makkelijk te monteren ook.|Ingrid Bosman|Deventer|5|Parkeer Camera|Detailing spray besteld, auto blinkt als een spiegel. Geweldig product voor deze prijs.|Michel de Graaf|Dordrecht|5|Detailing|LED interieur verlichting besteld, past perfect en ziet er gelikt uit. Snelle levering!|Wendy Timmers|Tilburg|5|LED Strips|CarPlay adapter werkt meteen out of the box. Geen gedoe, gewoon insteken en rijden.|Frank Huisman|Arnhem|5|CarPlay Scherm|Dashcam met parkeermodus, eindelijk geen zorgen meer over schade op de parkeerplaats.|Jolanda Prins|Delft|5|Dashcam|Raamfolie laten leveren en zelf geplakt, resultaat is echt professioneel. Top!|Barry Kok|Almere|4|Raamfolie|LED dagrijverlichting besteld, past perfect op mijn auto. Ziet er super uit.|Chantal Verhoef|Breda|5|LED Verlichting' | split: '|' -%}
 
 <div class="vct-rs">
   <div class="vct-rs-head">
@@ -58,10 +58,10 @@
 </div>
 
 <style>
-.vct-rs{padding:32px 24px 24px;max-width:1200px;margin:0 auto;box-sizing:border-box}
-.vct-rs-head{text-align:center;margin-bottom:24px}
-.vct-rs-badge{display:inline-block;background:#fff3e0;color:#ff7e00;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 12px;border-radius:99px;border:1px solid rgba(255,126,0,.25);margin-bottom:8px}
-.vct-rs-title{font-size:20px;font-weight:800;color:#030a22;margin:6px 0 10px;padding:0}
+.vct-rs{padding:0 24px 24px;max-width:1200px;margin:0 auto;box-sizing:border-box}
+.vct-rs-head{text-align:center;margin-bottom:20px;padding-top:0}
+.vct-rs-badge{display:inline-block;background:#fff3e0;color:#ff7e00;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 12px;border-radius:99px;border:1px solid rgba(255,126,0,.25);margin-bottom:6px}
+.vct-rs-title{font-size:20px;font-weight:800;color:#030a22;margin:4px 0 8px;padding:0}
 .vct-rs-score{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
 .vct-rs-num{font-size:26px;font-weight:900;color:#030a22;line-height:1}
 .vct-rs-stars{font-size:20px;color:#ff7e00;line-height:1}
@@ -121,8 +121,7 @@
 
   function cw(){
     if(!cards[0])return 0;
-    var gap=12;
-    return cards[0].getBoundingClientRect().width+gap;
+    return cards[0].getBoundingClientRect().width+12;
   }
 
   function dots(){
