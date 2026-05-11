@@ -324,15 +324,6 @@
         "spacing_mobile": 30
       }
     },
-    "section_custom_html_RDpdB9": {
-      "type": "section-custom-html",
-      "name": "Kees & Henk Banner",
-      "settings": {
-        "custom_html": "<style>\n  #overons-banner {\n    display: none;\n  }\n\n  @media (max-width: 800px) {\n    #overons-banner {\n      display: block;\n    }\n  }\n</style>\n\n<div id=\"overons-banner\">\n  <a href=\"https://www.vctparts.nl/pages/over-ons\" target=\"_blank\">\n    <img id=\"overons-banner-img\" src=\"https://cdn.shopify.com/s/files/1/0871/5904/6480/files/kees_en_henk_over_ons_productpage.jpg?v=1744815249?%0Apad_color=fff&amp;v=1739549571&amp;width=1280\" alt=\"Klantenservice VCT Parts\" width=\"600\">\n  </a>\n  <br>\n</div>\n\n<script>\n  // Alleen verbergen op .de domein\n  if (window.location.hostname.includes(\"vctparts.de\")) {\n    const overonsBanner = document.getElementById(\"overons-banner\");\n    if (overonsBanner) {\n      overonsBanner.style.display = \"none\";\n    }\n  }\n</script>",
-        "spacing_desktop": 30,
-        "spacing_mobile": 10
-      }
-    },
     "1737314667f1a26be6": {
       "type": "apps",
       "blocks": {
@@ -408,7 +399,6 @@
     "section_custom_liquid_HKGj3D",
     "17785230280d8057a2",
     "section_faq_CKDTLW",
-    "section_custom_html_RDpdB9",
     "1737314667f1a26be6",
     "recommendations",
     "recently-viewed",
