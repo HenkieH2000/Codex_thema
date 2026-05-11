@@ -189,7 +189,7 @@
     font-size: 12px;
     color: #555;
     text-align: center;
-    margin: 0 0 8px;
+    margin: 0 0 6px !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -242,8 +242,17 @@
   #cart > .l4ca.compact {
     position: relative;
     z-index: 1;
-    margin-top: 0;
-    padding-bottom: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom: 0 !important;
+  }
+
+  #cart > .l4ca.compact::before,
+  #cart > .l4ca.compact::after {
+    content: none !important;
+    display: none !important;
+    border: 0 !important;
   }
 
   #cart > .l4ca.compact > li {
@@ -259,6 +268,7 @@
 
   #cart > .l4ca.compact > li:last-child {
     border-bottom: 0 !important;
+    padding-bottom: 18px;
   }
 
   #cart > .l4ca.compact figure {
@@ -309,9 +319,11 @@
   #cart .product-recommendations {
     position: relative;
     z-index: 1;
-    margin-top: 0;
-    padding-top: 18px;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 16px !important;
     border-top: 1px solid #eef0f4 !important;
+    border-bottom: 0 !important;
     background: #fbfbfc;
   }
 
@@ -327,7 +339,11 @@
   }
 
   #cart .product-recommendations > .l4ca,
-  #cart .product-recommendations .l4ca,
+  #cart .product-recommendations .l4ca {
+    margin-top: 0 !important;
+    border-top: 0 !important;
+  }
+
   #cart .product-recommendations > .l4ca > li,
   #cart .product-recommendations .l4ca > li,
   #cart .product-recommendations > .l4ca > li:first-child,
@@ -336,7 +352,7 @@
   }
 
   #cart .product-recommendations h3 {
-    margin-top: 0;
+    margin-top: 0 !important;
   }
 
   #cart .sticky-in-panel.f8vl {
@@ -370,7 +386,7 @@
   }
 
   #cart .sticky-in-panel .l4tt {
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     padding: 0;
   }
 
@@ -391,7 +407,11 @@
   }
 
   #cart .sticky-in-panel .link-btn.wide {
-    margin-bottom: 8px !important;
+    margin-bottom: 6px !important;
+  }
+
+  #cart .sticky-in-panel .link-btn.wide + .link-btn.wide {
+    margin-top: 0 !important;
   }
 
   #cart .sticky-in-panel .link-btn.wide button,
@@ -697,7 +717,7 @@
         30 dagen bedenktijd, Gratis ruilen
       </p>
 
-      <p class="link-btn wide" style="margin-bottom: 8px;">
+      <p class="link-btn wide" style="margin-bottom: 6px;">
         <button class="overlay-{{ checkout_button_color }}{% if checkout_button_style == 'inv' %} inv{% endif %}" name="checkout">
           <span class="processing">{{ 'cart.button_processing' | t }}</span>
           <span class="processed">{{ 'cart.button_proceed' | t }}</span>
