@@ -1,0 +1,139 @@
+{%- assign reviews = 'Geweldige dashcam, super eenvoudig te installeren en werkt perfect!|Tom van der Berg|Amsterdam|5|Dashcam|Raamfolie er zelf opgeplakt met de instructievideo, resultaat is geweldig. Aanrader!|Sandra Kleijn|Rotterdam|5|Raamfolie|Snelle levering en de LED koplampen zijn echt een enorm verschil vergeleken met de oude halogeen lampen.|Martijn de Vries|Utrecht|5|LED Verlichting|CarPlay scherm perfect geinstalleerd dankzij de duidelijke handleiding. Top product!|Kevin Smits|Den Haag|5|CarPlay Scherm|Detailing pakket top kwaliteit, auto ziet er weer als nieuw uit. Snel geleverd ook.|Bas Hendriksen|Eindhoven|4|Detailing|Al jaren klant, altijd goede producten en snelle bezorging. Echt een topper!|Annemiek Jansen|Groningen|5|Algemeen|LED strips voor in de auto, perfect passend en mooie kleur. Zeker weer bestellen!|Rick Vermeer|Breda|5|LED Strips|Goede prijs, snel geleverd en precies wat ik zocht. Heel blij mee!|Lisa Bakker|Tilburg|5|Parkeer Camera' | split: '|' -%}
+
+<div class="vct-reviews-section">
+  <div class="vct-reviews-header">
+    <span class="vct-reviews-badge">⭐ Klantreviews</span>
+    <p class="vct-reviews-subtitle">Wat onze klanten zeggen</p>
+    <div class="vct-reviews-score">
+      <span class="vct-score-num">4.9</span>
+      <div class="vct-score-stars">★★★★★</div>
+      <span class="vct-score-count">op basis van 2.847 reviews</span>
+    </div>
+  </div>
+  <div class="vct-slider-wrapper">
+    <button class="vct-slider-btn vct-slider-prev" aria-label="Vorige review">&#8249;</button>
+    <div class="vct-slider-track-outer">
+      <div class="vct-slider-track" id="vctReviewTrack">
+        {%- assign i = 0 -%}
+        {%- for chunk in reviews -%}
+          {%- assign mod = i | modulo: 5 -%}
+          {%- if mod == 0 and chunk != '' -%}
+            {%- assign text_raw = chunk | strip -%}
+            {%- assign idx1 = i | plus: 1 -%}
+            {%- assign idx2 = i | plus: 2 -%}
+            {%- assign idx3 = i | plus: 3 -%}
+            {%- assign idx4 = i | plus: 4 -%}
+            {%- assign name = reviews[idx1] | strip -%}
+            {%- assign city_raw = reviews[idx2] | strip -%}
+            {%- assign stars_raw = reviews[idx3] | strip -%}
+            {%- assign product_raw = reviews[idx4] | strip -%}
+            {%- assign stars_int = stars_raw | plus: 0 -%}
+            {%- if name != '' -%}
+            <div class="vct-review-card">
+              <div class="vct-review-top">
+                <div class="vct-review-avatar">{{ name | slice: 0 }}</div>
+                <div class="vct-review-meta">
+                  <strong class="vct-review-name">{{ name }}</strong>
+                  <span class="vct-review-city">{{ city_raw }}</span>
+                </div>
+                <div class="vct-review-verified">✓ Geverifieerd</div>
+              </div>
+              <div class="vct-review-stars">
+                {%- for s in (1..5) -%}
+                  {%- if s <= stars_int -%}<span class="vct-star filled">★</span>{%- else -%}<span class="vct-star">★</span>{%- endif -%}
+                {%- endfor -%}
+              </div>
+              <p class="vct-review-text">"{{ text_raw }}"</p>
+              <span class="vct-review-product">{{ product_raw }}</span>
+            </div>
+            {%- endif -%}
+          {%- endif -%}
+          {%- assign i = i | plus: 1 -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    <button class="vct-slider-btn vct-slider-next" aria-label="Volgende review">&#8250;</button>
+  </div>
+  <div class="vct-slider-dots" id="vctReviewDots"></div>
+</div>
+
+<style>
+.vct-reviews-section{font-family:inherit;padding:32px 16px 24px;max-width:900px;margin:0 auto}
+.vct-reviews-header{text-align:center;margin-bottom:24px}
+.vct-reviews-badge{display:inline-block;background:#fff3e0;color:#ff7e00;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 14px;border-radius:99px;border:1px solid rgba(255,126,0,.2);margin-bottom:8px}
+.vct-reviews-subtitle{font-size:20px;font-weight:800;color:#030a22;margin:6px 0 10px}
+.vct-reviews-score{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.vct-score-num{font-size:26px;font-weight:900;color:#030a22;line-height:1}
+.vct-score-stars{font-size:20px;color:#ff7e00;line-height:1}
+.vct-score-count{font-size:12px;color:#6b7280}
+.vct-slider-wrapper{position:relative;display:flex;align-items:center;gap:8px}
+.vct-slider-track-outer{overflow:hidden;flex:1;border-radius:16px}
+.vct-slider-track{display:flex;gap:16px;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);will-change:transform}
+.vct-review-card{flex:0 0 calc(33.333% - 11px);background:#fff;border-radius:16px;border:1px solid rgba(3,10,34,.08);box-shadow:0 2px 12px rgba(3,10,34,.06);padding:20px;box-sizing:border-box;min-width:0}
+@media(max-width:768px){.vct-review-card{flex:0 0 100%}.vct-slider-btn{display:none}}
+@media(min-width:769px) and (max-width:1024px){.vct-review-card{flex:0 0 calc(50% - 8px)}}
+.vct-review-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.vct-review-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#ff7e00,#ffd100);color:#fff;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;text-transform:uppercase}
+.vct-review-meta{flex:1;display:flex;flex-direction:column;gap:1px}
+.vct-review-name{font-size:13.5px;font-weight:700;color:#030a22}
+.vct-review-city{font-size:11.5px;color:#9ca3af}
+.vct-review-verified{font-size:10.5px;color:#22c55e;font-weight:600;white-space:nowrap}
+.vct-review-stars{margin-bottom:8px}
+.vct-star{color:#d1d5db;font-size:16px}
+.vct-star.filled{color:#ff7e00}
+.vct-review-text{font-size:13px;color:#374151;line-height:1.55;margin:0 0 10px;font-style:italic}
+.vct-review-product{display:inline-block;font-size:11px;font-weight:600;color:#ff7e00;background:#fff3e0;border-radius:99px;padding:2px 10px;border:1px solid rgba(255,126,0,.18)}
+.vct-slider-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(3,10,34,.12);background:#fff;color:#030a22;font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .18s,border-color .18s;box-shadow:0 1px 4px rgba(3,10,34,.08)}
+.vct-slider-btn:hover{background:#ff7e00;border-color:#ff7e00;color:#fff}
+.vct-slider-dots{display:flex;justify-content:center;gap:6px;margin-top:16px}
+.vct-dot{width:8px;height:8px;border-radius:50%;background:rgba(3,10,34,.15);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s}
+.vct-dot.active{background:#ff7e00;transform:scale(1.25)}
+</style>
+
+<script>
+(function(){
+  var track=document.getElementById('vctReviewTrack');
+  var dotsContainer=document.getElementById('vctReviewDots');
+  if(!track)return;
+  var cards=track.querySelectorAll('.vct-review-card');
+  var total=cards.length;
+  var current=0;
+  function getSlidesVisible(){var w=window.innerWidth;if(w<=768)return 1;if(w<=1024)return 2;return 3;}
+  function getMaxIndex(){return Math.max(0,total-getSlidesVisible());}
+  function getCardWidth(){if(!cards[0])return 0;return cards[0].getBoundingClientRect().width+16;}
+  function buildDots(){
+    dotsContainer.innerHTML='';
+    var max=getMaxIndex();
+    for(var i=0;i<=max;i++){
+      var dot=document.createElement('button');
+      dot.className='vct-dot'+(i===0?' active':'');
+      dot.setAttribute('data-i',i);
+      dot.addEventListener('click',function(){goTo(parseInt(this.getAttribute('data-i')));});
+      dotsContainer.appendChild(dot);
+    }
+  }
+  function updateDots(){
+    dotsContainer.querySelectorAll('.vct-dot').forEach(function(d,i){d.classList.toggle('active',i===current);});
+  }
+  function goTo(index){
+    current=Math.max(0,Math.min(index,getMaxIndex()));
+    track.style.transform='translateX(-'+(getCardWidth()*current)+'px)';
+    updateDots();
+  }
+  var prevBtn=document.querySelector('.vct-slider-prev');
+  var nextBtn=document.querySelector('.vct-slider-next');
+  if(prevBtn)prevBtn.addEventListener('click',function(){goTo(current-1);});
+  if(nextBtn)nextBtn.addEventListener('click',function(){goTo(current+1);});
+  var startX=0;
+  track.addEventListener('touchstart',function(e){startX=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',function(e){
+    var diff=startX-e.changedTouches[0].clientX;
+    if(Math.abs(diff)>40)goTo(diff>0?current+1:current-1);
+  });
+  var section=track.closest('.vct-reviews-section');
+  var timer=setInterval(function(){goTo(current+1<=getMaxIndex()?current+1:0);},5000);
+  if(section)section.addEventListener('mouseenter',function(){clearInterval(timer);});
+  window.addEventListener('resize',function(){buildDots();goTo(0);});
+  buildDots();
+})();
+</script>
