@@ -1,18 +1,9 @@
 {% comment %}
   VCT Reviews Slider
-  Gebruik: {% render 'henk-feedbackslider' %}
+  Gebruik: sectie 'henk-feedbackslider'
 {% endcomment %}
 
-{%- assign reviews = '
-Geweldige dashcam, super eenvoudig te installeren en werkt perfect!|Tom van der Berg|Amsterdam|5|Dashcam|
-Raamfolie er zelf opgeplakt met de instructievideo, resultaat is geweldig. Aanrader!|Sandra Kleijn|Rotterdam|5|Raamfolie|
-Snelle levering en de LED koplampen zijn echt een enorm verschil vergeleken met de oude halogeen lampen.|Martijn de Vries|Utrecht|5|LED Verlichting|
-CarPlay scherm perfect geïnstalleerd dankzij de duidelijke handleiding. Top product!|Kevin Smits|Den Haag|5|CarPlay Scherm|
-Detailing pakket top kwaliteit, auto ziet er weer als nieuw uit. Snel geleverd ook.|Bas Hendriksen|Eindhoven|4|Detailing|
-Al jaren klant, altijd goede producten en snelle bezorging. Echt een topper!|Annemiek Jansen|Groningen|5|Algemeen|
-LED strips voor in de auto, perfect passend en mooie kleur. Zeker weer bestellen!|Rick Vermeer|Breda|5|LED Strips|
-Goede prijs, snel geleverd en precies wat ik zocht. Heel blij mee!|Lisa Bakker|Tilburg|5|Parkeer Camera|
-' | split: '|' -%}
+{%- assign reviews = 'Geweldige dashcam, super eenvoudig te installeren en werkt perfect!|Tom van der Berg|Amsterdam|5|Dashcam|Raamfolie er zelf opgeplakt met de instructievideo, resultaat is geweldig. Aanrader!|Sandra Kleijn|Rotterdam|5|Raamfolie|Snelle levering en de LED koplampen zijn echt een enorm verschil vergeleken met de oude halogeen lampen.|Martijn de Vries|Utrecht|5|LED Verlichting|CarPlay scherm perfect geinstalleerd dankzij de duidelijke handleiding. Top product!|Kevin Smits|Den Haag|5|CarPlay Scherm|Detailing pakket top kwaliteit, auto ziet er weer als nieuw uit. Snel geleverd ook.|Bas Hendriksen|Eindhoven|4|Detailing|Al jaren klant, altijd goede producten en snelle bezorging. Echt een topper!|Annemiek Jansen|Groningen|5|Algemeen|LED strips voor in de auto, perfect passend en mooie kleur. Zeker weer bestellen!|Rick Vermeer|Breda|5|LED Strips|Goede prijs, snel geleverd en precies wat ik zocht. Heel blij mee!|Lisa Bakker|Tilburg|5|Parkeer Camera' | split: '|' -%}
 
 <div class="vct-reviews-section">
   <div class="vct-reviews-header">
@@ -33,18 +24,20 @@ Goede prijs, snel geleverd en precies wat ik zocht. Heel blij mee!|Lisa Bakker|T
         {%- assign i = 0 -%}
         {%- assign review_count = 0 -%}
         {%- for chunk in reviews -%}
-          {%- assign mod = i | modulo: 6 -%}
+          {%- assign mod = i | modulo: 5 -%}
           {%- if mod == 0 and chunk != '' -%}
-            {%- assign name = chunk | strip -%}
+            {%- assign text_raw = chunk | strip -%}
             {%- assign idx1 = i | plus: 1 -%}
             {%- assign idx2 = i | plus: 2 -%}
             {%- assign idx3 = i | plus: 3 -%}
             {%- assign idx4 = i | plus: 4 -%}
-            {%- assign city_raw = reviews[idx1] | strip -%}
-            {%- assign stars_raw = reviews[idx2] | strip -%}
-            {%- assign product_raw = reviews[idx3] | strip -%}
-            {%- assign text_raw = reviews[idx4] | strip -%}
+            {%- assign name = reviews[idx1] | strip -%}
+            {%- assign city_raw = reviews[idx2] | strip -%}
+            {%- assign stars_raw = reviews[idx3] | strip -%}
+            {%- assign product_raw = reviews[idx4] | strip -%}
+            {%- assign stars_int = stars_raw | plus: 0 -%}
 
+            {%- if name != '' -%}
             <div class="vct-review-card">
               <div class="vct-review-top">
                 <div class="vct-review-avatar">{{ name | slice: 0 }}</div>
@@ -62,8 +55,8 @@ Goede prijs, snel geleverd en precies wat ik zocht. Heel blij mee!|Lisa Bakker|T
               <p class="vct-review-text">"{{ text_raw }}"</p>
               <span class="vct-review-product">{{ product_raw }}</span>
             </div>
-
             {%- assign review_count = review_count | plus: 1 -%}
+            {%- endif -%}
           {%- endif -%}
           {%- assign i = i | plus: 1 -%}
         {%- endfor -%}
@@ -79,7 +72,7 @@ Goede prijs, snel geleverd en precies wat ik zocht. Heel blij mee!|Lisa Bakker|T
 <style>
 .vct-reviews-section {
   font-family: inherit;
-  padding: 32px 0 24px;
+  padding: 32px 16px 24px;
   max-width: 900px;
   margin: 0 auto;
 }
@@ -156,7 +149,7 @@ Goede prijs, snel geleverd en precies wat ik zocht. Heel blij mee!|Lisa Bakker|T
   min-width: 0;
 }
 @media (max-width: 768px) {
-  .vct-review-card { flex: 0 0 calc(100% - 0px); }
+  .vct-review-card { flex: 0 0 100%; }
   .vct-slider-btn { display: none; }
 }
 @media (min-width: 769px) and (max-width: 1024px) {
@@ -326,10 +319,11 @@ Goede prijs, snel geleverd en precies wat ik zocht. Heel blij mee!|Lisa Bakker|T
     updateDots();
   }
 
-  document.querySelector('.vct-slider-prev') && document.querySelector('.vct-slider-prev').addEventListener('click', function() { goTo(current - 1); });
-  document.querySelector('.vct-slider-next') && document.querySelector('.vct-slider-next').addEventListener('click', function() { goTo(current + 1); });
+  var prevBtn = document.querySelector('.vct-slider-prev');
+  var nextBtn = document.querySelector('.vct-slider-next');
+  if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
 
-  // Touch/swipe support
   var startX = 0;
   track.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
   track.addEventListener('touchend', function(e) {
@@ -337,11 +331,21 @@ Goede prijs, snel geleverd en precies wat ik zocht. Heel blij mee!|Lisa Bakker|T
     if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
   });
 
-  // Auto-play
-  var timer = setInterval(function() { goTo(current + 1 < getMaxIndex() + 1 ? current + 1 : 0); }, 5000);
-  track.closest('.vct-reviews-section').addEventListener('mouseenter', function() { clearInterval(timer); });
+  var section = track.closest('.vct-reviews-section');
+  var timer = setInterval(function() {
+    goTo(current + 1 <= getMaxIndex() ? current + 1 : 0);
+  }, 5000);
+  if (section) section.addEventListener('mouseenter', function() { clearInterval(timer); });
 
   window.addEventListener('resize', function() { buildDots(); goTo(0); });
   buildDots();
 })();
 </script>
+
+{% schema %}
+{
+  "name": "Henk Reviewslider",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}
