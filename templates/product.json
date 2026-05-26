@@ -366,6 +366,7 @@
     },
     "recently-viewed": {
       "type": "section-recently-viewed-products",
+      "disabled": true,
       "custom_css": [
         ".product-card h3 {display: -webkit-box; -webkit-line-clamp: 2; /* Beperkt het aantal regels tot 2 */ -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; /* Voegt \"...\" toe bij afkapping */ white-space: normal; /* Zorgt ervoor dat tekst kan afbreken */ max-height: 3em; /* Houdt rekening met de lijnhoogte voor 2 regels */ line-height: 1.5em; /* Instellen van de lijnhoogte */}"
       ],
