@@ -46,8 +46,41 @@
         "spacing_mobile": 30
       }
     },
+    "section_featured_products_hwbKpg": {
+      "type": "section-featured-products",
+      "name": "t:sections.featured_products.presets.name",
+      "settings": {
+        "products": [
+          "ceramic-sealer-premium-keramische-coating-500ml-krachtig-tegen-vuil-voor-een-glanzend-resultaat-kopie",
+          "halovision-turbo-led-koplampen-h7-150w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-2-autolampen",
+          "glossio-combideal-foam-wassen-complete-foam-wasset-met-pre-wash-active-foamer-en-drukschuimer",
+          "halovision-turbo-led-koplampen-h7-150w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-2-autolampen-kopie-2",
+          "glossio-buff-wax-towel-oranje-microvezel-polijst-doek-40x40cm-voor-een-streeploos-resultaat-oranje"
+        ],
+        "layout": "slider",
+        "number_of_items": 5,
+        "text_alignment": "start",
+        "title": "<h2>Populaire producten</h2>",
+        "title_underline_style": "none",
+        "text": "",
+        "show_link": false,
+        "link_text": "Button",
+        "link_url": "/",
+        "button_style": "primary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "enable_color_picker": false,
+        "enable_quick_buy_compact": false,
+        "mobile_layout": "slider",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30
+      }
+    },
     "section_recently_viewed_products_bCEy9f": {
       "type": "section-recently-viewed-products",
+      "disabled": true,
       "settings": {
         "number_of_items": 5,
         "text_alignment": "start",
@@ -68,6 +101,7 @@
     "breadcrumbs",
     "main-cart",
     "section_custom_liquid_Ha9Qfb",
+    "section_featured_products_hwbKpg",
     "section_recently_viewed_products_bCEy9f"
   ]
 }
