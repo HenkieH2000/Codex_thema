@@ -49,8 +49,7 @@
     gap: var(--recently-viewed-gap);
   }
 
-  #shopify-section-{{ section.id }} .l4cl:not(.s4wi) > li,
-  #shopify-section-{{ section.id }} .l4cl.s4wi .swiper-slide > li {
+  #shopify-section-{{ section.id }} .l4cl:not(.s4wi) > li {
     width: auto !important;
     max-width: none !important;
     height: 100%;
@@ -63,12 +62,21 @@
   }
 
   #shopify-section-{{ section.id }} .l4cl.s4wi .swiper-slide {
+    min-width: 0;
     height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .l4cl.s4wi .swiper-slide > li {
+    width: 100% !important;
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
   }
 
   #shopify-section-{{ section.id }} .product-card {
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
 
   #shopify-section-{{ section.id }} .product-card .s1pr {
