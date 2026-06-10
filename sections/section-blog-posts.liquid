@@ -48,25 +48,12 @@
       assign button_color = section.settings.button_style | split: ' ' | first
       assign button_style = section.settings.button_style | split: ' ' | last
       assign is_link = false
-
       if button_style == 'link'
         assign is_link = true
       endif
-
-      assign link_classes = ''
-
-      unless is_link
-        assign link_classes = 'overlay-' | append: button_color | append: ' '
-      endunless
-
-      if is_link
-        assign link_classes = link_classes | append: 'inline strong'
-      elsif button_style == 'inv'
-        assign link_classes = link_classes | append: 'inv'
-      endif
     -%}
     <p class="class-x link{% unless is_link %}-btn{% endunless %}">
-      <a href="{{ section.settings.link_url }}" class="{{ link_classes | strip }}">
+      <a href="{{ section.settings.link_url }}" class="overlay-{{ button_color }} {% if is_link %}inline strong{% elsif button_style == 'inv' %}inv{% endif %}">
         {% if is_link %}<span>{% endif %}{{ section.settings.link_text }}{% if is_link %}</span>&nbsp;<i aria-hidden="true" class="icon-chevron-right"></i>{% endif %}
       </a>
     </p>
@@ -124,6 +111,35 @@
 {%- endif -%}
 
 <style>
+  #shopify-section-{{ section.id }} {
+    position: relative;
+    isolation: isolate;
+  }
+
+  #shopify-section-{{ section.id }} .l4ne,
+  #shopify-section-{{ section.id }} .l4ne > li {
+    position: relative;
+    z-index: 1;
+  }
+
+  #shopify-section-{{ section.id }} .l4ne a {
+    position: relative;
+    z-index: 3;
+    pointer-events: auto;
+  }
+
+  #shopify-section-{{ section.id }} .l4ne::before,
+  #shopify-section-{{ section.id }} .l4ne::after,
+  #shopify-section-{{ section.id }} .l4ne > li::before,
+  #shopify-section-{{ section.id }} .l4ne > li::after {
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} header {
+    position: relative;
+    z-index: 4;
+  }
+
   @media only screen and (min-width: 47.5em) {
   {% if link and section.settings.text_alignment == 'center' %}
     #shopify-section-{{ section.id }} { margin-bottom: {{ section.settings.spacing_desktop }}px; }
