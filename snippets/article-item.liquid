@@ -27,6 +27,10 @@
 <li>
   {% if show_image %}
     <figure>
+      {% if article.url != blank %}
+        <a href="{{ article.url }}" class="article-item-image-link" aria-label="{{ title | escape }}">
+      {% endif %}
+
       <picture>
         {% if article.image %}
           <img
@@ -42,14 +46,19 @@
             width="410"
             height="310"
             alt="{{ article.image.alt | default: article.title | escape }}"
-            loading="{% if lazyload %}lazy{% else %}endif{% endif %}"
+            loading="{% if lazyload %}lazy{% else %}eager{% endif %}"
           >
         {% else %}
           {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
         {% endif %}
       </picture>
+
+      {% if article.url != blank %}
+        </a>
+      {% endif %}
     </figure>
   {% endif %}
+
   <h3 class="size-h-small">
     {% if show_author or show_date %}
     <span class="small">
@@ -60,6 +69,7 @@
     {% endif %}
    {{ title }}
   </h3>
+
   {%- if show_excerpt -%}
     {%- if article.excerpt_or_content.size > 0 -%}
       <p class="mobile-hide{% if show_link %} m0{% endif %}">
@@ -67,5 +77,10 @@
       </p>
     {%- endif -%}
   {% endif %}
-  <p class="link{% unless is_link %}-btn{% endunless %}"><a href="{{ article.url }}" class="overlay-{{ button_color }} no-before {% if is_link %}inline strong{% elsif button_style == 'inv' %}inv{% endif %}">{% if is_link %}<span>{% endif %}{{ 'general.read_more.read_more' | t }}{% if is_link %}</span>&nbsp;<i aria-hidden="true" class="icon-chevron-right"></i>{% endif %}</a></p>
+
+  <p class="link{% unless is_link %}-btn{% endunless %}">
+    <a href="{{ article.url }}" class="overlay-{{ button_color }} no-before {% if is_link %}inline strong{% elsif button_style == 'inv' %}inv{% endif %}">
+      {% if is_link %}<span>{% endif %}{{ 'general.read_more.read_more' | t }}{% if is_link %}</span>&nbsp;<i aria-hidden="true" class="icon-chevron-right"></i>{% endif %}
+    </a>
+  </p>
 </li>
