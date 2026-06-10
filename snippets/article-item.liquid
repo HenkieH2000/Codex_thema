@@ -27,6 +27,10 @@
 <li>
   {% if show_image %}
     <figure>
+      {% if article.image and article.url != blank %}
+        <a href="{{ article.url }}" class="article-item-image-link" aria-label="{{ title | escape }}">
+      {% endif %}
+
       <picture>
         {% if article.image %}
           <img
@@ -50,7 +54,7 @@
       </picture>
 
       {% if article.image and article.url != blank %}
-        <a href="{{ article.url }}" class="article-item-image-overlay" aria-label="{{ title | escape }}"></a>
+        </a>
       {% endif %}
     </figure>
   {% endif %}
@@ -80,12 +84,3 @@
     </a>
   </p>
 </li>
-
-<style>
-  .article-item-image-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    display: block;
-  }
-</style>
