@@ -1,1 +1,59 @@
-{"sections":{"breadcrumbs":{"type":"breadcrumbs","settings":{"hide_mobile":false}},"section_logo_list_rPHkzy":{"type":"section-logo-list","blocks":{"logo_agcmfb":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/6pC1juBrsiuzY0U2An7oObnjuAKGmK8Ew6UI4GIB.webp","image_svg":"","link":"shopify:\/\/pages\/volkswagen-chiptuning-in-overijssel-en-drenthe-professionele-tuning-bij-vctparts"}},"logo_kBLXcJ":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/20180115182418_bmw_logo.webp","image_svg":"","link":"shopify:\/\/pages\/bmw-chiptuning-in-overijssel-en-drenthe-professionele-tuning-bij-vctparts"}},"logo_C3KKpH":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/PvPoaPN2CdqErObAImsGgv90iaddV45I5XmFH1Hs.webp","image_svg":"","link":"shopify:\/\/pages\/audi-chiptuning-in-overijssel-en-drenthe-professionele-tuning-bij-vctparts"}},"logo_pHrXqx":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/20180113094600_mercedes_benz_logo.new.webp","image_svg":"","link":"shopify:\/\/pages\/mercedes-chiptuning-in-overijssel-en-drenthe-professionele-tuning-bij-vctparts"}},"logo_gNJyd7":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/sTFeZFu9Zm4EYr9q248nJ9ysbQAyQVJVaNQdDHQV.webp","image_svg":"","link":"shopify:\/\/pages\/porsche-chiptuning-in-overijssel-en-drenthe-professionele-tuning-bij-vctparts"}},"logo_fgMPkp":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/2oJSoq9A6ndWY3Ll4YHZEu8rnA73P04oow3k6BB7.webp","image_svg":"","link":""}},"logo_aEVReB":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/R0OHgNRQ23iwqLxPEQikwtFbOE6oCCEP2wduP83d.webp","image_svg":"","link":""}},"logo_aFUgGL":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/UYFanRTZTEinvOJVXeGBaigfuyndVsTAsRHVTrnC.webp","image_svg":"","link":""}},"logo_hbqxVE":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/dW2eQAU1HfYSyjksN8xgmCFvJlfsaemDouzKic2h.webp","image_svg":"","link":""}},"logo_LeayRH":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/UbD2XeNJVcWIYbJdOgGZBiM5dHvZPyBn2EJRwGDY.webp","image_svg":"","link":"shopify:\/\/pages\/volvo-chiptuning-in-overijssel-en-drenthe-professionele-tuning-bij-vctparts"}},"logo_dp4DDm":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/KliRsApe5VfvPgDaADv9nfflVXA2FkPIlBdXmC7V.webp","image_svg":"","link":"shopify:\/\/pages\/mini-chiptuning-in-overijssel-en-drenthe-professionele-tuning-bij-vctparts"}},"logo_zMicht":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/eJqy6I1s3UzPhiffol0CGsDHD9iZo6BsJNhEW6WG.webp","image_svg":"","link":"shopify:\/\/pages\/toyota-chiptuning-in-overijssel-en-drenthe-professionele-tuning-bij-vctparts"}}},"block_order":["logo_agcmfb","logo_kBLXcJ","logo_C3KKpH","logo_pHrXqx","logo_gNJyd7","logo_fgMPkp","logo_aEVReB","logo_aFUgGL","logo_hbqxVE","logo_LeayRH","logo_dp4DDm","logo_zMicht"],"name":"t:sections.logo_list.presets.name","settings":{"number_of_items":6,"text_alignment":"start","title":"<h2>Kies jouw merk<\/h2>","title_underline_style":"none","show_link":false,"link_text":"Button","link_url":"","button_style":"primary plain","spacing_desktop":50,"spacing_mobile":30}},"main-page":{"type":"main-page","blocks":{"title":{"type":"title","settings":{"title_size":"h1"}},"content":{"type":"content","settings":{}}},"block_order":["title","content"],"settings":{"max_width":980,"content_alignment":"start","text_alignment":"start","spacing_desktop":50,"spacing_mobile":30}}},"order":["breadcrumbs","section_logo_list_rPHkzy","main-page"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "settings": {
+        "hide_mobile": false
+      }
+    },
+    "section_custom_liquid_gCbqV7": {
+      "type": "section-custom-liquid",
+      "name": "t:sections.custom_liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<style>\n* { box-sizing: border-box; margin: 0; padding: 0; }\n.slider-outer {\n  width: 100%;\n  padding: 1.5rem 0;\n  position: relative;\n  overflow: hidden;\n  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);\n  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);\n}\n.track {\n  display: flex;\n  gap: 20px;\n  width: max-content;\n  animation: logoscroll 36s linear infinite;\n}\n.track:hover { animation-play-state: paused; }\n@keyframes logoscroll {\n  0%   { transform: translateX(0); }\n  100% { transform: translateX(-50%); }\n}\n.logo-card {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 140px;\n  height: 80px;\n  background: #ffffff;\n  border: 1px solid #e0e0e0;\n  border-radius: 12px;\n  flex-shrink: 0;\n  text-decoration: none;\n  transition: border-color .2s, box-shadow .2s;\n}\n.logo-card:hover { border-color: #aaa; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }\n.logo-card img {\n  max-width: 80px;\n  max-height: 44px;\n  width: auto;\n  height: auto;\n  object-fit: contain;\n}\n@media (max-width: 600px) {\n  .logo-card { width: 90px; height: 60px; border-radius: 10px; }\n  .logo-card img { max-width: 54px; max-height: 32px; }\n  .track { gap: 14px; animation-duration: 28s; }\n}\n</style>\n<div class=\"slider-outer\">\n  <div class=\"track\" id=\"logotrack\"></div>\n</div>\n<script>\n(function(){\n  var brands = [\n    { name: 'BMW',        url: 'https://supertune.nl/bmw-chiptuning/',          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/500px-BMW.svg.png' },\n    { name: 'Volkswagen', url: 'https://supertune.nl/volkswagen-chiptuning/',   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/500px-Volkswagen_logo_2019.svg.png' },\n    { name: 'Audi',       url: 'https://supertune.nl/audi-chiptuning/',         img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Audi-Logo_2016.svg/500px-Audi-Logo_2016.svg.png' },\n    { name: 'SEAT',       url: 'https://supertune.nl/seat-chiptuning/',         img: 'https://logos-world.net/wp-content/uploads/2021/10/SEAT-Logo.png' },\n    { name: 'Skoda',      url: 'https://supertune.nl/skoda-chiptuning/',        img: 'https://cdn.freebiesupply.com/logos/large/2x/skoda-6-logo-png-transparent.png' },\n    { name: 'Cupra',      url: 'https://supertune.nl/cupra-chiptuning/',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Cupra.svg/500px-Cupra.svg.png' },\n    { name: 'Ford',       url: 'https://supertune.nl/ford-chiptuning/',         img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Ford_Motor_Company_Logo.svg/500px-Ford_Motor_Company_Logo.svg.png' },\n    { name: 'Mini',       url: 'https://supertune.nl/mini-chiptuning/',         img: 'https://pngimg.com/uploads/mini/mini_PNG11789.png' },\n    { name: 'Mercedes',   url: 'https://supertune.nl/mercedes-chiptuning/',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/960px-Mercedes-Logo.svg.png' },\n    { name: 'Alfa Romeo', url: 'https://supertune.nl/alfa-romeo-chiptuning/',   img: 'https://supertune.nl/wp-content/uploads/2026/05/current-badge_457d965994803bd415fc9735d023d1eb.png' },\n    { name: 'Opel',       url: 'https://supertune.nl/opel-chiptuning/',         img: 'https://pngimg.com/uploads/opel/opel_PNG1.png' },\n    { name: 'Renault',    url: 'https://supertune.nl/renault-chiptuning/',      img: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Renault_2021.svg' },\n    { name: 'Peugeot',    url: 'https://supertune.nl/peugeot-chiptuning/',      img: 'https://1000logos.net/wp-content/uploads/2021/02/Peugeot-logo.png' },\n  ];\n  var track = document.getElementById('logotrack');\n  var all = brands.concat(brands);\n  all.forEach(function(b) {\n    var a = document.createElement('a');\n    a.href = b.url;\n    a.className = 'logo-card';\n    a.title = b.name + ' chiptuning';\n    var img = document.createElement('img');\n    img.src = b.img;\n    img.alt = b.name + ' logo';\n    img.loading = 'lazy';\n    a.appendChild(img);\n    track.appendChild(a);\n  });\n  function restartAnimation() {\n    track.style.animation = 'none';\n    track.offsetHeight;\n    track.style.animation = '';\n  }\n  window.addEventListener('pageshow', function(e) {\n    restartAnimation();\n  });\n  document.addEventListener('visibilitychange', function() {\n    if (document.visibilityState === 'visible') {\n      restartAnimation();\n    }\n  });\n})();\n</script>",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30
+      }
+    },
+    "main-page": {
+      "type": "main-page",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "title_size": "h1"
+          }
+        },
+        "content": {
+          "type": "content",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "content"
+      ],
+      "settings": {
+        "max_width": 980,
+        "content_alignment": "start",
+        "text_alignment": "start",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs",
+    "section_custom_liquid_gCbqV7",
+    "main-page"
+  ]
+}
