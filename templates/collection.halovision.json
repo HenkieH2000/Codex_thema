@@ -113,6 +113,9 @@
     },
     "section_featured_products_RR8cPH": {
       "type": "section-featured-products",
+      "custom_css": [
+        ".card__heading {display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}"
+      ],
       "name": "t:sections.featured_products.presets.name",
       "settings": {
         "products": [
@@ -152,39 +155,6 @@
     "1781688679cf7364b5": {
       "type": "_blocks",
       "settings": {}
-    },
-    "section_image_with_products_gRiM8f": {
-      "type": "section-image-with-products",
-      "name": "t:sections.image_with_products.presets.name",
-      "settings": {
-        "image": "shopify://shop_images/HaloVision_Halogeen_Koplampen_H4-4.png",
-        "overlay_opacity": 0,
-        "color_palette": "",
-        "layout": "image-left",
-        "products": [
-          "halovision-turbo-led-koplampen-h7-25w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-2-autolampen-kopie-1",
-          "halovision-smart-h7-led-koplampen-app-bediening-dimbaar-en-schakelbaar-3000k-tot-6000k-canbus-led-autolampen-set",
-          "halovision-turbo-led-koplampen-h4-25w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-2-autolampen-kopie-1"
-        ],
-        "text_position": "center",
-        "title": "",
-        "title_underline_style": "none",
-        "text": "",
-        "show_link": false,
-        "link_text": "Button",
-        "link_url": "",
-        "button_style": "primary plain",
-        "enable_quick_buy_desktop": true,
-        "enable_quick_buy_mobile": true,
-        "enable_quick_buy_drawer": false,
-        "enable_quick_buy_qty_selector": true,
-        "enable_color_picker": false,
-        "enable_quick_buy_compact": false,
-        "width_mobile": "boxed",
-        "mobile_height": "1/1",
-        "spacing_desktop": 50,
-        "spacing_mobile": 30
-      }
     },
     "main-collection": {
       "type": "main-collection",
@@ -256,7 +226,6 @@
     "section_gallery_tUmmUp",
     "section_featured_products_RR8cPH",
     "1781688679cf7364b5",
-    "section_image_with_products_gRiM8f",
     "main-collection"
   ]
 }
