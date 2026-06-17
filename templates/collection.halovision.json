@@ -37,6 +37,80 @@
         "arrow_border": "#efefef"
       }
     },
+    "section_gallery_tUmmUp": {
+      "type": "section-gallery",
+      "blocks": {
+        "image_aeRh7h": {
+          "type": "image",
+          "settings": {
+            "video": "shopify://files/videos/Halovision video.mp4",
+            "overlay_opacity": 0,
+            "color_palette": "",
+            "text_position": "center",
+            "title": "",
+            "title_underline_style": "none",
+            "text": "",
+            "show_link": false,
+            "link_text": "Button",
+            "link_url": "",
+            "button_style": "primary plain"
+          }
+        },
+        "image_gtqXNq": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/H7_halovision_LED_turbo.png",
+            "overlay_opacity": 0,
+            "color_palette": "",
+            "text_position": "center",
+            "title": "",
+            "title_underline_style": "none",
+            "text": "",
+            "show_link": false,
+            "link_text": "Button",
+            "link_url": "",
+            "button_style": "primary plain"
+          }
+        },
+        "image_q6399A": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/halovision-halovision-turbo-led-koplampen-h7-25w-5000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-2-autolampen-halovision-7652883.png",
+            "overlay_opacity": 0,
+            "color_palette": "",
+            "text_position": "center",
+            "title": "<h2></h2><h2></h2>",
+            "title_underline_style": "none",
+            "text": "<p></p><p></p>",
+            "show_link": false,
+            "link_text": "Button",
+            "link_url": "",
+            "button_style": "primary plain"
+          }
+        }
+      },
+      "block_order": [
+        "image_aeRh7h",
+        "image_gtqXNq",
+        "image_q6399A"
+      ],
+      "name": "t:sections.gallery.presets.name",
+      "settings": {
+        "items_layout": "playful-grid",
+        "items_width": 2,
+        "height": "16/9",
+        "width": "boxed",
+        "space_between": 16,
+        "image_zoom": true,
+        "image_move": false,
+        "show_content_on_hover": false,
+        "content_on_hover_color_palette": "",
+        "layout_mobile": "rows",
+        "mobile_height": "16/9",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30
+      }
+    },
     "main-collection": {
       "type": "main-collection",
       "blocks": {
@@ -104,6 +178,7 @@
   "order": [
     "breadcrumbs",
     "navigeer_snel_d4Uqmp",
+    "section_gallery_tUmmUp",
     "main-collection"
   ]
 }
