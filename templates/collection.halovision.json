@@ -111,46 +111,46 @@
         "spacing_mobile": 30
       }
     },
+    "section_featured_products_RR8cPH": {
+      "type": "section-featured-products",
+      "name": "t:sections.featured_products.presets.name",
+      "settings": {
+        "products": [
+          "halovision-turbo-led-koplampen-h7-25w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-2-autolampen-kopie-1",
+          "halovision-turbo-led-groot-licht-koplampen-h7-h1-150w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-4-autolampen",
+          "halovision-turbo-led-groot-licht-koplampen-h7-150w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-4-autolampen-2",
+          "halovision-turbo-led-koplampen-h4-25w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-2-autolampen-kopie-1",
+          "halovision-turbo-led-koplampen-h4-en-hb3-9005-combideal-25w-30000lm-6000k-helder-wit-led-set-kopie",
+          "halovision-turbo-led-koplampen-h4-h11-25w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-2-autolampen-kopie",
+          "halovision-turbo-led-koplampen-h4-en-hb4-9006-25w-30000lm-6000k-helder-wit-combideal-led-set-dimlicht-en-grootlicht",
+          "halovision-turbo-led-groot-licht-koplampen-h7-hb4-150w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-4-autolampen-kopie",
+          "halovision-turbo-led-groot-licht-koplampen-h7-h1-150w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-4-autolampen-kopie",
+          "halovision-turbo-led-groot-licht-koplampen-h7-h11-150w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-4-autolampen-kopie-kopie",
+          "halovision-turbo-led-groot-licht-koplampen-h7-hb3-150w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-4-autolampen-kopie-kopie-kopie"
+        ],
+        "layout": "slider",
+        "number_of_items": 5,
+        "text_alignment": "start",
+        "title": "<h2>Combideals</h2>",
+        "title_underline_style": "none",
+        "text": "",
+        "show_link": false,
+        "link_text": "Button",
+        "link_url": "/",
+        "button_style": "primary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "enable_color_picker": false,
+        "enable_quick_buy_compact": false,
+        "mobile_layout": "slider",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30
+      }
+    },
     "1781688679cf7364b5": {
       "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_3a9429b_NG7jDd": {
-          "type": "ai_gen_block_3a9429b",
-          "settings": {
-            "vendor_name": "Halovision",
-            "max_products": 12,
-            "title": "Bestsellers",
-            "subtitle": "",
-            "title_alignment": "center",
-            "title_size": 32,
-            "subtitle_size": 16,
-            "products_per_row_desktop": 4,
-            "products_per_row_tablet": 3,
-            "product_gap": 20,
-            "section_padding": 40,
-            "show_navigation": true,
-            "show_vendor": true,
-            "product_title_size": 16,
-            "price_size": 18,
-            "card_border_radius": 8,
-            "background_color": "#ffffff",
-            "title_color": "#000000",
-            "subtitle_color": "#666666",
-            "card_background": "#ffffff",
-            "product_title_color": "#000000",
-            "vendor_color": "#999999",
-            "price_color": "#000000",
-            "link_hover_color": "#FF6602",
-            "nav_button_color": "#000000",
-            "nav_button_text_color": "#ffffff",
-            "nav_button_hover_color": "#FF6602"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_3a9429b_NG7jDd"
-      ],
       "settings": {}
     },
     "section_image_with_products_gRiM8f": {
@@ -254,6 +254,7 @@
     "breadcrumbs",
     "navigeer_snel_d4Uqmp",
     "section_gallery_tUmmUp",
+    "section_featured_products_RR8cPH",
     "1781688679cf7364b5",
     "section_image_with_products_gRiM8f",
     "main-collection"
