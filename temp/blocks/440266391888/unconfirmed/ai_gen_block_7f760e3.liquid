@@ -1,6 +1,679 @@
+{% doc %}
+  @prompt
+    slider van de best verkochte producten van het merk "Halovision", ik bedoel niet "halovision' maar van vendor halovision
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% liquid
+  assign vendor_filter = block.settings.vendor_name
+  assign products_to_show = block.settings.products_to_show
+  assign all_products = collections.all.products
+  assign filtered_products = ''
+  
+  for product in all_products
+    if product.vendor == vendor_filter
+      if filtered_products == ''
+        assign filtered_products = product.id | append: ''
+      else
+        assign filtered_products = filtered_products | append: ',' | append: product.id
+      endif
+    endif
+  endfor
+  
+  assign product_ids = filtered_products | split: ','
+  assign vendor_products = '' | split: ''
+  
+  for product_id in product_ids
+    for product in all_products
+      if product.id == product_id
+        assign vendor_products = vendor_products | concat: product
+        break
+      endif
+    endfor
+  endfor
+%}
+
+{% style %}
+  .ai-bestseller-slider-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+    display: block;
+  }
+
+  .ai-bestseller-slider__header-{{ ai_gen_id }} {
+    margin-bottom: 32px;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-bestseller-slider__title-{{ ai_gen_id }} {
+    margin: 0 0 8px 0;
+    color: {{ block.settings.title_color }};
+    font-size: {{ block.settings.title_size }}px;
+  }
+
+  .ai-bestseller-slider__subtitle-{{ ai_gen_id }} {
+    margin: 0;
+    color: {{ block.settings.subtitle_color }};
+    font-size: {{ block.settings.subtitle_size }}px;
+  }
+
+  .ai-bestseller-slider__container-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-bestseller-slider__track-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.gap }}px;
+    transition: transform 0.4s ease;
+    will-change: transform;
+  }
+
+  .ai-bestseller-slider__slide-{{ ai_gen_id }} {
+    flex: 0 0 calc((100% - ({{ block.settings.products_per_row_desktop | minus: 1 }} * {{ block.settings.gap }}px)) / {{ block.settings.products_per_row_desktop }});
+    min-width: 0;
+  }
+
+  .ai-bestseller-slider__product-{{ ai_gen_id }} {
+    background: {{ block.settings.card_background }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .ai-bestseller-slider__product-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-bestseller-slider__image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+    background: #f4f4f4;
+  }
+
+  .ai-bestseller-slider__image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-bestseller-slider__badge-{{ ai_gen_id }} {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: {{ block.settings.badge_background }};
+    color: {{ block.settings.badge_text_color }};
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 1;
+  }
+
+  .ai-bestseller-slider__info-{{ ai_gen_id }} {
+    padding: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ai-bestseller-slider__vendor-{{ ai_gen_id }} {
+    font-size: 12px;
+    color: {{ block.settings.vendor_color }};
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .ai-bestseller-slider__product-title-{{ ai_gen_id }} {
+    font-size: 16px;
+    color: {{ block.settings.product_title_color }};
+    margin: 0 0 8px 0;
+    line-height: 1.4;
+    flex-grow: 1;
+  }
+
+  .ai-bestseller-slider__product-title-{{ ai_gen_id }} a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ai-bestseller-slider__product-title-{{ ai_gen_id }} a:hover {
+    text-decoration: underline;
+  }
+
+  .ai-bestseller-slider__price-{{ ai_gen_id }} {
+    font-size: 18px;
+    font-weight: 700;
+    color: {{ block.settings.price_color }};
+    margin-bottom: 12px;
+  }
+
+  .ai-bestseller-slider__price-compare-{{ ai_gen_id }} {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 14px;
+    margin-left: 8px;
+    font-weight: 400;
+  }
+
+  .ai-bestseller-slider__button-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 12px 24px;
+    background: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .ai-bestseller-slider__button-{{ ai_gen_id }}:hover {
+    background: {{ block.settings.button_hover_background }};
+  }
+
+  .ai-bestseller-slider__nav-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .ai-bestseller-slider__nav-button-{{ ai_gen_id }} {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: {{ block.settings.nav_button_background }};
+    color: {{ block.settings.nav_button_color }};
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+  }
+
+  .ai-bestseller-slider__nav-button-{{ ai_gen_id }}:hover {
+    background: {{ block.settings.nav_button_hover_background }};
+  }
+
+  .ai-bestseller-slider__nav-button-{{ ai_gen_id }}:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .ai-bestseller-slider__empty-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+  }
+
+  .ai-bestseller-slider__empty-title-{{ ai_gen_id }} {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .ai-bestseller-slider__empty-text-{{ ai_gen_id }} {
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-bestseller-slider__slide-{{ ai_gen_id }} {
+      flex: 0 0 calc((100% - ({{ block.settings.products_per_row_mobile | minus: 1 }} * {{ block.settings.gap }}px)) / {{ block.settings.products_per_row_mobile }});
+    }
+
+    .ai-bestseller-slider__title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.8);
+    }
+
+    .ai-bestseller-slider__subtitle-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.subtitle_size }}px * 0.9);
+    }
+  }
+{% endstyle %}
+
+<bestseller-slider-{{ ai_gen_id }} class="ai-bestseller-slider-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.title != blank or block.settings.subtitle != blank %}
+    <div class="ai-bestseller-slider__header-{{ ai_gen_id }}">
+      {% if block.settings.title != blank %}
+        <h2 class="ai-bestseller-slider__title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+      {% endif %}
+      {% if block.settings.subtitle != blank %}
+        <p class="ai-bestseller-slider__subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if vendor_products.size > 0 %}
+    <div class="ai-bestseller-slider__container-{{ ai_gen_id }}">
+      <div class="ai-bestseller-slider__track-{{ ai_gen_id }}" data-track>
+        {% for product in vendor_products limit: products_to_show %}
+          <div class="ai-bestseller-slider__slide-{{ ai_gen_id }}">
+            <div class="ai-bestseller-slider__product-{{ ai_gen_id }}">
+              <div class="ai-bestseller-slider__image-wrapper-{{ ai_gen_id }}">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 600 }}"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    class="ai-bestseller-slider__image-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="600"
+                    height="600"
+                  >
+                {% else %}
+                  <div class="ai-bestseller-slider__image-{{ ai_gen_id }}">
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  </div>
+                {% endif %}
+                
+                {% if product.compare_at_price > product.price %}
+                  <div class="ai-bestseller-slider__badge-{{ ai_gen_id }}">
+                    {{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}% korting
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="ai-bestseller-slider__info-{{ ai_gen_id }}">
+                {% if block.settings.show_vendor %}
+                  <div class="ai-bestseller-slider__vendor-{{ ai_gen_id }}">{{ product.vendor }}</div>
+                {% endif %}
+
+                <h3 class="ai-bestseller-slider__product-title-{{ ai_gen_id }}">
+                  <a href="{{ product.url }}">{{ product.title }}</a>
+                </h3>
+
+                <div class="ai-bestseller-slider__price-{{ ai_gen_id }}">
+                  {{ product.price | money }}
+                  {% if product.compare_at_price > product.price %}
+                    <span class="ai-bestseller-slider__price-compare-{{ ai_gen_id }}">
+                      {{ product.compare_at_price | money }}
+                    </span>
+                  {% endif %}
+                </div>
+
+                <a href="{{ product.url }}" class="ai-bestseller-slider__button-{{ ai_gen_id }}">
+                  {{ block.settings.button_text }}
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if vendor_products.size > block.settings.products_per_row_desktop %}
+      <div class="ai-bestseller-slider__nav-{{ ai_gen_id }}">
+        <button
+          class="ai-bestseller-slider__nav-button-{{ ai_gen_id }}"
+          data-prev
+          aria-label="Vorige producten"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button
+          class="ai-bestseller-slider__nav-button-{{ ai_gen_id }}"
+          data-next
+          aria-label="Volgende producten"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    {% endif %}
+  {% else %}
+    <div class="ai-bestseller-slider__empty-{{ ai_gen_id }}">
+      <div class="ai-bestseller-slider__empty-title-{{ ai_gen_id }}">
+        Geen producten gevonden
+      </div>
+      <div class="ai-bestseller-slider__empty-text-{{ ai_gen_id }}">
+        Er zijn geen producten van vendor "{{ vendor_filter }}" gevonden. Controleer de vendor naam in de instellingen.
+      </div>
+    </div>
+  {% endif %}
+</bestseller-slider-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class BestsellerSlider{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentIndex = 0;
+        this.track = this.querySelector('[data-track]');
+        this.prevButton = this.querySelector('[data-prev]');
+        this.nextButton = this.querySelector('[data-next]');
+        this.slides = this.querySelectorAll('.ai-bestseller-slider__slide-{{ ai_gen_id }}');
+      }
+
+      connectedCallback() {
+        if (!this.track || !this.prevButton || !this.nextButton) return;
+
+        this.slidesToShow = this.getSlidesToShow();
+        this.maxIndex = Math.max(0, this.slides.length - this.slidesToShow);
+
+        this.prevButton.addEventListener('click', () => this.prev());
+        this.nextButton.addEventListener('click', () => this.next());
+
+        window.addEventListener('resize', () => {
+          this.slidesToShow = this.getSlidesToShow();
+          this.maxIndex = Math.max(0, this.slides.length - this.slidesToShow);
+          this.currentIndex = Math.min(this.currentIndex, this.maxIndex);
+          this.updateSlider();
+        });
+
+        this.updateSlider();
+      }
+
+      getSlidesToShow() {
+        return window.innerWidth <= 749 
+          ? {{ block.settings.products_per_row_mobile }} 
+          : {{ block.settings.products_per_row_desktop }};
+      }
+
+      prev() {
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+          this.updateSlider();
+        }
+      }
+
+      next() {
+        if (this.currentIndex < this.maxIndex) {
+          this.currentIndex++;
+          this.updateSlider();
+        }
+      }
+
+      updateSlider() {
+        const slideWidth = this.slides[0].offsetWidth;
+        const gap = {{ block.settings.gap }};
+        const offset = -(this.currentIndex * (slideWidth + gap));
+        
+        this.track.style.transform = `translateX(${offset}px)`;
+
+        this.prevButton.disabled = this.currentIndex === 0;
+        this.nextButton.disabled = this.currentIndex >= this.maxIndex;
+      }
+    }
+
+    customElements.define('bestseller-slider-{{ ai_gen_id }}', BestsellerSlider{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Bestseller slider",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Inhoud"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titel",
+      "default": "Onze bestsellers"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Ondertitel",
+      "default": "De meest populaire producten van Halovision"
+    },
+    {
+      "type": "text",
+      "id": "vendor_name",
+      "label": "Vendor naam",
+      "default": "Halovision",
+      "info": "Voer de exacte vendor naam in zoals deze in je producten staat"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Aantal producten",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Knoptekst",
+      "default": "Bekijk product"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Toon vendor naam",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop breedte",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "label": "Producten per rij (desktop)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_mobile",
+      "label": "Producten per rij (mobiel)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Ruimte tussen producten",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Sectie padding",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Tekstuitlijning",
+      "options": [
+        { "value": "left", "label": "Links" },
+        { "value": "center", "label": "Midden" },
+        { "value": "right", "label": "Rechts" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Kleuren"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Titelkleur",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Ondertitelkleur",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Kaart achtergrond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "vendor_color",
+      "label": "Vendor naam kleur",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Producttitel kleur",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Prijskleur",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "badge_background",
+      "label": "Badge achtergrond",
+      "default": "#e52a2a"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge tekstkleur",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Knop"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Knop achtergrond",
+      "default": "#FF6602"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Knop hover achtergrond",
+      "default": "#e55a00"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Knop tekstkleur",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Knop border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Navigatie"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_background",
+      "label": "Navigatie achtergrond",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_hover_background",
+      "label": "Navigatie hover achtergrond",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_color",
+      "label": "Navigatie icoonkleur",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Stijl"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Titelgrootte",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Ondertitelgrootte",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Kaart border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bestseller slider"
+    }
+  ]
+}
 {% endschema %}
