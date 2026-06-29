@@ -13,6 +13,7 @@
   "sections": {
     "announcement": {
       "type": "announcement-bar",
+      "disabled": true,
       "settings": {
         "color_palette": "scheme-21d74f06-dc51-452d-80b2-ced7afd9d22c",
         "text": "<p>☀️ <strong>Hitteprotocol actief in NL — reken op 1-2 dagen extra levertijd.</strong></p>"
