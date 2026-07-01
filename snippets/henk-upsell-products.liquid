@@ -6,7 +6,7 @@
 {% assign minimum_bundle_discount = 5 %}
 
 <div class="bundle-wrapper"
-     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=12"
+     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=10"
      data-main-variant="{{ product.selected_or_first_available_variant.id }}">
 
   <h2 class="bundle-header">Maak bundel compleet</h2>
@@ -15,7 +15,7 @@
     <div class="bundle-recommendations-container">
 
       {% if recommendations.performed and recommendations.products_count > 0 %}
-        {% for item in recommendations.products limit: 12 %}
+        {% for item in recommendations.products limit: 10 %}
 
           {% assign base_price = item.price %}
           {% assign compare_price = item.compare_at_price %}
@@ -81,6 +81,61 @@
   </div>
 
   <div class="bundle-footer"></div>
+</div>
+
+{% comment %}
+  ── Extra alternatieven-pool ──
+  De product-aanbevelingen-API geeft maximaal 10 producten. Om minimaal 20
+  alternatieven te kunnen tonen, vullen we aan met producten uit de collecties
+  van dit product. Deze staan verborgen en worden alleen door de JS uitgelezen.
+{% endcomment %}
+<div class="bundle-source-pool" style="display:none" aria-hidden="true">
+  {% assign pool_added = 0 %}
+  {% for col in product.collections %}
+    {% for p in col.products %}
+      {% unless pool_added >= 40 %}
+        {% if p.id != product.id %}
+          {% assign pv = p.selected_or_first_available_variant %}
+          {% assign p_ok = false %}
+          {% if pv.available %}
+            {% if pv.inventory_management == blank %}
+              {% assign p_ok = true %}
+            {% elsif pv.inventory_policy == 'continue' %}
+              {% assign p_ok = true %}
+            {% elsif pv.inventory_quantity > 0 %}
+              {% assign p_ok = true %}
+            {% endif %}
+          {% endif %}
+          {% if p_ok %}
+            {% assign pbase = p.price %}
+            {% assign pcompare = p.compare_at_price %}
+            {% assign ppct = minimum_bundle_discount %}
+            {% assign pold = pbase %}
+            {% if pcompare > pbase %}
+              {% assign pdiff = pcompare | minus: pbase %}
+              {% assign pactive = pdiff | times: 100.0 | divided_by: pcompare | ceil %}
+              {% if pactive > minimum_bundle_discount %}
+                {% assign ppct = pactive %}
+                {% assign pold = pcompare %}
+              {% endif %}
+            {% endif %}
+            {% assign pfactor = 100.0 | minus: ppct | divided_by: 100.0 %}
+            {% assign pprice = pbase | times: pfactor | round %}
+            <div class="bundle-source-card"
+                 data-variant-id="{{ pv.id }}"
+                 data-price="{{ pprice }}"
+                 data-old-price="{{ pold }}"
+                 data-pct="{{ ppct }}"
+                 data-title="{{ p.title | escape }}"
+                 data-vendor="{{ p.vendor | escape }}"
+                 data-url="{{ p.url }}"
+                 data-img="{{ p.featured_image | img_url: '200x' }}"></div>
+            {% assign pool_added = pool_added | plus: 1 %}
+          {% endif %}
+        {% endif %}
+      {% endunless %}
+    {% endfor %}
+  {% endfor %}
 </div>
 
 {% comment %} ── Alternatief-popup (modal) ── {% endcomment %}
@@ -186,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const VISIBLE_SLOTS = 2;
   let allCards = [];
-  let slotData = [-1, -1]; // welke productindex zit in slot 0 en slot 1
+  let slotData = [];
 
   function money(cents) {
     const n = parseInt(cents);
@@ -196,24 +251,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function escAttr(s) { return (s || '').replace(/"/g, '&quot;'); }
 
-  function parseCards(url) {
+  // Hoofd-variant: LIQUID-waarde eerst (het echte paginaproduct). Zo komt er
+  // nooit per ongeluk een verkeerde variant/product uit een ander formulier mee.
+  function getMainVariantId() {
+    const liquidVariant = wrapper.dataset.mainVariant;
+    if (liquidVariant) return String(liquidVariant);
+    const hidden = document.querySelector('input[name="id"][type="hidden"]');
+    if (hidden && hidden.value) return String(hidden.value);
+    const anyInput = document.querySelector('form[action*="/cart/add"] [name="id"]');
+    if (anyInput && anyInput.value) return String(anyInput.value);
+    return null;
+  }
+
+  function cardFromEl(c) {
+    return {
+      variantId : c.dataset.variantId,
+      price     : c.dataset.price,
+      oldPrice  : c.dataset.oldPrice,
+      pct       : c.dataset.pct,
+      title     : c.dataset.title,
+      vendor    : c.dataset.vendor,
+      url       : c.dataset.url,
+      img       : c.dataset.img
+    };
+  }
+
+  // Aanbevelingen ophalen (max 10 per intent) uit de section-render.
+  function parseRecommendations(url) {
     return fetch(url)
       .then(r => r.text())
       .then(text => {
         const el = document.createElement('div');
         el.innerHTML = text;
-        return Array.from(el.querySelectorAll('.bundle-card')).map(c => ({
-          variantId : c.dataset.variantId,
-          price     : c.dataset.price,
-          oldPrice  : c.dataset.oldPrice,
-          pct       : c.dataset.pct,
-          title     : c.dataset.title,
-          vendor    : c.dataset.vendor,
-          url       : c.dataset.url,
-          img       : c.dataset.img
-        }));
+        return Array.from(el.querySelectorAll('.bundle-card')).map(cardFromEl);
       })
       .catch(() => []);
+  }
+
+  // Extra pool (collectie-producten) staat al inline in de pagina.
+  function readInlinePool() {
+    return Array.from(document.querySelectorAll('.bundle-source-pool .bundle-source-card')).map(cardFromEl);
   }
 
   function buildCard(d, slotIndex) {
@@ -340,14 +417,18 @@ document.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && altOverlay.classList.contains('is-open')) closeAlt(); });
 
   /* ── Laden ── */
-  Promise.all([parseCards(complementaryUrl), parseCards(baseUrl)])
+  Promise.all([parseRecommendations(complementaryUrl), parseRecommendations(baseUrl)])
   .then(([compData, stdData]) => {
+    const mainId = String(getMainVariantId() || '');
     const seen = new Set();
-    for (const d of [...compData, ...stdData]) {
-      if (d.variantId && !seen.has(d.variantId)) {
-        seen.add(d.variantId);
-        allCards.push(d);
-      }
+
+    // Volgorde: complementair eerst (beste match), dan standaard, dan collectie-pool.
+    for (const d of [...compData, ...stdData, ...readInlinePool()]) {
+      if (!d.variantId) continue;
+      if (String(d.variantId) === mainId) continue;   // hoofdproduct nooit als upsell
+      if (seen.has(d.variantId)) continue;             // geen dubbele
+      seen.add(d.variantId);
+      allCards.push(d);
     }
 
     if (allCards.length === 0) { wrapper.style.display = 'none'; return; }
@@ -378,18 +459,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function hasCheckedAddons() {
     return wrapper.querySelectorAll('.recommended-product .add-on-checkbox:checked').length > 0;
-  }
-
-  function getMainVariantId() {
-    // 1) live variant-input in de product-form (respecteert variantkeuze)
-    const formInput = productForm.querySelector('[name="id"]:not([disabled])');
-    if (formInput && formInput.value) return formInput.value;
-    // 2) elke andere variant-input op de pagina
-    const anyInput = document.querySelector('form[action*="/cart/add"] [name="id"]:not([disabled])');
-    if (anyInput && anyInput.value) return anyInput.value;
-    // 3) terugval: door Liquid meegegeven hoofd-variant
-    if (wrapper.dataset.mainVariant) return wrapper.dataset.mainVariant;
-    return null;
   }
 
   function collectItems() {
