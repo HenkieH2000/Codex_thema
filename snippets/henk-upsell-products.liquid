@@ -87,9 +87,9 @@
   <div class="bundle-alt-modal" role="dialog" aria-modal="true" aria-label="Kies een alternatief product">
     <div class="bundle-alt-header">
       <span class="bundle-alt-label">Kies een alternatief</span>
-      <span class="bundle-alt-close" id="bundle-alt-close" role="button" tabindex="0" aria-label="Sluiten">
+      <button type="button" class="bundle-alt-close" id="bundle-alt-close" aria-label="Sluiten">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </span>
+      </button>
     </div>
     <div class="bundle-alt-grid" id="bundle-alt-grid"></div>
   </div>
@@ -118,10 +118,9 @@
   .price-current { font-size: 13px; font-weight: 700; color: #030a22; }
   .price-old { font-size: 11px; color: #9ca3af; text-decoration: line-through; }
   .discount-badge { background: #FE0000; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 8px; line-height: 1.4; }
-  .bundle-actions { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 8px; flex-shrink: 0; align-self: stretch; padding-left: 12px; }
-  .bundle-alt-btn { display: inline-flex; align-items: center; justify-content: center; gap: 3px; font-size: 11px; color: #FF7E00; font-weight: 700; cursor: pointer; line-height: 1; padding: 7px 14px; border: 1px solid #ffd3ac; border-radius: 100px; background: #fff7ef; white-space: nowrap; transition: background .15s, border-color .15s, color .15s; }
-  .bundle-alt-btn:hover { background: #FF7E00; border-color: #FF7E00; color: #fff; }
-  .bundle-info-btn { flex-shrink: 0; display: flex; align-items: center; text-decoration: none; }
+  .bundle-alt-btn { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; color: #FF7E00; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; line-height: 1.4; margin-top: 1px; width: fit-content; }
+  .bundle-alt-btn:hover { color: #e06e00; }
+  .bundle-info-btn { padding-left: 10px; flex-shrink: 0; display: flex; align-items: center; text-decoration: none; }
   .info-circle { width: 22px; height: 22px; background: #fff0e0; color: #FF7E00; border-radius: 50%; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
   .bundle-info-btn:hover .info-circle { background: #FF7E00; color: #fff; }
   .bundle-footer { height: 0; overflow: hidden; }
@@ -133,9 +132,8 @@
   .bundle-alt-overlay.is-open .bundle-alt-modal { transform: none; }
   .bundle-alt-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #e8eaf0; flex-shrink: 0; }
   .bundle-alt-label { font-size: 15px; font-weight: 800; color: #030a22; }
-  .bundle-alt-close { background: #f4f4f4 !important; border: none !important; box-shadow: none !important; width: 32px !important; height: 32px !important; min-width: 0 !important; max-width: 32px !important; min-height: 0 !important; max-height: 32px !important; border-radius: 50% !important; color: #6b7280 !important; cursor: pointer; display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; transition: background .15s, color .15s; padding: 0 !important; margin: 0 !important; line-height: 0 !important; }
-  .bundle-alt-close:hover { background: #FF7E00 !important; color: #fff !important; }
-  .bundle-alt-close svg { width: 14px !important; height: 14px !important; flex-shrink: 0 !important; }
+  .bundle-alt-close { background: #f4f4f4; border: none; width: 30px; height: 30px; border-radius: 50%; color: #6b7280; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, color .15s; padding: 0; }
+  .bundle-alt-close:hover { background: #FF7E00; color: #fff; }
   .bundle-alt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .bundle-alt-card { border: 1px solid #e8eaf0; border-radius: 10px; padding: 10px; cursor: pointer; position: relative; transition: border-color .2s, box-shadow .2s; background: #fff; display: flex; flex-direction: column; }
   .bundle-alt-card:hover { border-color: #FF7E00; box-shadow: 0 6px 16px -8px rgba(255,126,0,.45); }
@@ -173,12 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const altModal   = altOverlay.querySelector('.bundle-alt-modal');
   const altGrid    = document.getElementById('bundle-alt-grid');
   const altClose   = document.getElementById('bundle-alt-close');
-
-  // Verplaats de popup naar <body> zodat een thema-ouder met 'transform'
-  // (die 'position: fixed' opsluit) hem niet binnen het blok vasthoudt.
-  if (altOverlay && altOverlay.parentElement !== document.body) {
-    document.body.appendChild(altOverlay);
-  }
 
   if (!productForm) { wrapper.style.display = 'none'; return; }
 
@@ -240,16 +232,14 @@ document.addEventListener('DOMContentLoaded', function() {
           <span class="price-old">${money(d.oldPrice)}</span>
           <span class="discount-badge">-${d.pct}%</span>
         </div>
-      </div>
-      <div class="bundle-actions">
-        <a href="${d.url}" class="bundle-info-btn bundle-icon-link" title="Meer info" onclick="event.stopPropagation()">
-          <div class="info-circle">i</div>
-        </a>
         <span class="bundle-alt-btn">
           Wijzig
           <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
         </span>
-      </div>`;
+      </div>
+      <a href="${d.url}" class="bundle-info-btn bundle-icon-link" title="Meer info" onclick="event.stopPropagation()">
+        <div class="info-circle">i</div>
+      </a>`;
 
     card.querySelector('.bundle-alt-btn').addEventListener('click', e => {
       e.stopPropagation();
@@ -333,7 +323,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   altClose.addEventListener('click', closeAlt);
-  altClose.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeAlt(); } });
   altOverlay.addEventListener('click', e => { if (!altModal.contains(e.target)) closeAlt(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && altOverlay.classList.contains('is-open')) closeAlt(); });
 
