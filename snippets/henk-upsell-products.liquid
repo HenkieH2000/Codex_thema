@@ -1,22 +1,21 @@
 {% comment %}
   Snippet: snippets/henk-upsell-products.liquid
   Gebruik: {% render 'henk-upsell-products' %}
-  Dit zijn de kleine blokjes boven de winkelwagenknop
 {% endcomment %}
 
 {% assign minimum_bundle_discount = 5 %}
 
-<div class="bundle-wrapper" 
-     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=2">
-    
+<div class="bundle-wrapper"
+     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=12">
+
   <h2 class="bundle-header">Maak bundel compleet</h2>
-  
+
   <div class="bundle-list">
     <div class="bundle-recommendations-container">
-      
+
       {% if recommendations.performed and recommendations.products_count > 0 %}
-        {% for item in recommendations.products limit: 2 %}
-          
+        {% for item in recommendations.products limit: 12 %}
+
           {% assign base_price = item.price %}
           {% assign compare_price = item.compare_at_price %}
           {% assign active_discount_percentage = 0.0 %}
@@ -26,7 +25,7 @@
               {% assign price_difference = compare_price | minus: base_price %}
               {% assign active_discount_percentage = price_difference | times: 100.0 | divided_by: compare_price | ceil %}
           {% endif %}
-          
+
           {% if active_discount_percentage > minimum_bundle_discount %}
               {% assign final_percentage_to_apply = active_discount_percentage %}
               {% assign display_old_price = compare_price %}
@@ -37,9 +36,17 @@
 
           {% assign discount_factor = 100.0 | minus: final_percentage_to_apply | divided_by: 100.0 %}
           {% assign final_discounted_price = base_price | times: discount_factor | round %}
-          
-          <div class="bundle-card recommended-product" data-price="{{ final_discounted_price }}" data-variant-id="{{ item.selected_or_first_available_variant.id }}">
-            
+
+          <div class="bundle-card recommended-product"
+               data-price="{{ final_discounted_price }}"
+               data-variant-id="{{ item.selected_or_first_available_variant.id }}"
+               data-old-price="{{ display_old_price }}"
+               data-pct="{{ final_percentage_to_apply }}"
+               data-title="{{ item.title | escape }}"
+               data-vendor="{{ item.vendor | escape }}"
+               data-url="{{ item.url }}"
+               data-img="{{ item.featured_image | img_url: '200x' }}">
+
             <div class="bundle-checkbox-wrapper">
               <label class="bundle-custom-checkbox">
                 <input type="checkbox" class="bundle-checkbox add-on-checkbox" value="{{ item.selected_or_first_available_variant.id }}">
@@ -50,7 +57,7 @@
             </div>
 
             <a href="{{ item.url }}" class="bundle-image-wrap">
-              <img src="{{ item.featured_image | img_url: '100x' }}" alt="{{ item.title }}">
+              <img src="{{ item.featured_image | img_url: '200x' }}" alt="{{ item.title }}">
             </a>
 
             <div class="bundle-info">
@@ -75,6 +82,19 @@
   <div class="bundle-footer"></div>
 </div>
 
+{% comment %} ── Alternatief-popup (modal) ── {% endcomment %}
+<div class="bundle-alt-overlay" id="bundle-alt-overlay" style="display:none;" aria-hidden="true">
+  <div class="bundle-alt-modal" role="dialog" aria-modal="true" aria-label="Kies een alternatief product">
+    <div class="bundle-alt-header">
+      <span class="bundle-alt-label">Kies een alternatief</span>
+      <button type="button" class="bundle-alt-close" id="bundle-alt-close" aria-label="Sluiten">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="bundle-alt-grid" id="bundle-alt-grid"></div>
+  </div>
+</div>
+
 <style>
   .bundle-wrapper { margin-top: 12px; margin-bottom: 0; }
   .bundle-header { font-size: 13px; font-weight: 700; color: #030a22; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
@@ -94,14 +114,47 @@
   .bundle-image-wrap img { width: 48px; height: 48px; object-fit: contain; border-radius: 6px; border: 1px solid #f0f2f5; display: block; }
   .bundle-info { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
   .bundle-title { font-size: 12px; font-weight: 600; color: #030a22; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-  .bundle-prices { display: flex; align-items: center; gap: 6px; }
+  .bundle-prices { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
   .price-current { font-size: 13px; font-weight: 700; color: #030a22; }
   .price-old { font-size: 11px; color: #9ca3af; text-decoration: line-through; }
   .discount-badge { background: #FE0000; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 8px; line-height: 1.4; }
+  .bundle-alt-btn { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; color: #FF7E00; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; line-height: 1.4; margin-top: 1px; width: fit-content; }
+  .bundle-alt-btn:hover { color: #e06e00; }
   .bundle-info-btn { padding-left: 10px; flex-shrink: 0; display: flex; align-items: center; text-decoration: none; }
   .info-circle { width: 22px; height: 22px; background: #fff0e0; color: #FF7E00; border-radius: 50%; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
   .bundle-info-btn:hover .info-circle { background: #FF7E00; color: #fff; }
   .bundle-footer { height: 0; overflow: hidden; }
+
+  /* ── Alternatief-popup (modal) ── */
+  .bundle-alt-overlay { position: fixed; inset: 0; background: rgba(3,10,34,.55); display: flex; align-items: center; justify-content: center; z-index: 99999; padding: 16px; box-sizing: border-box; opacity: 0; transition: opacity .2s ease; }
+  .bundle-alt-overlay.is-open { opacity: 1; }
+  .bundle-alt-modal { background: #fff; border-radius: 14px; width: 100%; max-width: 640px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px -12px rgba(3,10,34,.35); transform: translateY(12px) scale(.98); transition: transform .2s ease; }
+  .bundle-alt-overlay.is-open .bundle-alt-modal { transform: none; }
+  .bundle-alt-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #e8eaf0; flex-shrink: 0; }
+  .bundle-alt-label { font-size: 15px; font-weight: 800; color: #030a22; }
+  .bundle-alt-close { background: #f4f4f4; border: none; width: 30px; height: 30px; border-radius: 50%; color: #6b7280; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, color .15s; padding: 0; }
+  .bundle-alt-close:hover { background: #FF7E00; color: #fff; }
+  .bundle-alt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .bundle-alt-card { border: 1px solid #e8eaf0; border-radius: 10px; padding: 10px; cursor: pointer; position: relative; transition: border-color .2s, box-shadow .2s; background: #fff; display: flex; flex-direction: column; }
+  .bundle-alt-card:hover { border-color: #FF7E00; box-shadow: 0 6px 16px -8px rgba(255,126,0,.45); }
+  .bundle-alt-card--active { border-color: #FF7E00; background: #fffaf5; cursor: default; }
+  .bundle-alt-card--active:hover { box-shadow: none; }
+  .bundle-alt-active-tag { display: none; position: absolute; top: 6px; left: 6px; background: #FF7E00; color: #fff; font-size: 9px; font-weight: 700; padding: 3px 6px; border-radius: 5px; align-items: center; gap: 3px; z-index: 2; }
+  .bundle-alt-card--active .bundle-alt-active-tag { display: inline-flex; }
+  .bundle-alt-card img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 6px; display: block; padding: 4px; box-sizing: border-box; }
+  .bundle-alt-discount-badge { position: absolute; top: 6px; right: 6px; background: #FE0000; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 4px; }
+  .bundle-alt-vendor { display: block; font-size: 10px; color: #6b7280; margin-top: 6px; }
+  .bundle-alt-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 11px; font-weight: 600; color: #030a22; line-height: 1.3; margin: 2px 0 6px; }
+  .bundle-alt-prices { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-top: auto; }
+
+  @media (max-width: 640px) {
+    .bundle-alt-overlay { padding: 0; align-items: flex-end; }
+    .bundle-alt-modal { max-width: 100%; max-height: 90vh; border-radius: 16px 16px 0 0; }
+    .bundle-alt-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 16px; }
+  }
+  @media (max-width: 360px) {
+    .bundle-alt-grid { grid-template-columns: repeat(1, 1fr); }
+  }
 </style>
 
 <script>
@@ -109,62 +162,202 @@ document.addEventListener('DOMContentLoaded', function() {
   const wrapper = document.querySelector('.bundle-wrapper');
   if (!wrapper) return;
 
-  const container = wrapper.querySelector('.bundle-recommendations-container');
-  const baseUrl = wrapper.dataset.url;
+  const container   = wrapper.querySelector('.bundle-recommendations-container');
+  const baseUrl     = wrapper.dataset.url;
   const complementaryUrl = baseUrl + '&intent=complementary';
   const productForm = document.querySelector('form[action*="/cart/add"]');
-  
+
+  const altOverlay = document.getElementById('bundle-alt-overlay');
+  const altModal   = altOverlay.querySelector('.bundle-alt-modal');
+  const altGrid    = document.getElementById('bundle-alt-grid');
+  const altClose   = document.getElementById('bundle-alt-close');
+
   if (!productForm) { wrapper.style.display = 'none'; return; }
 
-  function fetchCards(url) {
+  const VISIBLE_SLOTS = 2;
+  let allCards = [];
+  let slotData = [-1, -1]; // welke productindex zit in slot 0 en slot 1
+
+  function money(cents) {
+    const n = parseInt(cents);
+    if (!n || isNaN(n)) return '';
+    return (n / 100).toFixed(2).replace('.', ',').replace(',00', ',-');
+  }
+
+  function escAttr(s) { return (s || '').replace(/"/g, '&quot;'); }
+
+  function parseCards(url) {
     return fetch(url)
-      .then(response => response.text())
+      .then(r => r.text())
       .then(text => {
-        const html = document.createElement('div');
-        html.innerHTML = text;
-        return Array.from(html.querySelectorAll('.bundle-card'));
+        const el = document.createElement('div');
+        el.innerHTML = text;
+        return Array.from(el.querySelectorAll('.bundle-card')).map(c => ({
+          variantId : c.dataset.variantId,
+          price     : c.dataset.price,
+          oldPrice  : c.dataset.oldPrice,
+          pct       : c.dataset.pct,
+          title     : c.dataset.title,
+          vendor    : c.dataset.vendor,
+          url       : c.dataset.url,
+          img       : c.dataset.img
+        }));
       })
       .catch(() => []);
   }
 
-  Promise.all([fetchCards(complementaryUrl), fetchCards(baseUrl)])
-  .then(([complementaryCards, standardCards]) => {
-    
-    let finalCards = [...complementaryCards];
+  function buildCard(d, slotIndex) {
+    const card = document.createElement('div');
+    card.className = 'bundle-card recommended-product';
+    card.dataset.variantId = d.variantId;
+    card.dataset.price     = d.price;
+    card.dataset.oldPrice  = d.oldPrice;
 
-    if (finalCards.length < 2) {
-      const existingIds = finalCards.map(card => card.dataset.variantId);
-      for (const card of standardCards) {
-        if (finalCards.length >= 2) break;
-        if (!existingIds.includes(card.dataset.variantId)) {
-          finalCards.push(card);
-          existingIds.push(card.dataset.variantId);
-        }
+    card.innerHTML = `
+      <div class="bundle-checkbox-wrapper">
+        <label class="bundle-custom-checkbox" onclick="event.stopPropagation()">
+          <input type="checkbox" class="bundle-checkbox add-on-checkbox" value="${d.variantId}">
+          <span class="bundle-checkmark">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+        </label>
+      </div>
+      <a href="${d.url}" class="bundle-image-wrap" onclick="event.stopPropagation()">
+        <img src="${d.img}" alt="${escAttr(d.title)}">
+      </a>
+      <div class="bundle-info">
+        <div class="bundle-title">${d.title}</div>
+        <div class="bundle-prices">
+          <span class="price-current">${money(d.price)}</span>
+          <span class="price-old">${money(d.oldPrice)}</span>
+          <span class="discount-badge">-${d.pct}%</span>
+        </div>
+        <span class="bundle-alt-btn">
+          Wijzig
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </span>
+      </div>
+      <a href="${d.url}" class="bundle-info-btn bundle-icon-link" title="Meer info" onclick="event.stopPropagation()">
+        <div class="info-circle">i</div>
+      </a>`;
+
+    card.querySelector('.bundle-alt-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      showAltPanel(slotIndex);
+    });
+
+    card.querySelector('.bundle-checkbox').addEventListener('change', function () {
+      card.classList.toggle('is-checked', this.checked);
+    });
+
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('.bundle-alt-btn')) return;
+      if (e.target.closest('.bundle-icon-link')) return;
+      if (e.target.closest('.bundle-image-wrap')) return;
+      if (e.target.closest('.bundle-custom-checkbox')) return;
+      const cb = this.querySelector('.bundle-checkbox');
+      cb.checked = !cb.checked;
+      this.classList.toggle('is-checked', cb.checked);
+    });
+
+    return card;
+  }
+
+  /* ── Popup openen / sluiten ── */
+  function openAlt() {
+    altOverlay.style.display = 'flex';
+    altOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    void altOverlay.offsetWidth;
+    altOverlay.classList.add('is-open');
+  }
+  function closeAlt() {
+    altOverlay.classList.remove('is-open');
+    altOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(() => { altOverlay.style.display = 'none'; }, 200);
+  }
+
+  function showAltPanel(slotIndex) {
+    altGrid.innerHTML = '';
+    altGrid.scrollTop = 0;
+
+    allCards.forEach((d, i) => {
+      // verberg producten die al in een ander slot zitten
+      if (slotData.some((idx, s) => idx === i && s !== slotIndex)) return;
+      const isCurrent = slotData[slotIndex] === i;
+      const card = document.createElement('div');
+      card.className = 'bundle-alt-card' + (isCurrent ? ' bundle-alt-card--active' : '');
+      card.innerHTML = `
+        <span class="bundle-alt-active-tag">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Gekozen
+        </span>
+        <div class="bundle-alt-discount-badge">-${d.pct}%</div>
+        <img src="${d.img}" alt="${escAttr(d.title)}">
+        <span class="bundle-alt-vendor">${d.vendor}</span>
+        <span class="bundle-alt-title">${d.title}</span>
+        <div class="bundle-alt-prices">
+          <span class="price-current">${money(d.price)}</span>
+          <span class="price-old">${money(d.oldPrice)}</span>
+        </div>`;
+      if (!isCurrent) card.addEventListener('click', () => swapSlot(slotIndex, i));
+      altGrid.appendChild(card);
+    });
+
+    openAlt();
+  }
+
+  function swapSlot(slotIndex, newCardIndex) {
+    const cards = container.querySelectorAll('.bundle-card');
+    const oldCard = cards[slotIndex];
+    const wasChecked = oldCard?.querySelector('.bundle-checkbox')?.checked ?? false;
+    slotData[slotIndex] = newCardIndex;
+    const newCard = buildCard(allCards[newCardIndex], slotIndex);
+    if (wasChecked) {
+      newCard.classList.add('is-checked');
+      newCard.querySelector('.bundle-checkbox').checked = true;
+    }
+    if (oldCard) oldCard.replaceWith(newCard);
+    closeAlt();
+  }
+
+  altClose.addEventListener('click', closeAlt);
+  altOverlay.addEventListener('click', e => { if (!altModal.contains(e.target)) closeAlt(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && altOverlay.classList.contains('is-open')) closeAlt(); });
+
+  /* ── Laden ── */
+  Promise.all([parseCards(complementaryUrl), parseCards(baseUrl)])
+  .then(([compData, stdData]) => {
+    const seen = new Set();
+    for (const d of [...compData, ...stdData]) {
+      if (d.variantId && !seen.has(d.variantId)) {
+        seen.add(d.variantId);
+        allCards.push(d);
       }
     }
 
-    if (finalCards.length === 0) { wrapper.style.display = 'none'; return; }
+    if (allCards.length === 0) { wrapper.style.display = 'none'; return; }
 
+    const count = Math.min(VISIBLE_SLOTS, allCards.length);
+    slotData = [];
     container.innerHTML = '';
-    finalCards.forEach(card => container.appendChild(card));
+    for (let i = 0; i < count; i++) {
+      slotData[i] = i;
+      container.appendChild(buildCard(allCards[i], i));
+    }
 
-    container.querySelectorAll('.bundle-card').forEach(card => {
-      card.addEventListener('click', function(e) {
-        if (e.target.closest('.bundle-icon-link')) return;
-        const checkbox = this.querySelector('.bundle-checkbox');
-        if (checkbox) {
-          checkbox.checked = !checkbox.checked;
-          this.classList.toggle('is-checked', checkbox.checked);
-        }
-      });
-    });
-
+    // Geen extra producten om uit te kiezen? Verberg dan de Wijzig-knoppen.
+    if (allCards.length <= count) {
+      container.querySelectorAll('.bundle-alt-btn').forEach(b => b.style.display = 'none');
+    }
   })
   .catch(e => {
-    console.error("Fout bij het laden van aanbevelingen:", e);
+    console.error('Fout bij het laden van aanbevelingen:', e);
     wrapper.style.display = 'none';
   });
 
+  /* ── Toevoegen aan winkelwagen (ongewijzigd gedrag) ── */
   productForm.addEventListener('submit', function(e) {
     const checkedBundleItems = wrapper.querySelectorAll('.recommended-product .add-on-checkbox:checked');
     if (checkedBundleItems.length === 0) return;
