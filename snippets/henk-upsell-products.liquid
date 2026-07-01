@@ -87,9 +87,9 @@
   <div class="bundle-alt-modal" role="dialog" aria-modal="true" aria-label="Kies een alternatief product">
     <div class="bundle-alt-header">
       <span class="bundle-alt-label">Kies een alternatief</span>
-      <span class="bundle-alt-close" id="bundle-alt-close" role="button" tabindex="0" aria-label="Sluiten">
+      <button type="button" class="bundle-alt-close" id="bundle-alt-close" aria-label="Sluiten">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </span>
+      </button>
     </div>
     <div class="bundle-alt-grid" id="bundle-alt-grid"></div>
   </div>
@@ -118,10 +118,9 @@
   .price-current { font-size: 13px; font-weight: 700; color: #030a22; }
   .price-old { font-size: 11px; color: #9ca3af; text-decoration: line-through; }
   .discount-badge { background: #FE0000; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 8px; line-height: 1.4; }
-  .bundle-actions { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 8px; flex-shrink: 0; align-self: stretch; padding-left: 12px; }
-  .bundle-alt-btn { display: inline-flex; align-items: center; justify-content: center; gap: 3px; font-size: 11px; color: #FF7E00; font-weight: 700; cursor: pointer; line-height: 1; padding: 7px 14px; border: 1px solid #ffd3ac; border-radius: 100px; background: #fff7ef; white-space: nowrap; transition: background .15s, border-color .15s, color .15s; }
-  .bundle-alt-btn:hover { background: #FF7E00; border-color: #FF7E00; color: #fff; }
-  .bundle-info-btn { flex-shrink: 0; display: flex; align-items: center; text-decoration: none; }
+  .bundle-alt-btn { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; color: #FF7E00; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; line-height: 1.4; margin-top: 1px; width: fit-content; }
+  .bundle-alt-btn:hover { color: #e06e00; }
+  .bundle-info-btn { padding-left: 10px; flex-shrink: 0; display: flex; align-items: center; text-decoration: none; }
   .info-circle { width: 22px; height: 22px; background: #fff0e0; color: #FF7E00; border-radius: 50%; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
   .bundle-info-btn:hover .info-circle { background: #FF7E00; color: #fff; }
   .bundle-footer { height: 0; overflow: hidden; }
@@ -133,9 +132,8 @@
   .bundle-alt-overlay.is-open .bundle-alt-modal { transform: none; }
   .bundle-alt-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #e8eaf0; flex-shrink: 0; }
   .bundle-alt-label { font-size: 15px; font-weight: 800; color: #030a22; }
-  .bundle-alt-close { background: #f4f4f4 !important; border: none !important; box-shadow: none !important; width: 32px !important; height: 32px !important; min-width: 0 !important; max-width: 32px !important; min-height: 0 !important; max-height: 32px !important; border-radius: 50% !important; color: #6b7280 !important; cursor: pointer; display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; transition: background .15s, color .15s; padding: 0 !important; margin: 0 !important; line-height: 0 !important; }
-  .bundle-alt-close:hover { background: #FF7E00 !important; color: #fff !important; }
-  .bundle-alt-close svg { width: 14px !important; height: 14px !important; flex-shrink: 0 !important; }
+  .bundle-alt-close { background: #f4f4f4; border: none; width: 30px; height: 30px; border-radius: 50%; color: #6b7280; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, color .15s; padding: 0; }
+  .bundle-alt-close:hover { background: #FF7E00; color: #fff; }
   .bundle-alt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .bundle-alt-card { border: 1px solid #e8eaf0; border-radius: 10px; padding: 10px; cursor: pointer; position: relative; transition: border-color .2s, box-shadow .2s; background: #fff; display: flex; flex-direction: column; }
   .bundle-alt-card:hover { border-color: #FF7E00; box-shadow: 0 6px 16px -8px rgba(255,126,0,.45); }
@@ -173,12 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const altModal   = altOverlay.querySelector('.bundle-alt-modal');
   const altGrid    = document.getElementById('bundle-alt-grid');
   const altClose   = document.getElementById('bundle-alt-close');
-
-  // Verplaats de popup naar <body> zodat een thema-ouder met 'transform'
-  // (die 'position: fixed' opsluit) hem niet binnen het blok vasthoudt.
-  if (altOverlay && altOverlay.parentElement !== document.body) {
-    document.body.appendChild(altOverlay);
-  }
 
   if (!productForm) { wrapper.style.display = 'none'; return; }
 
@@ -240,16 +232,14 @@ document.addEventListener('DOMContentLoaded', function() {
           <span class="price-old">${money(d.oldPrice)}</span>
           <span class="discount-badge">-${d.pct}%</span>
         </div>
-      </div>
-      <div class="bundle-actions">
-        <a href="${d.url}" class="bundle-info-btn bundle-icon-link" title="Meer info" onclick="event.stopPropagation()">
-          <div class="info-circle">i</div>
-        </a>
         <span class="bundle-alt-btn">
           Wijzig
           <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
         </span>
-      </div>`;
+      </div>
+      <a href="${d.url}" class="bundle-info-btn bundle-icon-link" title="Meer info" onclick="event.stopPropagation()">
+        <div class="info-circle">i</div>
+      </a>`;
 
     card.querySelector('.bundle-alt-btn').addEventListener('click', e => {
       e.stopPropagation();
@@ -333,7 +323,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   altClose.addEventListener('click', closeAlt);
-  altClose.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeAlt(); } });
   altOverlay.addEventListener('click', e => { if (!altModal.contains(e.target)) closeAlt(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && altOverlay.classList.contains('is-open')) closeAlt(); });
 
@@ -368,127 +357,60 @@ document.addEventListener('DOMContentLoaded', function() {
     wrapper.style.display = 'none';
   });
 
-  /* Toevoegen aan winkelwagen:
-     Het thema onderschept de winkelwagenknop met eigen AJAX, waardoor een
-     'submit'-listener vaak nooit afgaat. Daarom vangen we de klik/submit in de
-     CAPTURE-fase op de form (voorouder van de knop) af, en voegen we hoofd-
-     product + aangevinkte upsells zelf toe, onafhankelijk van het thema. */
+  /* ── Toevoegen aan winkelwagen (ongewijzigd gedrag) ── */
+  productForm.addEventListener('submit', function(e) {
+    const checkedBundleItems = wrapper.querySelectorAll('.recommended-product .add-on-checkbox:checked');
+    if (checkedBundleItems.length === 0) return;
 
-  function hasCheckedAddons() {
-    return wrapper.querySelectorAll('.recommended-product .add-on-checkbox:checked').length > 0;
-  }
+    e.preventDefault();
+    let itemsToAdd = [];
 
-  function collectItems() {
-    const items = [];
     const mainVariantInput = productForm.querySelector('[name="id"]');
     if (mainVariantInput && mainVariantInput.value) {
       const quantityInput = productForm.querySelector('[name="quantity"]');
-      const quantity = quantityInput ? (parseInt(quantityInput.value) || 1) : 1;
-      items.push({ id: mainVariantInput.value, quantity: quantity });
+      const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+      itemsToAdd.push({ id: mainVariantInput.value, quantity: quantity });
     }
-    wrapper.querySelectorAll('.recommended-product .add-on-checkbox:checked').forEach(box => {
-      if (box.value) items.push({ id: box.value, quantity: 1, properties: { _upsell: 'true' } });
+
+    checkedBundleItems.forEach(box => {
+      itemsToAdd.push({
+        id: box.value,
+        quantity: 1,
+        properties: { _upsell: 'true' }
+      });
     });
-    return items;
-  }
 
-  function updateCartCount(cart, sideCartDoc) {
-    const totalQty = sideCartDoc?.querySelector('[data-totalqty]')?.dataset.totalqty || cart.item_count;
-    const totalPrice = sideCartDoc?.querySelector('[data-totalprice]')?.dataset.totalprice;
-    document.querySelectorAll('#cart-count,[data-cart-count],[data-cart-item-count],.cart-count,.cart__count,.header__cart-count,.cart-count-bubble').forEach(el => {
-      el.textContent = totalQty;
-      el.setAttribute('data-count', totalQty);
-      if (parseInt(totalQty, 10) > 0) el.removeAttribute('hidden');
-    });
-    if (totalPrice) {
-      document.querySelectorAll('#cart-total,[data-cart-total]').forEach(el => { el.textContent = totalPrice; });
+    let data = { items: itemsToAdd };
+    if (checkedBundleItems.length > 0) {
+      data.attributes = { 'Upsell gebruikt': 'henk-upsell' };
     }
-  }
 
-  function refreshDrawerContent(addResponse) {
-    const sideCartContainer = document.getElementById('cart');
-    const sideCartHtml = addResponse?.sections?.['side-cart'];
-    if (!sideCartContainer || !sideCartHtml) return Promise.resolve(null);
-    const sideCartDoc = new DOMParser().parseFromString(sideCartHtml, 'text/html');
-    const sideCartSection = sideCartDoc.querySelector('#shopify-section-side-cart');
-    if (!sideCartSection) return Promise.resolve(null);
-    sideCartContainer.innerHTML = sideCartSection.innerHTML;
-    window.dispatchEvent(new CustomEvent('modulePanel'));
-    window.dispatchEvent(new CustomEvent('listCart'));
-    window.dispatchEvent(new CustomEvent('semanticInput'));
-    window.dispatchEvent(new CustomEvent('formValidate'));
-    window.dispatchEvent(new CustomEvent('accordeon'));
-    if (window.ajaxCart && typeof window.ajaxCart.init === 'function') window.ajaxCart.init();
-    return Promise.resolve(sideCartDoc);
-  }
+    const submitButton = productForm.querySelector('[type="submit"]');
+    const originalText = submitButton ? submitButton.innerText : 'Toevoegen aan winkelwagen';
+    if (submitButton) submitButton.innerText = 'Producten worden toegevoegd...';
 
-  function openCartDrawer() {
-    if (window.ajaxCart && typeof window.ajaxCart.load === 'function') {
-      window.ajaxCart.load(false, true, false, false);
-      return;
-    }
-    const drawerEl = document.querySelector('cart-drawer');
-    if (drawerEl) {
-      if (typeof drawerEl.open === 'function') { drawerEl.open(); return; }
-      drawerEl.setAttribute('open', ''); drawerEl.removeAttribute('aria-hidden'); return;
-    }
-    for (const sel of ['a[data-panel="cart"]','[data-cart-toggle]','[data-drawer-trigger="cart"]','.js-drawer-open-cart','#cart-icon-bubble','[aria-label*="winkelwagen" i]','.cart-toggle','.cart__toggle','.header__cart','.site-header__cart']) {
-      const el = document.querySelector(sel);
-      if (el) { el.click(); return; }
-    }
-    for (const [name, target] of [['CartDrawer:open', document.body],['cart:open', document],['cart:toggle', document],['theme:cart:open', document],['open-cart', document],['cartOpen', document]]) {
-      target.dispatchEvent(new CustomEvent(name, { bubbles: true }));
-    }
-  }
-
-  function addBundleToCart(submitButton, originalText) {
-    const items = collectItems();
-    if (!items.length) return Promise.resolve();
-    if (submitButton) { submitButton.setAttribute('aria-busy', 'true'); }
-
-    return fetch('/cart/add.js', {
+    fetch('/cart/add.js', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({
-        items,
-        attributes: { 'Upsell gebruikt': 'henk-upsell' },
-        sections: 'side-cart',
-        sections_url: window.location.pathname
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     })
-    .then(r => { if (!r.ok) return r.json().then(e => { throw new Error(e.message || r.status); }); return r.json(); })
-    .then(addResponse => Promise.all([fetch('/cart.js').then(r => r.json()), refreshDrawerContent(addResponse)]))
-    .then(([cart, sideCartDoc]) => {
-      updateCartCount(cart, sideCartDoc);
-      document.dispatchEvent(new CustomEvent('cart:add', { bubbles: true, detail: { items } }));
-      document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true, detail: { cart } }));
-      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
-      window.dispatchEvent(new CustomEvent('cart-update', { bubbles: true, detail: { cart } }));
-      document.dispatchEvent(new CustomEvent('theme:cart:update', { bubbles: true, detail: { cart } }));
-      openCartDrawer();
+    .then(response => {
+      if (response.ok) {
+        document.dispatchEvent(new CustomEvent('cart:add', { bubbles: true, detail: { items: itemsToAdd } }));
+        document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+        if (submitButton) {
+          submitButton.innerText = 'Toegevoegd aan winkelwagen!';
+          setTimeout(() => { submitButton.innerText = originalText; }, 1500);
+        }
+      } else {
+        response.json().then(data => alert('Fout bij toevoegen: ' + (data.message || 'Controleer de productvarianten.')));
+        if (submitButton) submitButton.innerText = originalText;
+      }
     })
-    .catch(err => {
-      console.error('Upsell cart fout:', err);
-      alert('Fout bij toevoegen: ' + (err.message || 'probeer opnieuw'));
-    })
-    .finally(() => { if (submitButton) submitButton.removeAttribute('aria-busy'); });
-  }
-
-  const ADD_BTN_SELECTOR = '[name="add"], button[type="submit"], input[type="submit"], .product-form__submit, .add-to-cart, [data-add-to-cart]';
-
-  function interceptAdd(e) {
-    if (!hasCheckedAddons()) return; // niets aangevinkt → thema doet het gewoon zelf
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    const submitButton = e.target.closest(ADD_BTN_SELECTOR) || productForm.querySelector(ADD_BTN_SELECTOR);
-    addBundleToCart(submitButton, submitButton ? submitButton.innerHTML : '');
-  }
-
-  // Capture op de form: draait vóór de thema-listeners op de knop.
-  productForm.addEventListener('submit', interceptAdd, true);
-  productForm.addEventListener('click', function (e) {
-    const addBtn = e.target.closest(ADD_BTN_SELECTOR);
-    if (addBtn && productForm.contains(addBtn)) interceptAdd(e);
-  }, true);
+    .catch(error => {
+      console.error('Error:', error);
+      if (submitButton) submitButton.innerText = originalText;
+    });
+  });
 });
 </script>
