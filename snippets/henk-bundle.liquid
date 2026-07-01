@@ -25,22 +25,6 @@
     <div class="hb-upsell-grid" id="hb-upsell-grid"></div>
   </div>
 
-  <div class="hb-alt-panel" id="hb-alt-panel" style="display:none;">
-    <div class="hb-alt-header">
-      <span class="hb-alt-label">Kies een alternatief</span>
-      <span class="hb-alt-close" id="hb-alt-close">✕</span>
-    </div>
-    <div class="hb-alt-scroll-wrap">
-      <button class="hb-alt-arrow hb-alt-arrow--left" id="hb-alt-prev" aria-label="Vorige">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <div class="hb-alt-scroll" id="hb-alt-scroll"></div>
-      <button class="hb-alt-arrow hb-alt-arrow--right" id="hb-alt-next" aria-label="Volgende">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-    </div>
-  </div>
-
   <div class="hb-footer" id="hb-footer" style="display:none;">
     <div class="hb-footer-left">
       <div class="hb-total-wrap">
@@ -55,6 +39,20 @@
     </button>
   </div>
 
+</div>
+
+{% comment %} Popup voor het kiezen van een alternatief product — losstaand van .hb-wrapper zodat position:fixed altijd t.o.v. het viewport werkt {% endcomment %}
+<div class="hb-alt-modal-overlay" id="hb-alt-modal-overlay">
+  <div class="hb-alt-modal">
+    <div class="hb-alt-modal-header">
+      <span class="hb-alt-modal-title">Pas je bundel aan</span>
+      <span class="hb-alt-modal-close" id="hb-alt-modal-close">✕</span>
+    </div>
+    <div class="hb-alt-modal-body" id="hb-alt-modal-body"></div>
+    <div class="hb-alt-modal-footer">
+      <button class="hb-alt-modal-save" id="hb-alt-modal-save">Wijziging toepassen</button>
+    </div>
+  </div>
 </div>
 
 <div style="display:none">
@@ -234,29 +232,33 @@
   .hb-alt-btn:hover { color: #e06e00; }
   .hb-info-btn { position: absolute; bottom: 8px; right: 8px; width: 22px; height: 22px; border-radius: 50%; background: #fff3e8; border: none; display: flex; align-items: center; justify-content: center; color: #FF7E00; font-size: 11px; font-weight: 700; font-family: Georgia, serif; cursor: pointer; text-decoration: none; line-height: 1; transition: background 0.15s, color 0.15s; z-index: 2; }
   .hb-info-btn:hover { background: #FF7E00; border: none; color: #fff !important; }
-  .hb-alt-panel { margin-top: 12px; border: 1px solid #e8eaf0; border-radius: 10px; overflow: hidden; background: #fff; }
-  .hb-alt-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid #e8eaf0; }
-  .hb-alt-label { font-size: 12px; font-weight: 700; color: #030a22; }
-  .hb-alt-close { font-size: 13px; color: #9ca3af; cursor: pointer; line-height: 1; padding: 2px 4px; }
-  .hb-alt-close:hover { color: #030a22; }
-  .hb-alt-scroll-wrap { display: flex; align-items: center; }
-  .hb-alt-scroll { display: flex; gap: 8px; padding: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex: 1; scroll-behavior: smooth; }
-  .hb-alt-scroll::-webkit-scrollbar { display: none; }
-  .hb-alt-arrow { display: none !important; }
-  @media (min-width: 641px) {
-    .hb-wrapper .hb-alt-arrow { display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; width: 26px !important; height: 26px !important; min-width: 0 !important; min-height: 0 !important; max-width: 26px !important; max-height: 26px !important; background: #f9fafb !important; border: 1px solid #e8eaf0 !important; border-radius: 50% !important; cursor: pointer !important; color: #6b7280 !important; transition: border-color 0.2s, color 0.2s !important; margin: 0 4px !important; padding: 0 !important; box-shadow: none !important; font-size: 0 !important; line-height: 0 !important; }
-    .hb-wrapper .hb-alt-arrow:hover { border-color: #d1d5db !important; color: #030a22 !important; background: #f3f4f6 !important; }
-    .hb-wrapper .hb-alt-arrow:disabled { opacity: 0.3 !important; cursor: default !important; pointer-events: none !important; }
-    .hb-wrapper .hb-alt-arrow svg { width: 12px !important; height: 12px !important; flex-shrink: 0 !important; }
-  }
-  .hb-alt-card { flex-shrink: 0; width: 110px; border: 1px solid #e8eaf0; border-radius: 10px; padding: 8px; cursor: pointer; position: relative; transition: border-color 0.2s; }
-  .hb-alt-card:hover { border-color: #FF7E00; }
-  .hb-alt-card--active { border-color: #FF7E00; background: #fffaf5; pointer-events: none; }
-  .hb-alt-card img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 6px; display: block; }
-  .hb-alt-discount-badge { position: absolute; top: 6px; right: 6px; background: #FE0000; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 4px; }
-  .hb-alt-vendor { display: block; font-size: 9px; color: #6b7280; margin-top: 5px; }
-  .hb-alt-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 10px; font-weight: 600; color: #030a22; line-height: 1.3; margin: 2px 0 4px; }
-  .hb-alt-prices { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+
+  /* Popup: kies een alternatief */
+  .hb-alt-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(3,10,34,.55); z-index: 9999; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+  .hb-alt-modal-overlay.is-open { display: flex; }
+  .hb-alt-modal { background: #fff; border-radius: 14px; width: 100%; max-width: 640px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 48px -16px rgba(3,10,34,.35); font-family: inherit; }
+  .hb-alt-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid #e8eaf0; flex-shrink: 0; }
+  .hb-alt-modal-title { font-size: 16px; font-weight: 800; color: #030a22; }
+  .hb-alt-modal-close { font-size: 15px; color: #9ca3af; cursor: pointer; line-height: 1; padding: 4px 6px; border-radius: 6px; transition: background 0.15s, color 0.15s; }
+  .hb-alt-modal-close:hover { background: #f3f4f6; color: #030a22; }
+  .hb-alt-modal-body { padding: 18px 20px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+  .hb-alt-grid-card { border: 1px solid #e8eaf0; border-radius: 10px; padding: 10px; cursor: pointer; position: relative; transition: border-color 0.2s, background 0.2s; }
+  .hb-alt-grid-card:hover { border-color: #FF7E00; }
+  .hb-alt-grid-card.is-selected { border-color: #FF7E00; background: #fffaf5; }
+  .hb-alt-radio { position: absolute; top: 8px; left: 8px; width: 18px; height: 18px; border-radius: 50%; border: 2px solid #d1d5db; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 1; }
+  .hb-alt-radio-dot { width: 8px; height: 8px; border-radius: 50%; background: #FF7E00; opacity: 0; transition: opacity 0.15s ease; }
+  .hb-alt-grid-card.is-selected .hb-alt-radio { border-color: #FF7E00; }
+  .hb-alt-grid-card.is-selected .hb-alt-radio-dot { opacity: 1; }
+  .hb-alt-grid-card img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 6px; display: block; padding: 4px; box-sizing: border-box; }
+  .hb-alt-grid-discount { position: absolute; top: 6px; right: 6px; background: #FE0000; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 5px; }
+  .hb-alt-grid-vendor { display: block; font-size: 9px; color: #6b7280; font-weight: 500; margin-top: 6px; }
+  .hb-alt-grid-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 11px; font-weight: 600; color: #030a22; line-height: 1.3; margin: 2px 0 5px; min-height: 28px; }
+  .hb-alt-grid-prices { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+  .hb-alt-modal-footer { padding: 14px 20px; border-top: 1px solid #e8eaf0; flex-shrink: 0; }
+  .hb-alt-modal-save { width: 100%; background: #FF7E00 !important; color: #fff !important; border: none !important; border-radius: 100px !important; padding: 13px 20px !important; font-size: 13px !important; font-weight: 700 !important; cursor: pointer !important; transition: background 0.2s !important; }
+  .hb-alt-modal-save:hover { background: #e06e00 !important; }
+  .hb-alt-modal-save:disabled { background: #ccc !important; cursor: default !important; }
+
   .hb-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #e8eaf0; flex-wrap: wrap; }
   .hb-footer-left { display: flex; flex-direction: column; gap: 3px; }
   .hb-total-wrap { display: flex; align-items: baseline; gap: 8px; }
@@ -283,6 +285,9 @@
     .hb-info-btn { bottom: 8px; right: 8px; top: auto; }
     .hb-footer { flex-direction: column; align-items: flex-start; }
     .hb-btn { width: 100% !important; justify-content: center !important; }
+    .hb-alt-modal { max-height: 90vh; border-radius: 14px 14px 0 0; align-self: flex-end; }
+    .hb-alt-modal-overlay { align-items: flex-end; padding: 0; }
+    .hb-alt-modal-body { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
   }
 </style>
 
@@ -296,11 +301,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const btn       = document.getElementById('hb-btn');
   const totalNew  = document.getElementById('hb-total-new');
   const totalOld  = document.getElementById('hb-total-old');
-  const altPanel  = document.getElementById('hb-alt-panel');
-  const altScroll = document.getElementById('hb-alt-scroll');
-  const altClose  = document.getElementById('hb-alt-close');
-  const altPrev   = document.getElementById('hb-alt-prev');
-  const altNext   = document.getElementById('hb-alt-next');
+
+  const altOverlay    = document.getElementById('hb-alt-modal-overlay');
+  const altBody        = document.getElementById('hb-alt-modal-body');
+  const altModalClose  = document.getElementById('hb-alt-modal-close');
+  const altModalSave   = document.getElementById('hb-alt-modal-save');
+
   const baseUrl   = wrapper.dataset.url;
   const compUrl   = baseUrl + '&intent=complementary';
 
@@ -320,21 +326,15 @@ document.addEventListener('DOMContentLoaded', function () {
   let allCards = [];
   let slotData = [-1, -1, -1, -1, -1]; // 5 slots voor Glossio; niet-Glossio gebruikt alleen de eerste 3
 
+  // state voor de "kies alternatief" popup
+  let activeSlot = null;
+  let pendingIndex = null;
+
   function money(cents) {
     const n = parseInt(cents);
     if (!n || isNaN(n)) return '';
     return (n / 100).toFixed(2).replace('.', ',').replace(',00', ',-');
   }
-
-  function updateAltArrows() {
-    if (!altPrev || !altNext) return;
-    altPrev.disabled = altScroll.scrollLeft <= 0;
-    altNext.disabled = altScroll.scrollLeft + altScroll.clientWidth >= altScroll.scrollWidth - 1;
-  }
-
-  if (altPrev) altPrev.addEventListener('click', () => altScroll.scrollBy({ left: -240, behavior: 'smooth' }));
-  if (altNext) altNext.addEventListener('click', () => altScroll.scrollBy({ left: 240, behavior: 'smooth' }));
-  altScroll.addEventListener('scroll', updateAltArrows);
 
   function buildCard(d, slotIndex) {
     const card = document.createElement('div');
@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     card.querySelector('.hb-alt-btn').addEventListener('click', e => {
       e.stopPropagation();
-      showAltPanel(slotIndex);
+      openAltModal(slotIndex);
     });
     card.querySelector('.hb-info-btn').addEventListener('click', e => e.stopPropagation());
     card.querySelector('.hb-checkbox').addEventListener('change', function () {
@@ -389,29 +389,59 @@ document.addEventListener('DOMContentLoaded', function () {
     return card;
   }
 
-  function showAltPanel(slotIndex) {
-    altScroll.innerHTML = '';
-    altPanel.dataset.slot = slotIndex;
+  // ---- Popup: kies een alternatief product ----
+  function openAltModal(slotIndex) {
+    activeSlot = slotIndex;
+    pendingIndex = slotData[slotIndex];
+    renderAltGrid();
+    altOverlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAltModal() {
+    altOverlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+    activeSlot = null;
+    pendingIndex = null;
+  }
+
+  function renderAltGrid() {
+    altBody.innerHTML = '';
     allCards.forEach((d, i) => {
-      if (slotData.some((idx, s) => idx === i && s !== slotIndex)) return;
-      const isCurrent = slotData[slotIndex] === i;
+      // sla producten over die al in een ándere slot gekozen zijn
+      if (slotData.some((idx, s) => idx === i && s !== activeSlot)) return;
+
+      const isSelected = pendingIndex === i;
       const card = document.createElement('div');
-      card.className = 'hb-alt-card' + (isCurrent ? ' hb-alt-card--active' : '');
+      card.className = 'hb-alt-grid-card' + (isSelected ? ' is-selected' : '');
       card.innerHTML = `
+        <span class="hb-alt-radio"><span class="hb-alt-radio-dot"></span></span>
+        <span class="hb-alt-grid-discount">-${d.pct}%</span>
         <img src="${d.img}" alt="${d.title}">
-        <div class="hb-alt-discount-badge">-${d.pct}%</div>
-        <span class="hb-alt-vendor">${d.vendor}</span>
-        <span class="hb-alt-title">${d.title}</span>
-        <div class="hb-alt-prices">
+        <span class="hb-alt-grid-vendor">${d.vendor}</span>
+        <span class="hb-alt-grid-title">${d.title}</span>
+        <div class="hb-alt-grid-prices">
           <span class="hb-price-current">${money(d.price)}</span>
           <span class="hb-price-old">${money(d.oldPrice)}</span>
         </div>`;
-      if (!isCurrent) card.addEventListener('click', () => swapSlot(slotIndex, i));
-      altScroll.appendChild(card);
+      card.addEventListener('click', () => {
+        pendingIndex = i;
+        renderAltGrid();
+      });
+      altBody.appendChild(card);
     });
-    altPanel.style.display = 'block';
-    setTimeout(updateAltArrows, 50);
   }
+
+  altModalClose.addEventListener('click', closeAltModal);
+  altOverlay.addEventListener('click', function (e) {
+    if (e.target === altOverlay) closeAltModal();
+  });
+  altModalSave.addEventListener('click', function () {
+    if (activeSlot !== null && pendingIndex !== null && pendingIndex !== slotData[activeSlot]) {
+      swapSlot(activeSlot, pendingIndex);
+    }
+    closeAltModal();
+  });
 
   function swapSlot(slotIndex, newCardIndex) {
     const cards = grid.querySelectorAll('.hb-card');
@@ -420,11 +450,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const newCard = buildCard(allCards[newCardIndex], slotIndex);
     if (!wasChecked) { newCard.classList.remove('is-checked'); newCard.querySelector('.hb-checkbox').checked = false; }
     if (cards[slotIndex]) cards[slotIndex].replaceWith(newCard);
-    altPanel.style.display = 'none';
     updateTotals();
   }
-
-  altClose.addEventListener('click', () => altPanel.style.display = 'none');
 
   function updateTotals() {
     const mainPrice = parseInt(wrapper.dataset.mainPrice) || 0;
