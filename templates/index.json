@@ -420,7 +420,7 @@
           "settings": {
             "image": "shopify://shop_images/Gemini_Generated_Image_5i874u5i874u5i87_1.png",
             "overlay_opacity": 0,
-            "color_palette": "scheme-2",
+            "color_palette": "scheme-4",
             "text_position": "end start",
             "title": "<h2>Levertijd</h2>",
             "title_underline_style": "none",
