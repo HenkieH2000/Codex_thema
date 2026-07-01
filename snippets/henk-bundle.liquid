@@ -25,22 +25,6 @@
     <div class="hb-upsell-grid" id="hb-upsell-grid"></div>
   </div>
 
-  <div class="hb-alt-panel" id="hb-alt-panel" style="display:none;">
-    <div class="hb-alt-header">
-      <span class="hb-alt-label">Kies een alternatief</span>
-      <span class="hb-alt-close" id="hb-alt-close">✕</span>
-    </div>
-    <div class="hb-alt-scroll-wrap">
-      <button class="hb-alt-arrow hb-alt-arrow--left" id="hb-alt-prev" aria-label="Vorige">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <div class="hb-alt-scroll" id="hb-alt-scroll"></div>
-      <button class="hb-alt-arrow hb-alt-arrow--right" id="hb-alt-next" aria-label="Volgende">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-    </div>
-  </div>
-
   <div class="hb-footer" id="hb-footer" style="display:none;">
     <div class="hb-footer-left">
       <div class="hb-total-wrap">
@@ -55,6 +39,19 @@
     </button>
   </div>
 
+</div>
+
+{% comment %} ── Alternatief-popup (modal) ── {% endcomment %}
+<div class="hb-alt-overlay" id="hb-alt-overlay" style="display:none;" aria-hidden="true">
+  <div class="hb-alt-modal" role="dialog" aria-modal="true" aria-label="Kies een alternatief product">
+    <div class="hb-alt-header">
+      <span class="hb-alt-label">Kies een alternatief</span>
+      <button type="button" class="hb-alt-close" id="hb-alt-close" aria-label="Sluiten">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="hb-alt-grid" id="hb-alt-grid"></div>
+  </div>
 </div>
 
 <div style="display:none">
@@ -234,29 +231,29 @@
   .hb-alt-btn:hover { color: #e06e00; }
   .hb-info-btn { position: absolute; bottom: 8px; right: 8px; width: 22px; height: 22px; border-radius: 50%; background: #fff3e8; border: none; display: flex; align-items: center; justify-content: center; color: #FF7E00; font-size: 11px; font-weight: 700; font-family: Georgia, serif; cursor: pointer; text-decoration: none; line-height: 1; transition: background 0.15s, color 0.15s; z-index: 2; }
   .hb-info-btn:hover { background: #FF7E00; border: none; color: #fff !important; }
-  .hb-alt-panel { margin-top: 12px; border: 1px solid #e8eaf0; border-radius: 10px; overflow: hidden; background: #fff; }
-  .hb-alt-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid #e8eaf0; }
-  .hb-alt-label { font-size: 12px; font-weight: 700; color: #030a22; }
-  .hb-alt-close { font-size: 13px; color: #9ca3af; cursor: pointer; line-height: 1; padding: 2px 4px; }
-  .hb-alt-close:hover { color: #030a22; }
-  .hb-alt-scroll-wrap { display: flex; align-items: center; }
-  .hb-alt-scroll { display: flex; gap: 8px; padding: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex: 1; scroll-behavior: smooth; }
-  .hb-alt-scroll::-webkit-scrollbar { display: none; }
-  .hb-alt-arrow { display: none !important; }
-  @media (min-width: 641px) {
-    .hb-wrapper .hb-alt-arrow { display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; width: 26px !important; height: 26px !important; min-width: 0 !important; min-height: 0 !important; max-width: 26px !important; max-height: 26px !important; background: #f9fafb !important; border: 1px solid #e8eaf0 !important; border-radius: 50% !important; cursor: pointer !important; color: #6b7280 !important; transition: border-color 0.2s, color 0.2s !important; margin: 0 4px !important; padding: 0 !important; box-shadow: none !important; font-size: 0 !important; line-height: 0 !important; }
-    .hb-wrapper .hb-alt-arrow:hover { border-color: #d1d5db !important; color: #030a22 !important; background: #f3f4f6 !important; }
-    .hb-wrapper .hb-alt-arrow:disabled { opacity: 0.3 !important; cursor: default !important; pointer-events: none !important; }
-    .hb-wrapper .hb-alt-arrow svg { width: 12px !important; height: 12px !important; flex-shrink: 0 !important; }
-  }
-  .hb-alt-card { flex-shrink: 0; width: 110px; border: 1px solid #e8eaf0; border-radius: 10px; padding: 8px; cursor: pointer; position: relative; transition: border-color 0.2s; }
-  .hb-alt-card:hover { border-color: #FF7E00; }
-  .hb-alt-card--active { border-color: #FF7E00; background: #fffaf5; pointer-events: none; }
-  .hb-alt-card img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 6px; display: block; }
+
+  /* ── Alternatief-popup (modal) ── */
+  .hb-alt-overlay { position: fixed; inset: 0; background: rgba(3,10,34,.55); display: flex; align-items: center; justify-content: center; z-index: 99999; padding: 16px; box-sizing: border-box; opacity: 0; transition: opacity .2s ease; }
+  .hb-alt-overlay.is-open { opacity: 1; }
+  .hb-alt-modal { background: #fff; border-radius: 14px; width: 100%; max-width: 640px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px -12px rgba(3,10,34,.35); transform: translateY(12px) scale(.98); transition: transform .2s ease; }
+  .hb-alt-overlay.is-open .hb-alt-modal { transform: none; }
+  .hb-alt-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #e8eaf0; flex-shrink: 0; }
+  .hb-alt-label { font-size: 15px; font-weight: 800; color: #030a22; }
+  .hb-alt-close { background: #f4f4f4; border: none; width: 30px; height: 30px; border-radius: 50%; color: #6b7280; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, color .15s; padding: 0; }
+  .hb-alt-close:hover { background: #FF7E00; color: #fff; }
+  .hb-alt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px; overflow-y: auto; }
+  .hb-alt-card { border: 1px solid #e8eaf0; border-radius: 10px; padding: 10px; cursor: pointer; position: relative; transition: border-color .2s, box-shadow .2s; background: #fff; display: flex; flex-direction: column; }
+  .hb-alt-card:hover { border-color: #FF7E00; box-shadow: 0 6px 16px -8px rgba(255,126,0,.45); }
+  .hb-alt-card--active { border-color: #FF7E00; background: #fffaf5; cursor: default; }
+  .hb-alt-card--active:hover { box-shadow: none; }
+  .hb-alt-active-tag { display: none; position: absolute; top: 6px; left: 6px; background: #FF7E00; color: #fff; font-size: 9px; font-weight: 700; padding: 3px 6px; border-radius: 5px; align-items: center; gap: 3px; z-index: 2; }
+  .hb-alt-card--active .hb-alt-active-tag { display: inline-flex; }
+  .hb-alt-card img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 6px; display: block; padding: 4px; box-sizing: border-box; }
   .hb-alt-discount-badge { position: absolute; top: 6px; right: 6px; background: #FE0000; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 4px; }
-  .hb-alt-vendor { display: block; font-size: 9px; color: #6b7280; margin-top: 5px; }
-  .hb-alt-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 10px; font-weight: 600; color: #030a22; line-height: 1.3; margin: 2px 0 4px; }
-  .hb-alt-prices { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .hb-alt-vendor { display: block; font-size: 10px; color: #6b7280; margin-top: 6px; }
+  .hb-alt-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 11px; font-weight: 600; color: #030a22; line-height: 1.3; margin: 2px 0 6px; }
+  .hb-alt-prices { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-top: auto; }
+
   .hb-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #e8eaf0; flex-wrap: wrap; }
   .hb-footer-left { display: flex; flex-direction: column; gap: 3px; }
   .hb-total-wrap { display: flex; align-items: baseline; gap: 8px; }
@@ -283,6 +280,9 @@
     .hb-info-btn { bottom: 8px; right: 8px; top: auto; }
     .hb-footer { flex-direction: column; align-items: flex-start; }
     .hb-btn { width: 100% !important; justify-content: center !important; }
+    .hb-alt-overlay { padding: 0; align-items: flex-end; }
+    .hb-alt-modal { max-width: 100%; max-height: 90vh; border-radius: 16px 16px 0 0; }
+    .hb-alt-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 16px; }
   }
 </style>
 
@@ -296,11 +296,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const btn       = document.getElementById('hb-btn');
   const totalNew  = document.getElementById('hb-total-new');
   const totalOld  = document.getElementById('hb-total-old');
-  const altPanel  = document.getElementById('hb-alt-panel');
-  const altScroll = document.getElementById('hb-alt-scroll');
-  const altClose  = document.getElementById('hb-alt-close');
-  const altPrev   = document.getElementById('hb-alt-prev');
-  const altNext   = document.getElementById('hb-alt-next');
+  const altOverlay = document.getElementById('hb-alt-overlay');
+  const altModal   = altOverlay.querySelector('.hb-alt-modal');
+  const altGrid    = document.getElementById('hb-alt-grid');
+  const altClose   = document.getElementById('hb-alt-close');
   const baseUrl   = wrapper.dataset.url;
   const compUrl   = baseUrl + '&intent=complementary';
 
@@ -325,16 +324,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!n || isNaN(n)) return '';
     return (n / 100).toFixed(2).replace('.', ',').replace(',00', ',-');
   }
-
-  function updateAltArrows() {
-    if (!altPrev || !altNext) return;
-    altPrev.disabled = altScroll.scrollLeft <= 0;
-    altNext.disabled = altScroll.scrollLeft + altScroll.clientWidth >= altScroll.scrollWidth - 1;
-  }
-
-  if (altPrev) altPrev.addEventListener('click', () => altScroll.scrollBy({ left: -240, behavior: 'smooth' }));
-  if (altNext) altNext.addEventListener('click', () => altScroll.scrollBy({ left: 240, behavior: 'smooth' }));
-  altScroll.addEventListener('scroll', updateAltArrows);
 
   function buildCard(d, slotIndex) {
     const card = document.createElement('div');
@@ -362,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function () {
           <span class="hb-price-old">${money(d.oldPrice)}</span>
         </div>
         <span class="hb-alt-btn">
-          Kies alternatief
+          Wijzig
           <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
         </span>
       </div>
@@ -389,17 +378,41 @@ document.addEventListener('DOMContentLoaded', function () {
     return card;
   }
 
+  /* ── Popup openen/sluiten ── */
+  function openAlt() {
+    altOverlay.style.display = 'flex';
+    altOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    // forceer reflow zodat de transitie start
+    void altOverlay.offsetWidth;
+    altOverlay.classList.add('is-open');
+  }
+
+  function closeAlt() {
+    altOverlay.classList.remove('is-open');
+    altOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(() => { altOverlay.style.display = 'none'; }, 200);
+  }
+
   function showAltPanel(slotIndex) {
-    altScroll.innerHTML = '';
-    altPanel.dataset.slot = slotIndex;
+    altGrid.innerHTML = '';
+    altGrid.scrollTop = 0;
+    altOverlay.dataset.slot = slotIndex;
+
     allCards.forEach((d, i) => {
+      // verberg producten die al in een ander slot zitten
       if (slotData.some((idx, s) => idx === i && s !== slotIndex)) return;
       const isCurrent = slotData[slotIndex] === i;
       const card = document.createElement('div');
       card.className = 'hb-alt-card' + (isCurrent ? ' hb-alt-card--active' : '');
       card.innerHTML = `
-        <img src="${d.img}" alt="${d.title}">
+        <span class="hb-alt-active-tag">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Gekozen
+        </span>
         <div class="hb-alt-discount-badge">-${d.pct}%</div>
+        <img src="${d.img}" alt="${d.title}">
         <span class="hb-alt-vendor">${d.vendor}</span>
         <span class="hb-alt-title">${d.title}</span>
         <div class="hb-alt-prices">
@@ -407,10 +420,10 @@ document.addEventListener('DOMContentLoaded', function () {
           <span class="hb-price-old">${money(d.oldPrice)}</span>
         </div>`;
       if (!isCurrent) card.addEventListener('click', () => swapSlot(slotIndex, i));
-      altScroll.appendChild(card);
+      altGrid.appendChild(card);
     });
-    altPanel.style.display = 'block';
-    setTimeout(updateAltArrows, 50);
+
+    openAlt();
   }
 
   function swapSlot(slotIndex, newCardIndex) {
@@ -420,11 +433,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const newCard = buildCard(allCards[newCardIndex], slotIndex);
     if (!wasChecked) { newCard.classList.remove('is-checked'); newCard.querySelector('.hb-checkbox').checked = false; }
     if (cards[slotIndex]) cards[slotIndex].replaceWith(newCard);
-    altPanel.style.display = 'none';
+    closeAlt();
     updateTotals();
   }
 
-  altClose.addEventListener('click', () => altPanel.style.display = 'none');
+  // Sluiten via kruisje, klik op achtergrond, of Escape
+  altClose.addEventListener('click', closeAlt);
+  altOverlay.addEventListener('click', e => { if (!altModal.contains(e.target)) closeAlt(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && altOverlay.classList.contains('is-open')) closeAlt(); });
 
   function updateTotals() {
     const mainPrice = parseInt(wrapper.dataset.mainPrice) || 0;
