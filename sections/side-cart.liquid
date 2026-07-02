@@ -241,11 +241,17 @@
 
   #cart > .l4ca.compact {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
     border-bottom: 0 !important;
+  }
+
+  #cart > .l4ca.compact > li,
+  #cart > .l4ca.compact > li section {
+    position: relative;
+    z-index: 1;
   }
 
   #cart > .l4ca.compact::before,
@@ -305,10 +311,25 @@
     line-height: 1.35;
   }
 
-  #cart > .l4ca.compact footer {
+  #cart > .l4ca.compact > li footer {
+    position: relative;
+    z-index: 3;
     align-items: center;
     gap: 12px;
     margin-top: 10px;
+  }
+
+  #cart .input-amount {
+    position: relative;
+    z-index: 4;
+    pointer-events: auto;
+  }
+
+  #cart .input-amount input {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+    touch-action: manipulation;
   }
 
   #cart .remove-from-cart-link {
@@ -318,10 +339,12 @@
 
   #cart .product-recommendations {
     position: relative;
-    z-index: 1;
+    z-index: 1 !important;
+    isolation: isolate;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     padding-top: 16px !important;
+    padding-bottom: 12px !important;
     border-top: 1px solid #eef0f4 !important;
     border-bottom: 0 !important;
     background: #fbfbfc;
@@ -340,6 +363,8 @@
 
   #cart .product-recommendations > .l4ca,
   #cart .product-recommendations .l4ca {
+    position: relative;
+    z-index: 1;
     margin-top: 0 !important;
     border-top: 0 !important;
   }
@@ -348,6 +373,9 @@
   #cart .product-recommendations .l4ca > li,
   #cart .product-recommendations > .l4ca > li:first-child,
   #cart .product-recommendations .l4ca > li:first-child {
+    position: relative;
+    z-index: 1 !important;
+    isolation: isolate;
     border-top: 0 !important;
   }
 
@@ -358,7 +386,8 @@
   #cart .sticky-in-panel.f8vl {
     position: sticky;
     bottom: 0;
-    z-index: 50;
+    z-index: 1000 !important;
+    isolation: isolate;
     margin-top: auto;
     padding: 16px 0 10px;
     border-top: 1px solid #e7e9ee;
@@ -369,20 +398,17 @@
   }
 
   #cart .sticky-in-panel.f8vl:before {
+    content: "";
+    position: absolute;
+    inset: -22px 0 0;
     z-index: -1 !important;
     background: #fbfbfc;
+    box-shadow: 0 -10px 24px rgba(251, 251, 252, 0.96);
   }
 
   #cart .sticky-in-panel.f8vl > * {
     position: relative;
     z-index: 2;
-  }
-
-  #cart .product-recommendations,
-  #cart .product-recommendations *,
-  #cart > .l4ca.compact,
-  #cart > .l4ca.compact * {
-    z-index: auto;
   }
 
   #cart .sticky-in-panel .l4tt {
@@ -609,7 +635,7 @@
         {%- endfor -%}
 
         <footer>
-          <p class="input-amount">
+          <p class="input-amount" onpointerdown="event.stopPropagation()" onclick="event.stopPropagation()">
             <label for="qty-{{ line_item.index | plus: 1 }}" class="hidden">{{ 'cart.product.qty' | t }}</label>
             <input
               type="number"
