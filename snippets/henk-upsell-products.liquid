@@ -7,7 +7,9 @@
 
 <div class="bundle-wrapper"
      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=10"
-     data-main-variant="{{ product.selected_or_first_available_variant.id }}">
+     data-main-variant="{{ product.selected_or_first_available_variant.id }}"
+     data-main-product="{{ product.id }}"
+     data-pool-collections="{% for col in product.collections %}{{ col.handle }}{% unless forloop.last %},{% endunless %}{% endfor %}">
 
   <h2 class="bundle-header">Maak bundel compleet</h2>
 
@@ -47,33 +49,6 @@
                data-vendor="{{ item.vendor | escape }}"
                data-url="{{ item.url }}"
                data-img="{{ item.featured_image | img_url: '200x' }}">
-
-            <div class="bundle-checkbox-wrapper">
-              <label class="bundle-custom-checkbox">
-                <input type="checkbox" class="bundle-checkbox add-on-checkbox" value="{{ item.selected_or_first_available_variant.id }}">
-                <span class="bundle-checkmark">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-              </label>
-            </div>
-
-            <a href="{{ item.url }}" class="bundle-image-wrap">
-              <img src="{{ item.featured_image | img_url: '200x' }}" alt="{{ item.title }}">
-            </a>
-
-            <div class="bundle-info">
-              <div class="bundle-title">{{ item.title }}</div>
-              <div class="bundle-prices">
-                <span class="price-current">{{ final_discounted_price | money | replace: ',00', ',-' }}</span>
-                <span class="price-old">{{ display_old_price | money | replace: ',00', ',-' }}</span>
-                <span class="discount-badge">-{{ final_percentage_to_apply }}%</span>
-              </div>
-            </div>
-
-            <a href="{{ item.url }}" class="bundle-info-btn bundle-icon-link" title="Meer info">
-              <div class="info-circle">i</div>
-            </a>
-
           </div>
         {% endfor %}
       {% endif %}
@@ -81,61 +56,6 @@
   </div>
 
   <div class="bundle-footer"></div>
-</div>
-
-{% comment %}
-  ── Extra alternatieven-pool ──
-  De product-aanbevelingen-API geeft maximaal 10 producten. Om minimaal 20
-  alternatieven te kunnen tonen, vullen we aan met producten uit de collecties
-  van dit product. Deze staan verborgen en worden alleen door de JS uitgelezen.
-{% endcomment %}
-<div class="bundle-source-pool" style="display:none" aria-hidden="true">
-  {% assign pool_added = 0 %}
-  {% for col in product.collections %}
-    {% for p in col.products %}
-      {% unless pool_added >= 40 %}
-        {% if p.id != product.id %}
-          {% assign pv = p.selected_or_first_available_variant %}
-          {% assign p_ok = false %}
-          {% if pv.available %}
-            {% if pv.inventory_management == blank %}
-              {% assign p_ok = true %}
-            {% elsif pv.inventory_policy == 'continue' %}
-              {% assign p_ok = true %}
-            {% elsif pv.inventory_quantity > 0 %}
-              {% assign p_ok = true %}
-            {% endif %}
-          {% endif %}
-          {% if p_ok %}
-            {% assign pbase = p.price %}
-            {% assign pcompare = p.compare_at_price %}
-            {% assign ppct = minimum_bundle_discount %}
-            {% assign pold = pbase %}
-            {% if pcompare > pbase %}
-              {% assign pdiff = pcompare | minus: pbase %}
-              {% assign pactive = pdiff | times: 100.0 | divided_by: pcompare | ceil %}
-              {% if pactive > minimum_bundle_discount %}
-                {% assign ppct = pactive %}
-                {% assign pold = pcompare %}
-              {% endif %}
-            {% endif %}
-            {% assign pfactor = 100.0 | minus: ppct | divided_by: 100.0 %}
-            {% assign pprice = pbase | times: pfactor | round %}
-            <div class="bundle-source-card"
-                 data-variant-id="{{ pv.id }}"
-                 data-price="{{ pprice }}"
-                 data-old-price="{{ pold }}"
-                 data-pct="{{ ppct }}"
-                 data-title="{{ p.title | escape }}"
-                 data-vendor="{{ p.vendor | escape }}"
-                 data-url="{{ p.url }}"
-                 data-img="{{ p.featured_image | img_url: '200x' }}"></div>
-            {% assign pool_added = pool_added | plus: 1 %}
-          {% endif %}
-        {% endif %}
-      {% endunless %}
-    {% endfor %}
-  {% endfor %}
 </div>
 
 {% comment %} ── Alternatief-popup (modal) ── {% endcomment %}
@@ -217,31 +137,30 @@
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const wrapper = document.querySelector('.bundle-wrapper');
   if (!wrapper) return;
 
-  const container   = wrapper.querySelector('.bundle-recommendations-container');
-  const baseUrl     = wrapper.dataset.url;
+  const container        = wrapper.querySelector('.bundle-recommendations-container');
+  const baseUrl          = wrapper.dataset.url;
   const complementaryUrl = baseUrl + '&intent=complementary';
-  const productForm = document.querySelector('form[action*="/cart/add"]');
+  let   productForm      = document.querySelector('form[action*="/cart/add"]');
 
   const altOverlay = document.getElementById('bundle-alt-overlay');
   const altModal   = altOverlay.querySelector('.bundle-alt-modal');
   const altGrid    = document.getElementById('bundle-alt-grid');
   const altClose   = document.getElementById('bundle-alt-close');
 
-  // Verplaats de popup naar <body> zodat een thema-ouder met 'transform'
-  // (die 'position: fixed' opsluit) hem niet binnen het blok vasthoudt.
-  if (altOverlay && altOverlay.parentElement !== document.body) {
-    document.body.appendChild(altOverlay);
-  }
-
-  if (!productForm) { wrapper.style.display = 'none'; return; }
+  if (altOverlay && altOverlay.parentElement !== document.body) document.body.appendChild(altOverlay);
 
   const VISIBLE_SLOTS = 2;
+  const TARGET_MIN    = 24;   // streef naar 24 producten → 20+ alternatieven in de popup
+
+  /* ── ENIGE BRON VAN WAARHEID ──
+     allCards : alle beschikbare producten (data-objecten met variantId)
+     slots    : [{ index, checked }] per zichtbaar vak. Alles leest hieruit. */
   let allCards = [];
-  let slotData = [];
+  let slots = [];
 
   function money(cents) {
     const n = parseInt(cents);
@@ -249,23 +168,29 @@ document.addEventListener('DOMContentLoaded', function() {
     return (n / 100).toFixed(2).replace('.', ',').replace(',00', ',-');
   }
 
-  function escAttr(s) { return (s || '').replace(/"/g, '&quot;'); }
+  function escHtml(s) {
+    return (s == null ? '' : String(s))
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
 
-  // Hoofd-variant: LIQUID-waarde eerst (het echte paginaproduct). Zo komt er
-  // nooit per ongeluk een verkeerde variant/product uit een ander formulier mee.
   function getMainVariantId() {
     const liquidVariant = wrapper.dataset.mainVariant;
     if (liquidVariant) return String(liquidVariant);
-    const hidden = document.querySelector('input[name="id"][type="hidden"]');
-    if (hidden && hidden.value) return String(hidden.value);
-    const anyInput = document.querySelector('form[action*="/cart/add"] [name="id"]');
-    if (anyInput && anyInput.value) return String(anyInput.value);
+    if (productForm) {
+      const hidden = productForm.querySelector('input[name="id"][type="hidden"]');
+      if (hidden && hidden.value) return String(hidden.value);
+      const any = productForm.querySelector('[name="id"]');
+      if (any && any.value) return String(any.value);
+    }
+    const g = document.querySelector('form[action*="/cart/add"] [name="id"]');
+    if (g && g.value) return String(g.value);
     return null;
   }
 
+  /* ── Databronnen ── */
   function cardFromEl(c) {
     return {
-      variantId : c.dataset.variantId,
+      variantId : c.dataset.variantId ? String(c.dataset.variantId) : '',
       price     : c.dataset.price,
       oldPrice  : c.dataset.oldPrice,
       pct       : c.dataset.pct,
@@ -276,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 
-  // Aanbevelingen ophalen (max 10 per intent) uit de section-render.
+  // Aanbevelingen uit de section-render (max 10 per intent).
   function parseRecommendations(url) {
     return fetch(url)
       .then(r => r.text())
@@ -288,40 +213,80 @@ document.addEventListener('DOMContentLoaded', function() {
       .catch(() => []);
   }
 
-  // Extra pool (collectie-producten) staat al inline in de pagina.
-  function readInlinePool() {
-    return Array.from(document.querySelectorAll('.bundle-source-pool .bundle-source-card')).map(cardFromEl);
+  // Product uit /collections/<handle>/products.json omzetten naar een kaart.
+  function cardFromJson(p) {
+    if (!p || String(p.id) === String(wrapper.dataset.mainProduct)) return null;
+    const v = p.variants && p.variants[0];
+    if (!v || v.available === false) return null;
+    const baseCents = Math.round(parseFloat(v.price) * 100);
+    if (!baseCents) return null;
+    let pct = 5, oldCents = baseCents;
+    const cmp = v.compare_at_price ? Math.round(parseFloat(v.compare_at_price) * 100) : 0;
+    if (cmp > baseCents) {
+      const active = Math.ceil((cmp - baseCents) * 100 / cmp);
+      if (active > 5) { pct = active; oldCents = cmp; }
+    }
+    const priceCents = Math.round(baseCents * (100 - pct) / 100);
+    let img = '';
+    if (p.images && p.images[0]) img = (typeof p.images[0] === 'string') ? p.images[0] : p.images[0].src;
+    return {
+      variantId : String(v.id),
+      price     : String(priceCents),
+      oldPrice  : String(oldCents),
+      pct       : String(pct),
+      title     : p.title,
+      vendor    : p.vendor,
+      url       : '/products/' + p.handle,
+      img       : img
+    };
   }
 
-  function buildCard(d, slotIndex) {
+  function fetchCollection(handle) {
+    return fetch('/collections/' + handle + '/products.json?limit=30')
+      .then(r => r.ok ? r.json() : { products: [] })
+      .then(j => (j.products || []).map(cardFromJson).filter(Boolean))
+      .catch(() => []);
+  }
+
+  function goodHandles() {
+    const BAD = /^(all|all-products.*|alle-producten|orderly.*|tryon.*)$/i;
+    const NUM = /^<?\d+(-\d+)?$/;
+    return (wrapper.dataset.poolCollections || '')
+      .split(',').map(s => s.trim()).filter(Boolean)
+      .filter(h => !BAD.test(h) && !NUM.test(h));
+  }
+
+  /* ── Eén vak renderen uit state ── */
+  function buildCard(slotIndex) {
+    const slot = slots[slotIndex];
+    const d = allCards[slot.index];
+
     const card = document.createElement('div');
-    card.className = 'bundle-card recommended-product';
-    card.dataset.variantId = d.variantId;
-    card.dataset.price     = d.price;
-    card.dataset.oldPrice  = d.oldPrice;
+    card.className = 'bundle-card recommended-product' + (slot.checked ? ' is-checked' : '');
+    card.dataset.slot = String(slotIndex);
 
     card.innerHTML = `
       <div class="bundle-checkbox-wrapper">
         <label class="bundle-custom-checkbox" onclick="event.stopPropagation()">
-          <input type="checkbox" class="bundle-checkbox add-on-checkbox" value="${d.variantId}">
+          <input type="checkbox" class="bundle-checkbox add-on-checkbox" ${slot.checked ? 'checked' : ''}>
           <span class="bundle-checkmark">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </span>
         </label>
       </div>
-      <a href="${d.url}" class="bundle-image-wrap" onclick="event.stopPropagation()">
-        <img src="${d.img}" alt="${escAttr(d.title)}">
+      <a href="${escHtml(d.url)}" class="bundle-image-wrap" onclick="event.stopPropagation()">
+        <img src="${escHtml(d.img)}" alt="${escHtml(d.title)}" loading="lazy">
       </a>
       <div class="bundle-info">
-        <div class="bundle-title">${d.title}</div>
+        <div class="bundle-title">${escHtml(d.title)}</div>
         <div class="bundle-prices">
           <span class="price-current">${money(d.price)}</span>
           <span class="price-old">${money(d.oldPrice)}</span>
-          <span class="discount-badge">-${d.pct}%</span>
+          <span class="discount-badge">-${escHtml(d.pct)}%</span>
         </div>
       </div>
       <div class="bundle-actions">
-        <a href="${d.url}" class="bundle-info-btn bundle-icon-link" title="Meer info" onclick="event.stopPropagation()">
+        <a href="${escHtml(d.url)}" class="bundle-info-btn bundle-icon-link" title="Meer info" onclick="event.stopPropagation()">
           <div class="info-circle">i</div>
         </a>
         <span class="bundle-alt-btn">
@@ -330,29 +295,35 @@ document.addEventListener('DOMContentLoaded', function() {
         </span>
       </div>`;
 
-    card.querySelector('.bundle-alt-btn').addEventListener('click', e => {
-      e.stopPropagation();
-      showAltPanel(slotIndex);
-    });
+    const cb = card.querySelector('.bundle-checkbox');
+    function setChecked(v) {
+      slots[slotIndex].checked = v;
+      cb.checked = v;
+      card.classList.toggle('is-checked', v);
+    }
 
-    card.querySelector('.bundle-checkbox').addEventListener('change', function () {
-      card.classList.toggle('is-checked', this.checked);
-    });
-
+    card.querySelector('.bundle-alt-btn').addEventListener('click', e => { e.stopPropagation(); showAltPanel(slotIndex); });
+    cb.addEventListener('change', () => setChecked(cb.checked));
     card.addEventListener('click', function (e) {
       if (e.target.closest('.bundle-alt-btn')) return;
       if (e.target.closest('.bundle-icon-link')) return;
       if (e.target.closest('.bundle-image-wrap')) return;
       if (e.target.closest('.bundle-custom-checkbox')) return;
-      const cb = this.querySelector('.bundle-checkbox');
-      cb.checked = !cb.checked;
-      this.classList.toggle('is-checked', cb.checked);
+      setChecked(!slots[slotIndex].checked);
     });
 
     return card;
   }
 
-  /* ── Popup openen / sluiten ── */
+  function renderSlots() {
+    container.innerHTML = '';
+    slots.forEach((_, i) => container.appendChild(buildCard(i)));
+    if (allCards.length <= slots.length) {
+      container.querySelectorAll('.bundle-alt-btn').forEach(b => b.style.display = 'none');
+    }
+  }
+
+  /* ── Popup ── */
   function openAlt() {
     altOverlay.style.display = 'flex';
     altOverlay.setAttribute('aria-hidden', 'false');
@@ -372,42 +343,34 @@ document.addEventListener('DOMContentLoaded', function() {
     altGrid.scrollTop = 0;
 
     allCards.forEach((d, i) => {
-      // verberg producten die al in een ander slot zitten
-      if (slotData.some((idx, s) => idx === i && s !== slotIndex)) return;
-      const isCurrent = slotData[slotIndex] === i;
-      const card = document.createElement('div');
-      card.className = 'bundle-alt-card' + (isCurrent ? ' bundle-alt-card--active' : '');
-      card.innerHTML = `
+      const usedElsewhere = slots.some((s, si) => s.index === i && si !== slotIndex);
+      if (usedElsewhere) return;
+      const isCurrent = slots[slotIndex].index === i;
+      const el = document.createElement('div');
+      el.className = 'bundle-alt-card' + (isCurrent ? ' bundle-alt-card--active' : '');
+      el.innerHTML = `
         <span class="bundle-alt-active-tag">
           <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           Gekozen
         </span>
-        <div class="bundle-alt-discount-badge">-${d.pct}%</div>
-        <img src="${d.img}" alt="${escAttr(d.title)}">
-        <span class="bundle-alt-vendor">${d.vendor}</span>
-        <span class="bundle-alt-title">${d.title}</span>
+        <div class="bundle-alt-discount-badge">-${escHtml(d.pct)}%</div>
+        <img src="${escHtml(d.img)}" alt="${escHtml(d.title)}" loading="lazy">
+        <span class="bundle-alt-vendor">${escHtml(d.vendor)}</span>
+        <span class="bundle-alt-title">${escHtml(d.title)}</span>
         <div class="bundle-alt-prices">
           <span class="price-current">${money(d.price)}</span>
           <span class="price-old">${money(d.oldPrice)}</span>
         </div>`;
-      if (!isCurrent) card.addEventListener('click', () => swapSlot(slotIndex, i));
-      altGrid.appendChild(card);
+      if (!isCurrent) el.addEventListener('click', () => swapSlot(slotIndex, i));
+      altGrid.appendChild(el);
     });
 
     openAlt();
   }
 
-  function swapSlot(slotIndex, newCardIndex) {
-    const cards = container.querySelectorAll('.bundle-card');
-    const oldCard = cards[slotIndex];
-    const wasChecked = oldCard?.querySelector('.bundle-checkbox')?.checked ?? false;
-    slotData[slotIndex] = newCardIndex;
-    const newCard = buildCard(allCards[newCardIndex], slotIndex);
-    if (wasChecked) {
-      newCard.classList.add('is-checked');
-      newCard.querySelector('.bundle-checkbox').checked = true;
-    }
-    if (oldCard) oldCard.replaceWith(newCard);
+  function swapSlot(slotIndex, newIndex) {
+    slots[slotIndex].index = newIndex;   // checked blijft
+    renderSlots();
     closeAlt();
   }
 
@@ -416,61 +379,61 @@ document.addEventListener('DOMContentLoaded', function() {
   altOverlay.addEventListener('click', e => { if (!altModal.contains(e.target)) closeAlt(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && altOverlay.classList.contains('is-open')) closeAlt(); });
 
-  /* ── Laden ── */
-  Promise.all([parseRecommendations(complementaryUrl), parseRecommendations(baseUrl)])
-  .then(([compData, stdData]) => {
+  /* ── Laden (aanbevelingen + collectie-aanvulling tot 20+) ── */
+  (async function load() {
     const mainId = String(getMainVariantId() || '');
     const seen = new Set();
+    function push(arr) {
+      for (const d of arr) {
+        if (!d || !d.variantId) continue;
+        if (d.variantId === mainId) continue;
+        if (seen.has(d.variantId)) continue;
+        seen.add(d.variantId);
+        allCards.push(d);
+      }
+    }
 
-    // Volgorde: complementair eerst (beste match), dan standaard, dan collectie-pool.
-    for (const d of [...compData, ...stdData, ...readInlinePool()]) {
-      if (!d.variantId) continue;
-      if (String(d.variantId) === mainId) continue;   // hoofdproduct nooit als upsell
-      if (seen.has(d.variantId)) continue;             // geen dubbele
-      seen.add(d.variantId);
-      allCards.push(d);
+    try {
+      const [comp, std] = await Promise.all([parseRecommendations(complementaryUrl), parseRecommendations(baseUrl)]);
+      push(comp); push(std);
+
+      // Aanvullen met collectie-producten tot we >= TARGET_MIN hebben.
+      for (const h of goodHandles()) {
+        if (allCards.length >= TARGET_MIN) break;
+        push(await fetchCollection(h));
+      }
+    } catch (e) {
+      console.error('Upsell laadfout:', e);
     }
 
     if (allCards.length === 0) { wrapper.style.display = 'none'; return; }
 
     const count = Math.min(VISIBLE_SLOTS, allCards.length);
-    slotData = [];
-    container.innerHTML = '';
-    for (let i = 0; i < count; i++) {
-      slotData[i] = i;
-      container.appendChild(buildCard(allCards[i], i));
-    }
+    slots = [];
+    for (let i = 0; i < count; i++) slots.push({ index: i, checked: false });
+    renderSlots();
+  })();
 
-    // Geen extra producten om uit te kiezen? Verberg dan de Wijzig-knoppen.
-    if (allCards.length <= count) {
-      container.querySelectorAll('.bundle-alt-btn').forEach(b => b.style.display = 'none');
-    }
-  })
-  .catch(e => {
-    console.error('Fout bij het laden van aanbevelingen:', e);
-    wrapper.style.display = 'none';
-  });
+  /* ─────────── Toevoegen aan winkelwagen ───────────
+     De sticky winkelwagenbalk staat BUITEN het productformulier. Daarom vangen
+     we de klik/submit af op WINDOW (capture) — dat draait vóór álle thema-
+     listeners, ongeacht welke knop. Hoofdproduct + upsells gaan atomisch in de
+     mand; de drawer opent PAS daarna. Variant-ID's komen 100% uit de state. */
 
-  /* Toevoegen aan winkelwagen:
-     Het thema onderschept de winkelwagenknop met eigen AJAX, waardoor een
-     'submit'-listener vaak nooit afgaat. Daarom vangen we de klik/submit in de
-     CAPTURE-fase op de form (voorouder van de knop) af, en voegen we hoofd-
-     product + aangevinkte upsells zelf toe, onafhankelijk van het thema. */
-
-  function hasCheckedAddons() {
-    return wrapper.querySelectorAll('.recommended-product .add-on-checkbox:checked').length > 0;
-  }
+  function hasCheckedAddons() { return slots.some(s => s.checked); }
 
   function collectItems() {
     const items = [];
     const mainId = getMainVariantId();
     if (mainId) {
-      const quantityInput = productForm.querySelector('[name="quantity"]');
-      const quantity = quantityInput ? (parseInt(quantityInput.value) || 1) : 1;
+      const qEl = (productForm && productForm.querySelector('[name="quantity"]')) || document.querySelector('form[action*="/cart/add"] [name="quantity"]');
+      const quantity = qEl ? (parseInt(qEl.value) || 1) : 1;
       items.push({ id: mainId, quantity: quantity });
     }
-    wrapper.querySelectorAll('.recommended-product .add-on-checkbox:checked').forEach(box => {
-      if (box.value) items.push({ id: box.value, quantity: 1, properties: { _upsell: 'true' } });
+    slots.forEach(s => {
+      if (!s.checked) return;
+      const d = allCards[s.index];
+      if (d && d.variantId) items.push({ id: d.variantId, quantity: 1, properties: { _upsell: 'true' } });
     });
     return items;
   }
@@ -524,8 +487,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function refreshCartUI(addResponse, items) {
-    // Verversen mag falen zonder de klant een fout te tonen: producten zitten al in de cart.
+  function afterAddUI(addResponse, items) {
     return Promise.all([
       fetch('/cart.js').then(r => r.json()).catch(() => null),
       refreshDrawerContent(addResponse).catch(() => null)
@@ -537,15 +499,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
         window.dispatchEvent(new CustomEvent('cart-update', { bubbles: true, detail: { cart } }));
         document.dispatchEvent(new CustomEvent('theme:cart:update', { bubbles: true, detail: { cart } }));
-        openCartDrawer();
-      } catch (uiErr) { console.error('Upsell UI ververs-fout:', uiErr); }
+      } catch (uiErr) { console.error('Upsell UI-fout:', uiErr); }
+      openCartDrawer(); // drawer opent PAS nadat alles is toegevoegd
     });
   }
 
   function addBundleToCart() {
     const items = collectItems();
     if (!items.length) return Promise.resolve();
-
     return fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
@@ -557,50 +518,58 @@ document.addEventListener('DOMContentLoaded', function() {
       })
     })
     .then(r => { if (!r.ok) return r.json().then(e => { throw new Error(e.message || ('HTTP ' + r.status)); }); return r.json(); })
-    .then(addResponse => refreshCartUI(addResponse, items))   // add geslaagd
+    .then(addResponse => afterAddUI(addResponse, items))
     .catch(err => {
       console.error('Upsell cart fout:', err);
       alert('Er ging iets mis bij het toevoegen. Probeer het opnieuw.');
     });
   }
 
-  const ADD_BTN_SELECTOR = '[name="add"], button[type="submit"], input[type="submit"], .product-form__submit, .add-to-cart, [data-add-to-cart]';
-  let isAdding = false;
+  // Herkennen van winkelwagen-knoppen.
+  const ATC_BROAD  = '[name="add"], button[type="submit"], input[type="submit"], .product-form__submit, .add-to-cart, .add_to_cart, [data-add-to-cart], [data-add-to-cart-trigger], .product-form__cart-submit, .btn-addtocart, .btn--add-to-cart';
+  const ATC_STRICT = '[name="add"], .product-form__submit, .add-to-cart, .add_to_cart, [data-add-to-cart], [data-add-to-cart-trigger], .product-form__cart-submit, .btn-addtocart, .btn--add-to-cart';
 
-  function interceptAdd(e) {
-    if (!hasCheckedAddons()) return; // niets aangevinkt → thema doet het gewoon zelf
+  function isMainTrigger(btn) {
+    const form = btn.closest('form[action*="/cart/add"]');
+    if (form) {
+      const idInput = form.querySelector('[name="id"]');
+      const formId = idInput && idInput.value ? String(idInput.value) : '';
+      return !formId || formId === String(getMainVariantId() || '');
+    }
+    // Geen cart-form (sticky balk): alleen echte ATC-knoppen accepteren.
+    return btn.matches(ATC_STRICT) || /in\s*winkelwagen|toevoegen|add to cart/i.test((btn.textContent || '').trim());
+  }
+
+  let isAdding = false;
+  function takeOver(e, btn) {
     e.preventDefault();
     e.stopImmediatePropagation();
-    if (isAdding) return;            // dubbelklik-beveiliging
+    if (isAdding) return;
     isAdding = true;
-
-    const submitButton = e.target.closest(ADD_BTN_SELECTOR) || productForm.querySelector(ADD_BTN_SELECTOR);
-    let originalHTML = '';
-    if (submitButton) {
-      originalHTML = submitButton.innerHTML;
-      submitButton.disabled = true;
-      submitButton.setAttribute('aria-busy', 'true');
-      submitButton.style.pointerEvents = 'none';
-      submitButton.style.opacity = '0.75';
-    }
-
+    const original = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.style.pointerEvents = 'none'; btn.style.opacity = '0.75'; }
     addBundleToCart().finally(() => {
       isAdding = false;
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.removeAttribute('aria-busy');
-        submitButton.style.pointerEvents = '';
-        submitButton.style.opacity = '';
-        if (originalHTML) submitButton.innerHTML = originalHTML;
-      }
+      if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); btn.style.pointerEvents = ''; btn.style.opacity = ''; if (original) btn.innerHTML = original; }
     });
   }
 
-  // Capture op de form: draait vóór de thema-listeners op de knop.
-  productForm.addEventListener('submit', interceptAdd, true);
-  productForm.addEventListener('click', function (e) {
-    const addBtn = e.target.closest(ADD_BTN_SELECTOR);
-    if (addBtn && productForm.contains(addBtn)) interceptAdd(e);
+  window.addEventListener('click', function (e) {
+    if (!hasCheckedAddons()) return;
+    const btn = e.target.closest && e.target.closest(ATC_BROAD);
+    if (!btn) return;
+    if (!isMainTrigger(btn)) return;
+    takeOver(e, btn);
+  }, true);
+
+  window.addEventListener('submit', function (e) {
+    if (!hasCheckedAddons()) return;
+    const form = e.target;
+    if (!form.matches || !form.matches('form[action*="/cart/add"]')) return;
+    const idInput = form.querySelector('[name="id"]');
+    const formId = idInput && idInput.value ? String(idInput.value) : '';
+    if (formId && formId !== String(getMainVariantId() || '')) return; // ander product
+    takeOver(e, form.querySelector(ATC_BROAD));
   }, true);
 });
 </script>
