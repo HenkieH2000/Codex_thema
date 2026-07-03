@@ -395,11 +395,6 @@
         "disabled": false,
         "settings": {}
       },
-      "172750395860225535": {
-        "type": "shopify://apps/metrion/blocks/metrion-embedding/019be65b-c4bb-796d-96e9-f0eee9562c47",
-        "disabled": false,
-        "settings": {}
-      },
       "8764476057892802672": {
         "type": "shopify://apps/stoq/blocks/main/4bb73be2-b7c2-4870-949f-c528145452a3",
         "disabled": false,
@@ -416,6 +411,16 @@
       },
       "16488661044329386848": {
         "type": "shopify://apps/profitmetrics/blocks/head/019b0272-dcd0-785d-9894-392186bb1e9e",
+        "disabled": false,
+        "settings": {}
+      },
+      "172750395860225535": {
+        "type": "shopify://apps/metrion/blocks/metrion-embedding/019be65b-c4bb-796d-96e9-f0eee9562c47",
+        "disabled": true,
+        "settings": {}
+      },
+      "597687374541648500": {
+        "type": "shopify://apps/weltpixel-tracking/blocks/ga4-app-embed/019a827c-6b88-7ae1-a9c9-f842f02a2dc0",
         "disabled": false,
         "settings": {}
       }
