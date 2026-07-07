@@ -114,6 +114,7 @@
     },
     "section_featured_products_RR8cPH": {
       "type": "section-featured-products",
+      "disabled": true,
       "custom_css": [
         ".card__heading {display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}"
       ],
