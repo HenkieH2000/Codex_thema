@@ -94,6 +94,7 @@
         "image_gtqXNq",
         "image_q6399A"
       ],
+      "disabled": true,
       "name": "t:sections.gallery.presets.name",
       "settings": {
         "items_layout": "playful-grid",
