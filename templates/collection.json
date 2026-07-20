@@ -167,12 +167,243 @@
         "products_per_row_mobile": "2",
         "filter_mobile_sticky": true
       }
+    },
+    "section_icon_text_blocks_UgFXV9": {
+      "type": "section-icon-text-blocks",
+      "blocks": {
+        "text_ChfFBw": {
+          "type": "text",
+          "settings": {
+            "icon": "none",
+            "image_svg": "",
+            "image_height": 55,
+            "title": "{{ collection.metafields.custom.usp_titel1.value }}",
+            "text": "<p>{{ collection.metafields.custom.usp_tekst1 | metafield_tag }}</p>",
+            "show_link": true,
+            "link_text": "Button",
+            "link_url": "",
+            "button_style": "primary plain"
+          }
+        },
+        "text_QNyDWL": {
+          "type": "text",
+          "settings": {
+            "icon": "none",
+            "image_svg": "",
+            "image_height": 55,
+            "title": "{{ collection.metafields.custom.usp_titel2.value }}",
+            "text": "<p>{{ collection.metafields.custom.usp_tekst2 | metafield_tag }}</p>",
+            "show_link": true,
+            "link_text": "Button",
+            "link_url": "",
+            "button_style": "primary plain"
+          }
+        },
+        "text_gABgGP": {
+          "type": "text",
+          "settings": {
+            "icon": "none",
+            "image_svg": "",
+            "image_height": 55,
+            "title": "{{ collection.metafields.custom.usp_titel3.value }}",
+            "text": "<p>{{ collection.metafields.custom.usp_tekst3 | metafield_tag }}</p>",
+            "show_link": true,
+            "link_text": "Button",
+            "link_url": "",
+            "button_style": "primary plain"
+          }
+        },
+        "text_NefB3p": {
+          "type": "text",
+          "settings": {
+            "icon": "none",
+            "image_svg": "",
+            "image_height": 55,
+            "title": "{{ collection.metafields.custom.usp_titel4.value }}",
+            "text": "<p>{{ collection.metafields.custom.usp_tekst4 | metafield_tag }}</p>",
+            "show_link": true,
+            "link_text": "Button",
+            "link_url": "",
+            "button_style": "primary plain"
+          }
+        }
+      },
+      "block_order": [
+        "text_ChfFBw",
+        "text_QNyDWL",
+        "text_gABgGP",
+        "text_NefB3p"
+      ],
+      "name": "t:sections.icon_text_blocks.presets.name",
+      "settings": {
+        "items_width": 4,
+        "text_alignment": "start",
+        "title": "<h2>Waarom kiezen voor deze producten?</h2>",
+        "title_underline_style": "none",
+        "text": "<p>{{ collection.metafields.custom.conctext | metafield_tag }}</p>",
+        "font_size": "16px",
+        "show_link": true,
+        "link_text": "Button",
+        "link_url": "",
+        "button_style": "primary plain",
+        "blocks_text_alignment": "start",
+        "blocks_title_font": "primary",
+        "blocks_title_size": "h2",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30
+      }
+    },
+    "section_faq_HV6cQz": {
+      "type": "section-faq",
+      "blocks": {
+        "text_bBym7C": {
+          "type": "text",
+          "settings": {
+            "faq_question": "{{ collection.metafields.custom.faq_vraag1.value }}",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>{{ collection.metafields.custom.faq_antwoord1.value }}</p>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_pqMw7U": {
+          "type": "text",
+          "settings": {
+            "faq_question": "{{ collection.metafields.custom.faq_vraag2.value }}",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>{{ collection.metafields.custom.faq_antwoord2.value }}</p>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_MNExic": {
+          "type": "text",
+          "settings": {
+            "faq_question": "{{ collection.metafields.custom.faq_vraag3.value }}",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>{{ collection.metafields.custom.faq_antwoord3.value }}</p>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_dtXjDU": {
+          "type": "text",
+          "settings": {
+            "faq_question": "{{ collection.metafields.custom.faq_vraag4.value }}",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>{{ collection.metafields.custom.faq_antwoord4.value }}</p>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_GgXVaX": {
+          "type": "text",
+          "settings": {
+            "faq_question": "{{ collection.metafields.custom.faq_vraag5.value }}",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>{{ collection.metafields.custom.faq_antwoord5.value }}</p>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_3i6LEb": {
+          "type": "text",
+          "settings": {
+            "faq_question": "{{ collection.metafields.custom.faq_vraag6.value }}",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>{{ collection.metafields.custom.faq_antwoord6.value }}</p>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_AJ7r33": {
+          "type": "text",
+          "settings": {
+            "faq_question": "{{ collection.metafields.custom.faq_vraag7.value }}",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>{{ collection.metafields.custom.faq_antwoord7.value }}</p>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_qWApCM": {
+          "type": "text",
+          "settings": {
+            "faq_question": "{{ collection.metafields.custom.faq_vraag8.value }}",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>{{ collection.metafields.custom.faq_antwoord8.value }}</p>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        }
+      },
+      "block_order": [
+        "text_bBym7C",
+        "text_pqMw7U",
+        "text_MNExic",
+        "text_dtXjDU",
+        "text_GgXVaX",
+        "text_3i6LEb",
+        "text_AJ7r33",
+        "text_qWApCM"
+      ],
+      "name": "t:sections.faq.presets.name",
+      "settings": {
+        "alignment": "left",
+        "compact": false,
+        "title": "<h2>Veelgestelde vragen (FAQ)</h2>",
+        "title_underline_style": "none",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30
+      }
     }
   },
   "order": [
     "breadcrumbs",
     "navigeer_snel_d4Uqmp",
     "section_image_with_text_4VnxUL",
-    "main-collection"
+    "main-collection",
+    "section_icon_text_blocks_UgFXV9",
+    "section_faq_HV6cQz"
   ]
 }
