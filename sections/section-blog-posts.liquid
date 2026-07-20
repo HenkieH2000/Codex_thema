@@ -122,9 +122,16 @@
     z-index: 1;
   }
 
-  #shopify-section-{{ section.id }} .l4ne a {
+#shopify-section-{{ section.id }} .l4ne a {
     position: relative;
     z-index: 3;
+    pointer-events: auto;
+  }
+
+  #shopify-section-{{ section.id }} .l4ne > li > a.article-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 5 !important;
     pointer-events: auto;
   }
 
