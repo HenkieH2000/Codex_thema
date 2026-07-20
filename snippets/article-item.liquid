@@ -68,5 +68,4 @@
       </p>
     {%- endif -%}
   {% endif %}
-  <p class="link{% unless is_link %}-btn{% endunless %}" style="position:relative;z-index:3;"><a href="{{ article.url }}" class="overlay-{{ button_color }} no-before {% if is_link %}inline strong{% elsif button_style == 'inv' %}inv{% endif %}">{% if is_link %}<span>{% endif %}{{ 'general.read_more.read_more' | t }}{% if is_link %}</span>&nbsp;<i aria-hidden="true" class="icon-chevron-right"></i>{% endif %}</a></p>
-</li>
+<p class="link{% unless is_link %}-btn{% endunless %}" style="position:relative;z-index:3;"><a href="{{ article.url }}" class="article-readmore overlay-{{ button_color }} no-before {% if is_link %}inline strong{% elsif button_style == 'inv' %}inv{% endif %}"></li>
