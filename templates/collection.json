@@ -56,19 +56,19 @@
         "usp_jiAfx7": {
           "type": "usp",
           "settings": {
-            "usp": "<p>{{ collection.metafields.custom.banner_detail1.value }}Eén samenhangende lijn, geen los inkopen van verschillende merken</p>"
+            "usp": "<p>{{ collection.metafields.custom.banner_detail1.value }}</p>"
           }
         },
         "usp_aPL38t": {
           "type": "usp",
           "settings": {
-            "usp": "<p>{{ collection.metafields.custom.banner_detail2.value }}Professioneel resultaat, ook zonder ervaring</p>"
+            "usp": "<p>{{ collection.metafields.custom.banner_detail2.value }}</p>"
           }
         },
         "usp_NDaUXd": {
           "type": "usp",
           "settings": {
-            "usp": "<p>Voor zowel exterieur als interieur{{ collection.metafields.custom.banner_detail3.value }}</p>"
+            "usp": "<p>{{ collection.metafields.custom.banner_detail3.value }}</p>"
           }
         },
         "buttons_BjTybH": {
