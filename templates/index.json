@@ -527,7 +527,7 @@
             "text": "",
             "show_link": true,
             "link_text": "Shop nu",
-            "link_url": "https://www.vctparts.nl/collections/halovision",
+            "link_url": "shopify://collections/halovision",
             "button_style": "tertiary link"
           }
         },
