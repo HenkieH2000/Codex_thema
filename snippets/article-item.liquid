@@ -27,7 +27,6 @@
 <li>
   {% if show_image %}
     <figure>
-      <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">
       <picture>
         {% if article.image %}
           <img
@@ -49,7 +48,6 @@
           {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
         {% endif %}
       </picture>
-      </a>
     </figure>
   {% endif %}
   <h3 class="size-h-small">
