@@ -24,7 +24,8 @@
   endif
 -%}
 
-<li>
+<li style="position: relative;">
+  <a href="{{ article.url }}" style="position:absolute;inset:0;z-index:2;" aria-label="{{ article.title | escape }}"></a>
   {% if show_image %}
     <figure>
       <picture>
@@ -42,7 +43,7 @@
             width="410"
             height="310"
             alt="{{ article.image.alt | default: article.title | escape }}"
-            loading="{% if lazyload %}lazy{% else %}endif{% endif %}"
+            loading="{% if lazyload %}lazy{% else %}eager{% endif %}"
           >
         {% else %}
           {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
@@ -67,5 +68,5 @@
       </p>
     {%- endif -%}
   {% endif %}
-  <p class="link{% unless is_link %}-btn{% endunless %}"><a href="{{ article.url }}" class="overlay-{{ button_color }} no-before {% if is_link %}inline strong{% elsif button_style == 'inv' %}inv{% endif %}">{% if is_link %}<span>{% endif %}{{ 'general.read_more.read_more' | t }}{% if is_link %}</span>&nbsp;<i aria-hidden="true" class="icon-chevron-right"></i>{% endif %}</a></p>
+  <p class="link{% unless is_link %}-btn{% endunless %}" style="position:relative;z-index:3;"><a href="{{ article.url }}" class="overlay-{{ button_color }} no-before {% if is_link %}inline strong{% elsif button_style == 'inv' %}inv{% endif %}">{% if is_link %}<span>{% endif %}{{ 'general.read_more.read_more' | t }}{% if is_link %}</span>&nbsp;<i aria-hidden="true" class="icon-chevron-right"></i>{% endif %}</a></p>
 </li>
