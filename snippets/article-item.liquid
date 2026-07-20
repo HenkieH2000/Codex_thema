@@ -27,7 +27,6 @@
 <li>
   {% if show_image %}
     <figure>
-      <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">
       <picture>
         {% if article.image %}
           <img
@@ -43,13 +42,12 @@
             width="410"
             height="310"
             alt="{{ article.image.alt | default: article.title | escape }}"
-            loading="{% if lazyload %}lazy{% else %}eager{% endif %}"
+            loading="{% if lazyload %}lazy{% else %}endif{% endif %}"
           >
         {% else %}
           {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
         {% endif %}
       </picture>
-      </a>
     </figure>
   {% endif %}
   <h3 class="size-h-small">
