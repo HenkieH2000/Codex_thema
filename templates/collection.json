@@ -43,32 +43,32 @@
         "title_xxpnbb": {
           "type": "title",
           "settings": {
-            "title": "<h2>Glossio — detailing van de bovenste plank</h2>",
+            "title": "<h2>{{ collection.metafields.custom.banner_titel.value }}</h2>",
             "title_underline_style": "none"
           }
         },
         "text_pCKCh9": {
           "type": "text",
           "settings": {
-            "text": "<p>Glossio is een detailinglijn gemaakt voor wie thuis een showroomresultaat wil bereiken. Shampoo, coating, interieurreiniger en microvezeldoeken die op elkaar zijn afgestemd — zonder gedoe.</p>"
+            "text": "<p>{{ collection.metafields.custom.banner_beschrijving | metafield_tag }}Glossio is een detailinglijn gemaakt voor wie thuis een showroomresultaat wil bereiken. Shampoo, coating, interieurreiniger en microvezeldoeken die op elkaar zijn afgestemd — zonder gedoe.</p>"
           }
         },
         "usp_jiAfx7": {
           "type": "usp",
           "settings": {
-            "usp": "<p>Eén samenhangende lijn, geen los inkopen van verschillende merken</p>"
+            "usp": "<p>{{ collection.metafields.custom.banner_detail1.value }}Eén samenhangende lijn, geen los inkopen van verschillende merken</p>"
           }
         },
         "usp_aPL38t": {
           "type": "usp",
           "settings": {
-            "usp": "<p>Professioneel resultaat, ook zonder ervaring</p>"
+            "usp": "<p>{{ collection.metafields.custom.banner_detail2.value }}Professioneel resultaat, ook zonder ervaring</p>"
           }
         },
         "usp_NDaUXd": {
           "type": "usp",
           "settings": {
-            "usp": "<p>Voor zowel exterieur als interieur</p>"
+            "usp": "<p>Voor zowel exterieur als interieur{{ collection.metafields.custom.banner_detail3.value }}</p>"
           }
         },
         "buttons_BjTybH": {
@@ -96,7 +96,7 @@
       ],
       "name": "t:sections.image_with_text.presets.name",
       "settings": {
-        "image": "shopify://shop_images/Glossio_Collectie_afb1.png",
+        "image": "{{ collection.metafields.custom.banner_afbeelding.value }}",
         "overlay_opacity": 0,
         "color_palette": "",
         "layout": "image-left",
