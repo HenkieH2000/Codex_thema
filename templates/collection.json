@@ -50,7 +50,7 @@
         "text_pCKCh9": {
           "type": "text",
           "settings": {
-            "text": "<p>{{ collection.metafields.custom.banner_beschrijving | metafield_tag }}Glossio is een detailinglijn gemaakt voor wie thuis een showroomresultaat wil bereiken. Shampoo, coating, interieurreiniger en microvezeldoeken die op elkaar zijn afgestemd — zonder gedoe.</p>"
+            "text": "<p>{{ collection.metafields.custom.banner_beschrijving | metafield_tag }}</p>"
           }
         },
         "usp_jiAfx7": {
