@@ -1,0 +1,120 @@
+{% if article.metafields.custom.related_products != blank %}
+  <section class="related-products-blog" style="padding: 40px 0; border-top: 2px solid #e8e8e8;">
+    <div class="page-width">
+      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.02em;">
+        {{ section.settings.heading }}
+      </h2>
+      <div class="related-products-grid">
+        {% for product in article.metafields.custom.related_products.value %}
+          <a href="{{ product.url }}" class="related-product-card">
+            <div class="related-product-image">
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | image_url: width: 400 }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                >
+              {% endif %}
+            </div>
+            <div class="related-product-info">
+              <p class="related-product-title">{{ product.title }}</p>
+              <p class="related-product-price">
+                {% if product.compare_at_price > product.price %}
+                  <span class="price-was" style="text-decoration: line-through; color: #999; font-size: 0.85em;">
+                    {{ product.compare_at_price | money }}
+                  </span>
+                  <span class="price-sale" style="color: #c0392b; font-weight: 700;">
+                    {{ product.price | money }}
+                  </span>
+                {% else %}
+                  {{ product.price | money }}
+                {% endif %}
+              </p>
+              <span class="related-product-btn">Bekijk product →</span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+<style>
+  .related-products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (min-width: 750px) {
+    .related-products-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .related-product-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .related-product-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+  }
+  .related-product-image img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+  }
+  .related-product-info {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+  .related-product-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+  .related-product-price {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  .related-product-btn {
+    margin-top: auto;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Gerelateerde producten",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Koptekst",
+      "default": "Gerelateerde producten"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gerelateerde producten"
+    }
+  ]
+}
+{% endschema %}
