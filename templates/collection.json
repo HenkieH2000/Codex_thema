@@ -15,6 +15,28 @@
         "hide_mobile": false
       }
     },
+    "navigeer_snel_d4Uqmp": {
+      "type": "navigeer-snel",
+      "name": "Navigeer Snel",
+      "settings": {
+        "label": "Navigeer snel",
+        "padding_v": 12,
+        "label_size": 14,
+        "label_color": "#030a22",
+        "chip_font_size": 13,
+        "chip_radius": 50,
+        "chip_bg": "#ffffff",
+        "chip_text_color": "#030a22",
+        "chip_border_color": "#efefef",
+        "thumb_size": 34,
+        "active_bg_color": "#efefef",
+        "active_text_color": "#ff7e00",
+        "active_border_color": "#ff7e00",
+        "arrow_bg": "#ffffff",
+        "arrow_icon_color": "#efefef",
+        "arrow_border": "#efefef"
+      }
+    },
     "section_image_with_text_4VnxUL": {
       "type": "section-image-with-text",
       "blocks": {
@@ -74,35 +96,13 @@
       ],
       "name": "t:sections.image_with_text.presets.name",
       "settings": {
-        "image": "shopify://shop_images/Glossio_Collectie_afb1.png",
+        "image": "shopify://shop_images/HaloVision_Volkswagen_Specifieke_H7_LED_40W_8000Lm.png",
         "overlay_opacity": 0,
         "color_palette": "",
         "layout": "image-left",
         "text_position": "text-start",
         "spacing_desktop": 50,
         "spacing_mobile": 30
-      }
-    },
-    "navigeer_snel_d4Uqmp": {
-      "type": "navigeer-snel",
-      "name": "Navigeer Snel",
-      "settings": {
-        "label": "Navigeer snel",
-        "padding_v": 12,
-        "label_size": 14,
-        "label_color": "#030a22",
-        "chip_font_size": 13,
-        "chip_radius": 50,
-        "chip_bg": "#ffffff",
-        "chip_text_color": "#030a22",
-        "chip_border_color": "#efefef",
-        "thumb_size": 34,
-        "active_bg_color": "#efefef",
-        "active_text_color": "#ff7e00",
-        "active_border_color": "#ff7e00",
-        "arrow_bg": "#ffffff",
-        "arrow_icon_color": "#efefef",
-        "arrow_border": "#efefef"
       }
     },
     "main-collection": {
