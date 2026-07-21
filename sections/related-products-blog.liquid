@@ -1,11 +1,14 @@
 {%- liquid
-  assign related_handles = article.metafields.custom.related_products.value | split: ','
+  assign raw_handles = article.metafields.custom.related_products.value | replace: ',', newline
+  assign related_handles = raw_handles | split: newline
   assign valid_count = 0
   for handle in related_handles
     assign clean_handle = handle | strip
-    assign lookup_product = all_products[clean_handle]
-    if lookup_product != blank
-      assign valid_count = valid_count | plus: 1
+    if clean_handle != blank
+      assign lookup_product = all_products[clean_handle]
+      if lookup_product != blank
+        assign valid_count = valid_count | plus: 1
+      endif
     endif
   endfor
 
@@ -41,10 +44,12 @@
           assign placeholder_int = 0
           for handle in related_handles
             assign clean_handle = handle | strip
-            assign product = all_products[clean_handle]
-            if product != blank
-              assign placeholder_int = placeholder_int | plus: 1
-              render 'product-item', product: product, placeholder_int: placeholder_int, enable_quick_buy_desktop: true, enable_quick_buy_mobile: true, enable_quick_buy_qty_selector: true, quick_buy_compact: false, enable_quick_buy_drawer: true, enable_color_picker: false
+            if clean_handle != blank
+              assign product = all_products[clean_handle]
+              if product != blank
+                assign placeholder_int = placeholder_int | plus: 1
+                render 'product-item', product: product, placeholder_int: placeholder_int, enable_quick_buy_desktop: true, enable_quick_buy_mobile: true, enable_quick_buy_qty_selector: true, quick_buy_compact: false, enable_quick_buy_drawer: true, enable_color_picker: false
+              endif
             endif
           endfor
         -%}
