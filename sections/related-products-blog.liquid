@@ -1,6 +1,9 @@
+{% capture newline %}
+{% endcapture %}
 {%- liquid
-  assign raw_handles = article.metafields.custom.related_products.value | replace: ',', newline
-  assign related_handles = raw_handles | split: newline
+  assign raw_value = article.metafields.custom.related_products.value | default: ''
+  assign raw_value = raw_value | replace: ',', newline
+  assign related_handles = raw_value | split: newline
   assign valid_count = 0
   for handle in related_handles
     assign clean_handle = handle | strip
