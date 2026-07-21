@@ -1,6 +1,33 @@
-{%- assign related = article.metafields.custom.related_products.value -%}
-{%- if related != blank and related.size > 0 -%}
+{%- liquid
+  assign related_handles = article.metafields.custom.related_products.value | split: ','
+  assign valid_count = 0
+  for handle in related_handles
+    assign clean_handle = handle | strip
+    assign lookup_product = all_products[clean_handle]
+    if lookup_product != blank
+      assign valid_count = valid_count | plus: 1
+    endif
+  endfor
 
+  case valid_count
+    when 0
+      assign width_class = 'w20'
+    when 2
+      assign width_class = 'w50'
+    when 3
+      assign width_class = 'w33'
+    when 4
+      assign width_class = 'w25'
+    when 5
+      assign width_class = 'w20'
+    when 6
+      assign width_class = 'w16'
+    else
+      assign width_class = 'w14'
+  endcase
+-%}
+
+{%- if valid_count > 0 -%}
 <div class="m6tb static">
   <div>
     <article>
@@ -9,13 +36,16 @@
           {{ section.settings.title }}
         </div>
       </header>
-      <ul class="l4cl with-quick-buy slider w25">
+      <ul class="l4cl with-quick-buy slider {{ width_class }}">
         {%- liquid
-          for product in related
-            capture placeholder_int
-              cycle 1, 2, 3, 4, 5, 6
-            endcapture
-            render 'product-item', product: product, placeholder_int: placeholder_int, enable_quick_buy_desktop: true, enable_quick_buy_mobile: true, enable_quick_buy_qty_selector: true, quick_buy_compact: false, enable_quick_buy_drawer: true, enable_color_picker: false
+          assign placeholder_int = 0
+          for handle in related_handles
+            assign clean_handle = handle | strip
+            assign product = all_products[clean_handle]
+            if product != blank
+              assign placeholder_int = placeholder_int | plus: 1
+              render 'product-item', product: product, placeholder_int: placeholder_int, enable_quick_buy_desktop: true, enable_quick_buy_mobile: true, enable_quick_buy_qty_selector: true, quick_buy_compact: false, enable_quick_buy_drawer: true, enable_color_picker: false
+            endif
           endfor
         -%}
       </ul>
@@ -31,7 +61,6 @@
     #shopify-section-{{ section.id }} { margin-bottom: 26px; }
   }
 </style>
-
 {%- endif -%}
 
 {% schema %}
