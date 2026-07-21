@@ -144,6 +144,14 @@
         "spacing_desktop": 50,
         "spacing_mobile": 30
       }
+    },
+    "related_products_blog_NXLkNz": {
+      "type": "related-products-blog",
+      "name": "Gerelateerde producten",
+      "settings": {
+        "title": "<h2>Gerelateerde producten</h2>",
+        "spacing_desktop": 50
+      }
     }
   },
   "order": [
@@ -151,6 +159,7 @@
     "main-article",
     "section_rich_text_acaznB",
     "related_products_blog_pPwAwP",
+    "related_products_blog_NXLkNz",
     "blogs_row"
   ]
 }
