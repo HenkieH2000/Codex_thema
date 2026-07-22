@@ -300,11 +300,6 @@
           "position": "right"
         }
       },
-      "6251270934270006384": {
-        "type": "shopify://apps/stape-server-gtm/blocks/gtm/7e13c847-7971-409d-8fe0-29ec14d5f048",
-        "disabled": false,
-        "settings": {}
-      },
       "15181020662106344915": {
         "type": "shopify://apps/judge-me-reviews/blocks/popup_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
         "disabled": true,
@@ -320,41 +315,8 @@
         "disabled": false,
         "settings": {}
       },
-      "4608251692753025422": {
-        "type": "shopify://apps/sales-discounts/blocks/sale-labels/29205fb1-2e68-4d81-a905-d828a51c8413",
-        "disabled": true,
-        "settings": {}
-      },
       "12857598347353057890": {
         "type": "shopify://apps/asktimmy-ai/blocks/app_embed/400790a8-f036-45a6-886a-4150d0e6f6aa",
-        "disabled": false,
-        "settings": {}
-      },
-      "320593021044489861": {
-        "type": "shopify://apps/sales-discounts/blocks/countdown/29205fb1-2e68-4d81-a905-d828a51c8413",
-        "disabled": false,
-        "settings": {}
-      },
-      "12753009889109327377": {
-        "type": "shopify://apps/sales-discounts/blocks/price_property/29205fb1-2e68-4d81-a905-d828a51c8413",
-        "disabled": true,
-        "settings": {
-          "original_price_label": "🏷️ Original price",
-          "visibility": "all"
-        }
-      },
-      "9005256451184024879": {
-        "type": "shopify://apps/uppromote-affiliate/blocks/customer-referral/64c32457-930d-4cb9-9641-e24c0d9cf1f4",
-        "disabled": false,
-        "settings": {}
-      },
-      "1996061711396120121": {
-        "type": "shopify://apps/uppromote-affiliate/blocks/message-bar/64c32457-930d-4cb9-9641-e24c0d9cf1f4",
-        "disabled": false,
-        "settings": {}
-      },
-      "3138269044488530766": {
-        "type": "shopify://apps/uppromote-affiliate/blocks/core-script/64c32457-930d-4cb9-9641-e24c0d9cf1f4",
         "disabled": false,
         "settings": {}
       },
@@ -419,8 +381,8 @@
         "disabled": false,
         "settings": {}
       },
-      "172750395860225535": {
-        "type": "shopify://apps/metrion/blocks/metrion-embedding/019be65b-c4bb-796d-96e9-f0eee9562c47",
+      "2647664283302970701": {
+        "type": "shopify://apps/cookiebot-cmp/blocks/uc-banner/42d95aba-03be-478d-adf0-7bb4f5efae78",
         "disabled": false,
         "settings": {}
       }
