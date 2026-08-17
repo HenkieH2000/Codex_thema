@@ -51,11 +51,11 @@
       "name": "t:sections.featured_products.presets.name",
       "settings": {
         "products": [
-          "ceramic-sealer-premium-keramische-coating-500ml-krachtig-tegen-vuil-voor-een-glanzend-resultaat-kopie",
+          "glossio-ceramic-sealer-keramische-coating-500ml",
           "halovision-turbo-led-koplampen-h7-150w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-2-autolampen",
           "glossio-combideal-foam-wassen-complete-foam-wasset-met-pre-wash-active-foamer-en-drukschuimer",
           "halovision-turbo-led-koplampen-h7-150w-30000lm-6000k-helder-wit-canbus-plug-en-play-dimlicht-grootlicht-led-set-van-2-autolampen-kopie-2",
-          "glossio-buff-wax-towel-oranje-microvezel-polijst-doek-40x40cm-voor-een-streeploos-resultaat-oranje"
+          "glossio-buff-wax-towel-polijstdoek-40x40cm-oranje"
         ],
         "layout": "slider",
         "number_of_items": 5,
